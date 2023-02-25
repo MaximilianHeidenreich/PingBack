@@ -26,14 +26,14 @@
 
 <div class="h-full grow overflow-y-auto">
     {#if !$storeActiveProject}
-    <AppContentSection>
+    <AppContentSection class="!px-6">
         <p class="text-center mx-auto max-w-[50ch]">
             No active project.<br>
             <span class="text-sm">Please choose a project!</span>
         </p>
     </AppContentSection>
     {:else}
-    <AppContentSection>
+    <AppContentSection class="!px-6">
         <header class="mb-2">
             <span class="text-2xl font-medium">Project</span>
         </header>
@@ -43,7 +43,7 @@
         </fieldset>
         <hr class="mt-4">
     </AppContentSection>
-    <AppContentSection>
+    <AppContentSection class="!px-6">
         <header class="mb-2">
             <span class="text-2xl font-medium">Channels</span>
         </header>
@@ -69,7 +69,7 @@
             {/each}
         </ul>
     </AppContentSection>
-    <AppContentSection>
+    <AppContentSection class="!px-6">
         <header class="mb-2 flex items-center gap-3">
             <span class="text-2xl font-medium mb-0.5">API Keys</span>
             <IconButton on:click={onCreateApiKey}>
@@ -94,7 +94,7 @@
             {/each}
         </ul>
     </AppContentSection>
-    <AppContentSection>
+    <AppContentSection class="!px-6">
         <header class="mb-2">
             <span class="text-2xl font-medium">Danger Zone</span>
         </header>

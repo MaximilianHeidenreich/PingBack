@@ -31,13 +31,13 @@
 </script>
 
 {#if !event}
-<AppContentSection>
+<AppContentSection class="!px-6">
     <p class="text-center mx-auto max-w-[50ch]">
         Event not found!
     </p>
 </AppContentSection>
 {:else}
-<AppContentSection>
+<AppContentSection class="!px-4">
     <header class="overview mb-2 w-full flex gap-8">
         <div class="icon">
             <div class="w-fit mt-1 p-4 aspect-square flex justify-center items-center bg-[#8686861e] rounded-3xl" style="background: {reducedEmojiColor};">
@@ -59,7 +59,7 @@
     </header>
     <hr class="mt-4">
 </AppContentSection>
-<AppContentSection>
+<AppContentSection class="!px-4">
     <details class="mb-6">
         <summary class="cursor-pointer flex justify-between items-center gap-2">
             <span class="text-2xl font-medium">Tags <span class="font-mono text-base">({Object.keys(event.tags).length})</span></span>
@@ -71,7 +71,7 @@
     </details>
     <hr class="mt-4">
 </AppContentSection>
-<AppContentSection>
+<AppContentSection class="!px-4">
     <header class="mb-6">
         <span class="text-2xl font-medium">Description</span>
     </header>

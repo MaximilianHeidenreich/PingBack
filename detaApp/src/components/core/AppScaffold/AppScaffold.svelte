@@ -21,7 +21,7 @@
         grid-template-columns: min-content auto;
     }
     main {
-        @apply w-full h-full max-h-full flex flex-col;
+        @apply w-full h-full max-w-full max-h-full flex flex-col;
         grid-row: 1;
         grid-column: 2 / 3;
     }

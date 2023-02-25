@@ -25,7 +25,7 @@
     });
 </script>
 
-<AppContentSection class="h-full grow overflow-y-scroll">
+<AppContentSection class="h-full w-full grow overflow-y-scroll">
     <EventFeed events={data.events}>
 
     </EventFeed>

@@ -22,15 +22,18 @@
     {#if $storeFeedStyle === "compact-list"}
     <a href="{baseURL}/event/{event.id}">
         <div class="title">
-            <div class="w-fit p-2 pl-0 aspect-square flex justify-start items-center">
+            <!--<div class="w-14 h-12 aspect-square bg-lime-200 p-2 pl-0 flex justify-start items-center">
                 <span class="icon">{event.icon}</span>
-            </div>
+            </div>-->
+            <span class="icon text-2xl">{event.icon}</span>
             <span class="text-base font-medium truncate">{event.title}</span>
         </div>
-        <ul class="meta">
-            <li><span class="text-sm text-gray-500 font-mono">{new Date(event.createdAt).toLocaleString("de-DE", {day: "numeric", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"})}</span></li>
-        </ul>
+        <div class="meta">
+            <span class="text-sm text-gray-500 font-mono">{new Date(event.createdAt).toLocaleString("de-DE", {day: "numeric", month: "numeric", year: "2-digit", hour: "2-digit", minute: "2-digit"})}</span>
+        </div>
     </a>
+
+    <!-- TODO: Fix cards on mobile -->
     {:else if $storeFeedStyle === "card"}
     <a href="{baseURL}/event/{event.id}">
         <div class="icon">
@@ -58,7 +61,7 @@
             <footer>
                 <ul class="flex justify-between items-center gap-8">
                     <li class="text-sm text-gray-500 font-mono">{event.event} @ {event.channel} · {new Date(event.createdAt).toLocaleString("de-DE", {day: "numeric", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"})}</li>
-                    <li>
+                    <li class="hidden md:block">
                         <IconButton><IconDots slot="icon" size={24} stroke={2}/></IconButton>
                     </li>
                 </ul>
@@ -71,32 +74,22 @@
 <style lang="postcss">
     /* SHARED */
     li.item {
-        @apply w-full py-0.5;
-        @apply border-b-2 border-neutral-100;
+        @apply w-full py-0.5 border-b-2 border-neutral-100;
+        /*@apply bg-gray-100;*/
+    }
+    li.item > a {
+        @apply px-4;
     }
 
     /* COMPACT-LIST */
-    /*.item.compact-list {
-        @apply py-0.5;
-        @apply border-b-2 border-neutral-100;
-    }*/
-    .item.item.compact-list a {
-        @apply flex justify-between items-center gap-8;
+    li.item.compact-list a {
+        @apply flex items-center gap-2 py-2;
     }
     .item.compact-list a > .title {
-        @apply w-full flex items-center gap-1 grow;
+        @apply w-[10ch] grow shrink flex items-center gap-2;
     }
     .item.compact-list a > .meta {
-        @apply w-full grow flex justify-end;
-    }
-
-    @media screen and (max-width: 768px) {
-        .item.compact-list a {
-            @apply flex-col justify-start !gap-0;
-        }
-        .item.compact-list a > .meta {
-            @apply justify-end;
-        }
+        @apply w-fit shrink-0 flex justify-end;
     }
 
     /* CARD */
@@ -107,13 +100,13 @@
         @apply w-full flex gap-4;
     }
     .item.card .meta {
-        @apply w-full grow;
+        @apply w-fit shrink-0 grow;
     }
     .item.card header span {
         @apply text-lg font-semibold truncate;
     }
     .item.card .preview {
-        @apply mt-2 mb-1 max-w-[50ch];
+        @apply mt-2 mb-1 max-w-[40ch];
     }
 
 </style>

@@ -4,6 +4,6 @@
 
 <style lang="postcss">
     section {
-        @apply w-full max-w-2xl mx-auto py-6 px-6;
+        @apply w-full max-w-full overflow-hidden md:max-w-2xl mx-auto py-6 px-6 px-0;
     }
 </style>

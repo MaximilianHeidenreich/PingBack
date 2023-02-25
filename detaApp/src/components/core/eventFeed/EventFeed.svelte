@@ -11,7 +11,7 @@
 {#if events.length <= 0}
 <p class="text-center mx-auto max-w-[50ch]">
     Nothing to display... <br>
-    <span class="text-sm">Visit <a href="/" class="pretty-link">help</a> to learn how to publish your first event.</span>
+    <span class="text-sm">Visit <a href="https://maximilianheidenreich.gitbook.io/pingback/" target="_blank" class="pretty-link">help</a> to learn how to publish your first event.</span>
 </p>
 {:else}
 <ul class="eventFeed">
@@ -23,6 +23,7 @@
 
 <style lang="postcss">
     ul.eventFeed {
-        @apply w-full h-fit max-h-full px-6 py-4 overflow-y-auto flex flex-col;
+        @apply w-full h-fit max-h-full px-0 py-4 overflow-y-auto;
+        @apply flex flex-col;
     }
 </style>
