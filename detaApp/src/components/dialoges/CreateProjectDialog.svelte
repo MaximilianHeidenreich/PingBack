@@ -38,7 +38,7 @@
                     sanitizer={sanitizeProjectIdInput} 
                     placeholder="My-Project"/>
             </label>
-            <p class="mt-2 px-0.5 leading-5 max-w-[35ch]"><small class="mt-1">Allowed characters: lowercase letters, numbers, dashes and underscores</small>.</p>
+            <p class="mt-2 px-0.5 leading-5 max-w-[35ch]"><small class="mt-1">Allowed characters: lowercase letters, numbers, dashes and underscores.</small></p>
         </fieldset>
         <fieldset class="flex justify-end gap-4">
             <Button on:click={() => { dialog.close(); }} type="secondary">Cancel</Button>
