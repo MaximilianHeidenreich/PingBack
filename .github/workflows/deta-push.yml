@@ -1,0 +1,40 @@
+name: Push to Deta Space
+run-name: push to deta space
+on:
+  push:
+    branches: [$default-branch]
+permissions:
+  contents: read
+jobs:
+  Build-And-Push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Installing dependencies
+        run: npm i && curl -fsSL https://get.deta.dev/space-cli.sh | sh
+      - name: 🔨 Building SveltKit project
+        run: npm run build
+      - name: 🪐 Pushing to Deta Space
+        run: |
+          echo ${{ secrets.DETA_ACCESS_TOKEN }} | space login
+          space link --id ${{ secrets.DETA_PROJECT_ID }}
+          space push
+      - run: echo "ℹ️ Build finished with status ${{ job.status }}."
+
+  Notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup Deno
+        uses: denoland/setup-deno@9db7f66e8e16b5699a514448ce994936c63f0d54
+        with:
+          deno-version: v1.x
+      - name: List files in the repository
+        run: |
+          deno run --allow-all clients/deno/tests/publishEvent.test.ts
+      - run: echo "🔔 Job finished with status ${{ job.status }}."
