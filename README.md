@@ -8,7 +8,7 @@
 <h2 align="center">PingBack</h2>
 
 <p align="center">
-    A lightweight, developer friendly, key-value persistant storage solution for Deno projects</a>.
+    Aggregate, Filter and Monitor any events inside the personal cloud.</a>.
     <br />
     <a href="https://maximilianheidenreich.gitbook.io/pingback/"><strong>Explore the docs »</strong></a>
     <br />
