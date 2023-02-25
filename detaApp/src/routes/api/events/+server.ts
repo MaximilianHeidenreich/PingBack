@@ -1,20 +1,21 @@
 import type { IResponse } from "$lib/api/IResponse";
-import { isApiKeyValid } from "$lib/server/apiKey";
 import { deta } from "$lib/server/deta";
 import { buildResponse, validApiKey } from "$lib/server/routeHelper";
 import type { IEvent } from "$lib/types/IEvent";
+import type { IProject } from "$lib/types/IProject";
 import { sanitizeProjectIdInternal } from "$lib/utils/sanitizers";
 import { error } from "@sveltejs/kit";
 import type { FetchResponse } from "deta/dist/types/types/base/response";
 import type { RequestHandler } from "../$types";
 
 const db_events = deta.Base("events");
+const db_projects = deta.Base("projects");
 
 export const GET = (async ({ url }) => {
     const queryRaw = url.searchParams.get("query") || undefined;
     const limit = url.searchParams.get("limit") || 50;
     const last = url.searchParams.get("last") || undefined;
-    const day = url.searchParams.get("day") || undefined; // TODO: imple server side fetch for specific day
+    const day = url.searchParams.get("day") || undefined; // TODO: imple server side fetch for specific day ?
 
     let query: Record<string, unknown> | Record<string | number | symbol, never> = {};
     if (queryRaw) {
@@ -52,9 +53,9 @@ export const GET = (async ({ url }) => {
 
 export const POST = (async ({ url, request }) => {
     const reqBody = await request.json();
-    const project = sanitizeProjectIdInternal(reqBody.project);
+    const projectId = sanitizeProjectIdInternal(reqBody.project);
 
-    if (!(await validApiKey(request, project))) {
+    if (!(await validApiKey(request, projectId))) {     // TODO: improve -> We already fetch the project, so just return it for use in the route
         return buildResponse()
             .status(401)
             .json({ ok: false, error: "Unauthorized!" })
@@ -62,8 +63,29 @@ export const POST = (async ({ url, request }) => {
     }
 
     // TODO: zod validate reqBody
-    // TODO: Check project exists
-    // TODO: Check channel exists
+
+    let project: IProject | undefined;
+    {
+        try {
+            // @ts-ignore -> Deta SDK / TypeScript shitting itself but we good :)
+            project = (await db_projects.get(projectId)) as IProject | undefined;
+        }
+        catch (err) {
+            console.error(err);
+            return buildResponse()
+                .status(500)
+                .statusText("Internal error!")
+                .json({ ok: false, error: {} })
+                .build();
+        }
+    }
+
+    if (!project!.channels.find(c => c.name === reqBody.channel)) {
+        return buildResponse()
+                .status(404)
+                .json({ ok: false, error: "Channel not found!" })
+                .build();
+    }
 
 
     let pendingEvent: IEvent = {
@@ -88,6 +110,20 @@ export const POST = (async ({ url, request }) => {
     catch (err) {
         console.error(err);
         throw error(500, "Internal error!");
+    }
+
+    // Update project details
+    project!.latestEventTimestamp = pendingEvent.createdAt;
+    {
+        // @ts-ignore -> Deta SDK shitting itself but we good :)
+        delete project!.key;
+        try {
+            // @ts-ignore -> Deta SDK shitting itself but we good :)
+            await db_projects.update(project!, project.id);
+        }
+        catch (err) {
+            console.error(err);
+        }
     }
 
     const response = buildResponse()

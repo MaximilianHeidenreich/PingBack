@@ -7,6 +7,7 @@ export interface IProject {
     // META
     id: string;
     createdAt: number;
+    latestEventTimestamp: number;
 
     // PAYLOAD
     name: string;    // Project name, only lowercase letters, numbers and dashes and underscores
