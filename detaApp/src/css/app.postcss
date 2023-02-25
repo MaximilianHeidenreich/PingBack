@@ -4,34 +4,34 @@
 @tailwind utilities;
 
 /* CORE */
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    @apply bg-white;
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	@apply bg-white;
 }
 
 .toaster {
-    z-index: 9999;
+	z-index: 9999;
 }
 
 details > summary {
-    list-style-type: none;
+	list-style-type: none;
 }
 details > summary::-webkit-details-marker {
-    display: none;
+	display: none;
 }
 details > summary::before {
-    content: '';
-    display: none;
+	content: "";
+	display: none;
 }
 details[open] > summary::before {
-    content: '';
-    display: none;
+	content: "";
+	display: none;
 }
 
-
 a.pretty-link {
-    @apply text-blue-500 underline underline-offset-2;
+	@apply text-blue-500 underline underline-offset-2;
 }

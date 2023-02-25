@@ -2,15 +2,29 @@
 	"useTabs": true,
 	"singleQuote": false,
 	"trailingComma": "none",
+    "semi": true,
 	"printWidth": 100,
+    "tabWidth": 4,
+    "proseWrap": "preserve",
+    "bracketSpacing": true,
+    "bracketSameLine": true,
 	"plugins": [
-        "prettier-plugin-svelte",
+		"prettier-plugin-svelte",
 		"prettier-plugin-organize-imports",
-		"prettier-plugin-tailwindcss"
-    ],
+		"prettier-plugin-tailwindcss",
+        "@ianvs/prettier-plugin-sort-imports"
+	],
 	"pluginSearchDirs": ["."],
 	"overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }],
-    "bracketSpacing": true,
+	
 	"svelteBracketNewLine": false,
-	"singleAttributePerLine": true
+	"singleAttributePerLine": true,
+    "svelteIndentScriptAndStyle": true,
+    "svelteAllowShorthand": true,
+
+    "importOrder": ["^svelte/(.*)$", "^$lib/(.*)$", "^$cmp/(.*)$", "^[./]"],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "importOrderMergeDuplicateImports": true,
+    
 }

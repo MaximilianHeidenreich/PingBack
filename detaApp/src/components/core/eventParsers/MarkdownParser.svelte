@@ -1,19 +1,18 @@
 <script lang="ts">
 	import type { IEvent } from "$lib/types/IEvent";
-    import { compile } from "mdsvex";
+	import { compile } from "mdsvex";
 
-    // PROPS
-    export let event: IEvent;
+	// PROPS
+	export let event: IEvent;
 
-    // STATE
-    /*let compiled = compile(event.description, {
+	// STATE
+	/*let compiled = compile(event.description, {
         smartypants: true,
     })*/
-
 </script>
 
 <div>
-    <!--{#await compiled}
+	<!--{#await compiled}
         <p>Loading...</p>
     {:then result}
         {@html result}
