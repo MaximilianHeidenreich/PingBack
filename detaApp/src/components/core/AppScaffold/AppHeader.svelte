@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { storeFeedStyle } from "$lib/stores/storeFeedStyle";
 	import { storePageHeaderTitle } from "$lib/stores/storePageHeader";
+	import { callRefresh, storeRefreshButton, storeRefreshing } from "$lib/stores/storeRefreshButton";
 	import { storeSidebarOpen } from "$lib/stores/storeSidebarOpen";
 	import { ICON_TOKENS } from "$lib/utils/tokens";
 	import { IconMenu2, IconRefresh, IconSearch, IconStack2 } from "@tabler/icons-svelte";
@@ -31,7 +32,15 @@
     <ul class="flex items-center gap-1">
         <li><IconButton><IconSearch slot="icon" size={ICON_TOKENS.SIZE.BASE} stroke={ICON_TOKENS.STROKE.BASE}/></IconButton></li>
         <li><IconButton on:click={onToggleFeedStyle}><IconStack2 slot="icon" size={ICON_TOKENS.SIZE.BASE} stroke={ICON_TOKENS.STROKE.BASE}/></IconButton></li>
-        <li><IconButton><IconRefresh slot="icon" size={ICON_TOKENS.SIZE.BASE} stroke={ICON_TOKENS.STROKE.BASE}/></IconButton></li>
+        <li>
+            {#key $storeRefreshButton}
+            {#key $storeRefreshing}
+            <IconButton on:click={callRefresh}>
+                <IconRefresh slot="icon" size={ICON_TOKENS.SIZE.BASE} stroke={ICON_TOKENS.STROKE.BASE} class="{get(storeRefreshing) ? 'animate-spin' : ''}" style="animation-direction: reverse;"/>
+            </IconButton>
+            {/key}
+            {/key}
+            </li>
     </ul>
 </header>
 

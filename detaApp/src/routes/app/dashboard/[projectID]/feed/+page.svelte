@@ -6,6 +6,7 @@
 	import { get } from "svelte/store";
 	import EventFeed from "$cmp/core/eventFeed/EventFeed.svelte";
 	import AppContentSection from "$cmp/core/AppScaffold/AppContentSection.svelte";
+	import AutoLoadEventFeed from "$cmp/core/eventFeed/AutoLoadEventFeed.svelte";
 
     // PROPS
     export let  data: PageData;
@@ -13,9 +14,6 @@
     // STATE
     let projectId = data.projectId;
     //$: events = Object.keys($storeEvents[projectId]).flatMap((key) => $storeEvents[projectId][key]);
-    $: $storeEvents && console.log(get(storeEvents));
-    $: eventsRaw = ($storeEvents && $storeEvents[projectId]) && Object.keys($storeEvents[projectId]).flatMap((key) => $storeEvents[projectId][key]);
-    $: events = eventsRaw || [];
 
     // HOOKS
     onMount(async () => {
@@ -25,8 +23,6 @@
     });
 </script>
 
-<AppContentSection class="h-full w-full grow overflow-y-scroll">
-    <EventFeed events={data.events}>
-
-    </EventFeed>
+<AppContentSection class="h-full w-full grow overflow-y-scroll !py-0">
+    <AutoLoadEventFeed query={{ project: projectId }}/>
 </AppContentSection>

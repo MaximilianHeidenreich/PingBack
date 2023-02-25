@@ -5,6 +5,7 @@
 	import { convertHexToRGBA } from "$lib/utils/colors";
 	import { IconDots } from "@tabler/icons-svelte";
     import { generatePalette } from "emoji-palette";
+	import { onMount } from "svelte";
 	import IconButton from "../buttons/IconButton.svelte";
 	import TextParser from "../eventParsers/TextParser.svelte";
 
@@ -12,9 +13,14 @@
     export let  event: IEvent;
     $: baseURL = "/app/dashboard/" + $storeActiveProject?.id;
 
-    let emojiPalette = generatePalette(event.icon);
-    let reducedEmojiColor = convertHexToRGBA(emojiPalette[0], 0.15);
+    let emojiPalette: string[] = [];
+    $: reducedEmojiColor = "#000";
     
+    // HOOKS
+    onMount(() => {
+        emojiPalette = generatePalette(event.icon);
+        reducedEmojiColor = convertHexToRGBA(emojiPalette[0], 0.15);
+    });
 
 </script>
 

@@ -10,11 +10,11 @@
 {#if type === "button"}
 <button
     on:click
-    {disabled}>
+    {disabled} {...$$restProps}>
     <slot name="icon"/>
 </button>
 {:else if type === "link"}
-<a {href} class:disabled>
+<a {href} class:disabled {...$$restProps}>
     <slot name="icon"/>
 </a>
 {/if}
