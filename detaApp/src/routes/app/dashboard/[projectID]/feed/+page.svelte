@@ -2,11 +2,8 @@
     import type { PageData } from "./$types";
 	import { storePageHeaderTitle } from "$lib/stores/storePageHeader";
 	import { onMount } from "svelte";
-	import { storeActiveProjectID } from "$lib/stores/storeActiveProject";
 	import { storeEvents, store_fetchEvents } from "$lib/stores/storeEvents";
 	import { get } from "svelte/store";
-	import PageContent from "$cmp/core/PageContent.svelte";
-	import PageContentSection from "$cmp/core/PageContentSection.svelte";
 	import EventFeed from "$cmp/core/eventFeed/EventFeed.svelte";
 	import AppContentSection from "$cmp/core/AppScaffold/AppContentSection.svelte";
 
@@ -33,8 +30,3 @@
 
     </EventFeed>
 </AppContentSection>
-<!--<PageContent>
-    <PageContentSection>
-        <EventFeed {events}/>
-    </PageContentSection>
-</PageContent>-->

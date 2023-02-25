@@ -1,8 +1,5 @@
-<script>
+<script lang="ts">
 	import { navigating } from "$app/stores";
-	import { TRANSITION_TOKENS } from "$lib/utils/transitions";
-	import { fly, fade } from "svelte/transition";
-
 </script>
 <div id="app-scaffold">
     <slot name="sidebar"/>
