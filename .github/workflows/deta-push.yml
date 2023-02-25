@@ -5,6 +5,8 @@ on:
     branches: [main]
 permissions:
   contents: read
+env:
+  DETA_PROJECT_KEY: foobar
 jobs:
   Build-And-Push:
     runs-on: ubuntu-latest
