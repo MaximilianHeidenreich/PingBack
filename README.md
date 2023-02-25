@@ -53,7 +53,7 @@ PingBack tries to be a relatively unbiased yet powerful application for you to a
 
 ## Installation
 
-> **! Please refeer to the official [documentation](https://maximilianheidenreich.gitbook.io/pingback/) for more information on how to set-up and use Pingback !**
+> **! Please referr to the official [documentation](https://maximilianheidenreich.gitbook.io/pingback/) for more information on how to set-up and use Pingback !**
 
 1. Create an account on [Deta Space](https://deta.space).
 2. Visit PingBack's App Page and click the `Install App` button.
