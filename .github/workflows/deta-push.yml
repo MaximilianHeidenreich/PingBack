@@ -15,7 +15,10 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Installing dependencies
-        run: npm i && curl -fsSL https://get.deta.dev/space-cli.sh | sh
+        run: |
+          ls -al
+          npm i
+          curl -fsSL https://get.deta.dev/space-cli.sh | sh
       - name: 🔨 Building SveltKit project
         run: npm run build
       - name: 🪐 Pushing to Deta Space
