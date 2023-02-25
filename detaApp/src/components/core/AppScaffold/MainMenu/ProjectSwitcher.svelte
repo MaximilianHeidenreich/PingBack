@@ -1,35 +1,35 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
-	import { storeActiveProject } from "$lib/stores/storeActiveProject";
-	import type { IProject } from "$lib/types/IProject";
-	import RoundMenuButton from "./RoundMenuButton.svelte";
+    import { goto } from "$app/navigation";
+    import { storeActiveProject } from "$lib/stores/storeActiveProject";
+    import type { IProject } from "$lib/types/IProject";
 
-	// PROPS
-	export let projects: IProject[];
+    import RoundMenuButton from "./RoundMenuButton.svelte";
 
-	// UTILS
-	function generateProjectDisplayName(project: IProject): string {
-		return project.id.slice(0, 2).toUpperCase();
-	}
+    // PROPS
+    export let projects: IProject[];
 
-	// HANDLERS
-	function onPickProject(project: IProject): void {
-		goto(`/app/dashboard/${project.id}/feed`);
-		storeActiveProject.set(project);
-	}
+    // UTILS
+    function generateProjectDisplayName(project: IProject): string {
+        return project.id.slice(0, 2).toUpperCase();
+    }
+
+    // HANDLERS
+    function onPickProject(project: IProject): void {
+        goto(`/app/dashboard/${project.id}/feed`);
+        storeActiveProject.set(project);
+    }
 </script>
 
 <div class="h-max w-full">
-	<ul class="flex flex-col gap-4">
-		{#each projects as project}
-			<li>
-				<RoundMenuButton
-					type="button"
-					on:click={() => onPickProject(project)}
-				>
-					<span class="font-mono">{generateProjectDisplayName(project)}</span>
-				</RoundMenuButton>
-			</li>
-		{/each}
-	</ul>
+    <ul class="flex flex-col gap-4">
+        {#each projects as project}
+            <li>
+                <RoundMenuButton
+                    type="button"
+                    on:click={() => onPickProject(project)}>
+                    <span class="font-mono">{generateProjectDisplayName(project)}</span>
+                </RoundMenuButton>
+            </li>
+        {/each}
+    </ul>
 </div>

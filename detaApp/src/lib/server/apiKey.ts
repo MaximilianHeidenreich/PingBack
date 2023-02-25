@@ -1,4 +1,5 @@
 import type { IApiKey, TApiKeyPermission } from "$lib/types/IApiKey";
+
 import { deta } from "./deta";
 
 /**
@@ -7,10 +8,10 @@ import { deta } from "./deta";
  * @returns
  */
 export async function isApiKeyValid(
-	apiKey: string,
-	project: string
+    apiKey: string,
+    project: string
 ): Promise<TApiKeyPermission[] | boolean> {
-	const db_keys = deta.Base("apiKeys");
-	const result = (await db_keys.get(apiKey)) as IApiKey | null;
-	return result !== null && result.project === project;
+    const db_keys = deta.Base("apiKeys");
+    const result = (await db_keys.get(apiKey)) as IApiKey | null;
+    return result !== null && result.project === project;
 }
