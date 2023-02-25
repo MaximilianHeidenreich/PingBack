@@ -1,5 +1,6 @@
 <script lang="ts">
-	import IconButton from "$cmp/core/buttons/IconButton.svelte";
+	import { page } from "$app/stores";
+    import IconButton from "$cmp/core/buttons/IconButton.svelte";
 	import CreateChannelDialog from "$cmp/dialoges/CreateChannelDialog.svelte";
 	import { storeActiveProject } from "$lib/stores/storeActiveProject";
     import { storeAppProjectMenuOpen } from "$lib/stores/storeAppProjectMenuOpen";
@@ -41,9 +42,9 @@
     </header>
     <section>
         <ul class="menu-links">
-            <li><a href="{baseURL}/feed"><IconRss size={ICON_TOKENS.SIZE.SM} stroke={ICON_TOKENS.STROKE.BASE}/> Feed</a></li>
-            <li><a href="{baseURL}/charts"><IconChartHistogram size={ICON_TOKENS.SIZE.SM} stroke={ICON_TOKENS.STROKE.BASE}/> Charts</a></li>
-            <li><a href="{baseURL}/metrics"><Icon123 size={ICON_TOKENS.SIZE.SM} stroke={ICON_TOKENS.STROKE.BASE}/> Metrics</a></li>
+            <li><a href="{baseURL}/feed" class:active={$page.url.pathname.endsWith("feed")}><IconRss size={ICON_TOKENS.SIZE.SM} stroke={ICON_TOKENS.STROKE.BASE}/> Feed</a></li>
+            <li><a href="{baseURL}/charts" class:active={$page.url.pathname.endsWith("charts")}><IconChartHistogram size={ICON_TOKENS.SIZE.SM} stroke={ICON_TOKENS.STROKE.BASE}/> Charts</a></li>
+            <li><a href="{baseURL}/metrics" class:active={$page.url.pathname.endsWith("matrics")}><Icon123 size={ICON_TOKENS.SIZE.SM} stroke={ICON_TOKENS.STROKE.BASE}/> Metrics</a></li>
         </ul>
         <hr class="mt-5">
     </section>
@@ -57,7 +58,13 @@
         </header>
         <ul class="menu-links mt-1">
             {#each project.channels as channel}
-                <li><a href="{baseURL}/channel/{channel.name}" class="font-mono"><IconHash class="-mr-2" size={ICON_TOKENS.SIZE.SM} stroke={ICON_TOKENS.STROKE.BASE}/>{channel.name}</a></li>
+                <li>
+                    <a href="{baseURL}/channel/{channel.name}" 
+                        class="font-mono"
+                        class:active={$page.url.pathname.endsWith(channel.name)}>
+                        <IconHash class="-mr-2" size={ICON_TOKENS.SIZE.SM} stroke={ICON_TOKENS.STROKE.BASE}/>{channel.name}
+                    </a>
+                </li>
             {/each}
         </ul>
     </section>
@@ -85,6 +92,9 @@
     .menu-links > li > a {
         @apply w-full py-2 px-4 flex items-center gap-3 rounded-xl;
         @apply transition-colors ease-in-out duration-200;
+    }
+    .menu-links > li > a.active {
+        @apply bg-neutral-100;
     }
     .menu-links > li > a:hover {
         @apply bg-neutral-100;
