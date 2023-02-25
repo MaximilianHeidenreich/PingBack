@@ -25,7 +25,7 @@
 
 ## About The Project
 
-PingBack tries to be a relatively unbiased yet powerful application for you to aggregate, filter and monitor events from any source. It is built on top of the wonderful [Deta](https://deta.space) platform, meaning that all of your data is owned by you.
+PingBack tries to be a relatively unbiased yet powerful application for you to aggregate, filter and monitor events from any source. It is built on top of the wonderful [Deta](https://deta.space) platform, meaning that all of your data is owned by you and it is *100% free*. <small>(Finally, no more monthly fees you have to worry about).</small>
 
 ### Use-Cases
 
@@ -66,3 +66,12 @@ PingBack tries to be a relatively unbiased yet powerful application for you to a
 ## Usage
 
 todo: example code integration & snippets
+
+<!-- CREDIT -->
+
+## Credit
+
+I needed an app for this purpose for a long time now but never came around to build one.
+*Shayan* over at [LogSnag](https://logsnag.com) already created a Saas product for this.
+PingBack is heavily inspired by LogSnag, but build for the [Deta Space](https://deta.space) 
+platform and therefore **100% free** (in addition to the other benefits of using a personal cloud).
