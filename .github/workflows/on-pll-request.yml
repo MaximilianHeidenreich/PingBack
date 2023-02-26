@@ -25,4 +25,5 @@ jobs:
         cache-dependency-path: "**/package-lock.json"
     - run: | 
         cd detaApp
+        npm install
         npm run test
