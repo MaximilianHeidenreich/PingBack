@@ -1,42 +1,13 @@
 <script lang="ts">
     import CreateProjectDialog from "$cmp/dialoges/CreateProjectDialog.svelte";
-    import { storeAppProjectMenuOpen } from "$lib/stores/storeAppProjectMenuOpen";
     import { storeProjects, store_fetchAllProjects } from "$lib/stores/storeProjects";
-    import type { IProject } from "$lib/types/IProject";
     import { ICON_TOKENS } from "$lib/utils/tokens";
     import { openDialog } from "$lib/utils/utils";
     import { IconHome, IconPlus, IconQuestionMark, IconUser } from "@tabler/icons-svelte";
     import { onMount } from "svelte";
 
-    import { get } from "svelte/store";
-
     import ProjectSwitcher from "./ProjectSwitcher.svelte";
     import RoundMenuButton from "./RoundMenuButton.svelte";
-
-    // STATE
-    /*let projects: IProject[] = [
-        {
-            id: "test-project",
-            channels: [
-                { name: "general", notify: true },
-                { name: "logs", notify: false },
-                { name: "payments", notify: true },
-            ],
-            createdAt: 0,
-            name: "Test-Project"
-        },
-        {
-            id: "art",
-            channels: [
-                { name: "foo", notify: true },
-                { name: "bar", notify: true },
-            ],
-            createdAt: 0,
-            name: "Art"
-        },
-        { id: "foo",channels: [],createdAt: 0,name: "Foo"},
-        { id: "foo",channels: [],createdAt: 0,name: "Foo"},
-    ];*/
 
     // HOOKS
     onMount(() => {
