@@ -1,4 +1,5 @@
 [![Pass tests](https://github.com/MaximilianHeidenreich/PingBack/actions/workflows/on-pll-request.yml/badge.svg?branch=main)](https://github.com/MaximilianHeidenreich/PingBack/actions/workflows/on-pll-request.yml)
+![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/MaximilianHeidenreich/PingBack?filename=detaApp%2Fpackage.json&style=flat)
 
 <!-- PROJECT LOGO -->
 <br />
