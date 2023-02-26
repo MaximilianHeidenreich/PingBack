@@ -1,3 +1,5 @@
+[![Pass tests](https://github.com/MaximilianHeidenreich/PingBack/actions/workflows/on-pll-request.yml/badge.svg?branch=main)](https://github.com/MaximilianHeidenreich/PingBack/actions/workflows/on-pll-request.yml)
+
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
