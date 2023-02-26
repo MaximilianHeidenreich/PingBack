@@ -1,4 +1,4 @@
-name: Pass tests
+name: DetaApp — Vitest
 on:
   pull_request:
     paths:
