@@ -3,7 +3,6 @@
     import Button from "$cmp/core/buttons/Button.svelte";
     import Input from "$cmp/core/inputs/Input.svelte";
     import { createProject } from "$lib/api/apiProjects";
-    import { storeActiveDialog } from "$lib/stores/storeActiveDialog";
     import { store_fetchAllProjects } from "$lib/stores/storeProjects";
     import { sanitizeProjectIdInput } from "$lib/utils/sanitizers";
     import toastOptions from "$lib/utils/toast";
