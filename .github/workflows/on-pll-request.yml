@@ -3,6 +3,9 @@ on:
   pull_request:
     paths:
       - "detaApp/src**"
+  push:
+    paths:
+      - "detaApp/src**"
 jobs:
   build:
     runs-on: ubuntu-latest
