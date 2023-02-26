@@ -5,9 +5,10 @@
  */
 export function sanitizeProjectIdInput(input: string): string {
     let sane = input
-        .replaceAll(" ", "-")
-        .replace(/[^0-9a-zA-Z-_]/g, "_")
-        .replace(/ +/, " ");
+        .trimStart()
+        .trimEnd()
+        .replace(/ +/, "-")
+        .replace(/[^0-9a-zA-Z-_]/g, "_");
     return sane;
 }
 
@@ -18,10 +19,11 @@ export function sanitizeProjectIdInput(input: string): string {
  */
 export function sanitizeProjectIdInternal(input: string): string {
     let sane = input
+        .trimStart()
+        .trimEnd()
         .toLowerCase()
-        .replaceAll(" ", "-")
-        .replace(/[^0-9a-z-_]/g, "_")
-        .replace(/ +/, " ");
+        .replace(/ +/, "-")
+        .replace(/[^0-9a-z-_]/g, "_");
     return sane;
 }
 
