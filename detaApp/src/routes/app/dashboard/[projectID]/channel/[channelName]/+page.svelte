@@ -1,12 +1,9 @@
 <script lang="ts">
     import AppContentSection from "$cmp/core/AppScaffold/AppContentSection.svelte";
     import AutoLoadEventFeed from "$cmp/core/eventFeed/AutoLoadEventFeed.svelte";
-    import EventFeed from "$cmp/core/eventFeed/EventFeed.svelte";
-    import { storeEvents, store_fetchEvents } from "$lib/stores/storeEvents";
+    import { store_fetchEvents } from "$lib/stores/storeEvents";
     import { storePageHeaderTitle } from "$lib/stores/storePageHeader";
     import { onMount } from "svelte";
-
-    import { get } from "svelte/store";
 
     import type { PageData } from "./$types";
 
@@ -24,9 +21,6 @@
     });
 </script>
 
-<!--<AppContentSection class="h-full grow overflow-y-scroll">
-    <EventFeed events={data.events}/>
-</AppContentSection>-->
 <AppContentSection class="h-full w-full grow overflow-y-scroll !py-0">
     <AutoLoadEventFeed query={{ project: projectId, channel: data.channelName }} />
 </AppContentSection>
