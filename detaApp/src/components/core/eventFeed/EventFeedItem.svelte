@@ -51,9 +51,9 @@
         <a href="{baseURL}/event/{event.id}">
             <div class="icon">
                 <div
-                    class="mt-1 flex aspect-square w-fit items-center justify-center rounded-2xl bg-[#8686861e] p-4"
+                    class="mt-1 flex w-fit h-auto aspect-square items-center justify-center rounded-2xl bg-[#8686861e] px-4"
                     style="background: {reducedEmojiColor};">
-                    <span class="icon">{event.icon}</span>
+                    <span class="icon text-2xl">{event.icon}</span>
                 </div>
             </div>
             <div class="meta">
