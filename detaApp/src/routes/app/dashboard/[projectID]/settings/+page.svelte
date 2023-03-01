@@ -1,11 +1,13 @@
 <script lang="ts">
     import AppContentSection from "$cmp/core/AppScaffold/AppContentSection.svelte";
+    import Button from "$cmp/core/buttons/Button.svelte";
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
     import CreateApiKeyDialog from "$cmp/dialoges/CreateApiKeyDialog.svelte";
     import { storeActiveDialog } from "$lib/stores/storeActiveDialog";
     import { storeActiveProject } from "$lib/stores/storeActiveProject";
     import { storePageHeaderTitle } from "$lib/stores/storePageHeader";
     import { ICON_TOKENS } from "$lib/utils/tokens";
+    import { copyToClipboard } from "$lib/utils/utils";
     import {
         IconBell,
         IconBellOff,
@@ -16,6 +18,7 @@
         IconTrash
     } from "@tabler/icons-svelte";
     import { onMount } from "svelte";
+    import { get } from "svelte/store";
 
     import type { PageData } from "./$types";
 
@@ -49,6 +52,7 @@
             <fieldset class="flex items-center justify-between">
                 <span class="font-mono">{$storeActiveProject.id}</span>
                 <IconButton
+                    on:click={() => { const v = get(storeActiveProject); if (v) copyToClipboard(v.id) }}
                     ><IconCopy
                         slot="icon"
                         size={24}
@@ -90,6 +94,7 @@
                             </li>
                             <li>
                                 <IconButton
+                                    on:click={() => { copyToClipboard(channel.name) }}
                                     ><IconCopy
                                         slot="icon"
                                         size={ICON_TOKENS.SIZE.BASE}
@@ -135,6 +140,7 @@
                         <ul class="flex">
                             <li>
                                 <IconButton
+                                    on:click={() => { copyToClipboard(apiKey.apiKey) }}
                                     ><IconCopy
                                         slot="icon"
                                         size={ICON_TOKENS.SIZE.BASE}
