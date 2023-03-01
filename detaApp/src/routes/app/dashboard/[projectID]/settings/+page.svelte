@@ -162,7 +162,8 @@
             <header class="mb-2">
                 <span class="text-2xl font-medium">Danger Zone</span>
             </header>
-            todo: delete project / data <!-- TODO: Delete project / data -->
+            <!-- TODO: Delete project / data -->
+            <Button type="primary" color="red">Delete Project</Button>
         </AppContentSection>
     {/if}
 </div>
