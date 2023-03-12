@@ -1,13 +1,10 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import Spinner from "$cmp/utils/Spinner.svelte";
-    import { ICON_TOKENS } from "$lib/utils/tokens";
-    import { IconFidgetSpinner } from "@tabler/icons-svelte";
     import { onMount } from "svelte";
 
     // HOOKS
     onMount(() => {
-        goto("/app/dashboard", { replaceState: true });
+        goto("/app", { replaceState: true });
     });
 </script>
 
@@ -17,5 +14,5 @@
             size={ICON_TOKENS.SIZE.LG}
             stroke={ICON_TOKENS.STROKE.BASE} />
     </div>-->
-    <Spinner />
+    todo laoding
 </div>
