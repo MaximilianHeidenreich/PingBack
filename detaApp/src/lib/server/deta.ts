@@ -8,7 +8,7 @@ export const deta = Deta(env.DETA_PROJECT_KEY);
  * @param dbName 
  * @returns 
  */
-const orm_db = <T>(dbName: string) => {
+const wrap_db = <T>(dbName: string) => {
     type TReturn = T & { key: string };
     type TQuery = { [key: string]: unknown };
     const db = deta.Base(dbName);
@@ -86,7 +86,7 @@ const orm_db = <T>(dbName: string) => {
     }
 }
 
-export const db_apiKeys = orm_db("apiKeys");//deta.Base("apiKeys");
-export const db_events = orm_db("events");//deta.Base("events");
-export const db_projects = orm_db("projects");//deta.Base("projects");
-export const db_system = orm_db("system");//deta.Base("system");       // System data -> configuration, migrations, etc.
+export const db_apiKeys = wrap_db("apiKeys");//deta.Base("apiKeys");
+export const db_events = wrap_db("events");//deta.Base("events");
+export const db_projects = wrap_db("projects");//deta.Base("projects");
+export const db_system = wrap_db("system");//deta.Base("system");       // System data -> configuration, migrations, etc.
