@@ -45,12 +45,12 @@ export const GET = (async ({ url }) => {
     return response;
 }) satisfies RequestHandler;
 
+// TODO Keys should probably just be hashed and stored that way (including first 5 chars for user experience)
 export const POST = (async ({ url, request }) => {
     const reqBody = await request.json();
 
     // TODO: zod validate reqBody
     // TODO: Check project exists
-    // TODO: Check channel exists
 
     let pendingApiKey: IApiKey = {
         apiKey: crypto.randomUUID(),

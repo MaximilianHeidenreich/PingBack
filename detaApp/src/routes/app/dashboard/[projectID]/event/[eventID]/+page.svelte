@@ -81,10 +81,10 @@
         <hr class="mt-4" />
     </AppContentSection>
 
-    <AppContentSection class="!px-4">
+    <!--<AppContentSection class="!px-4">
         <LogBox />
         <hr class="mt-4" />
-    </AppContentSection>
+    </AppContentSection>-->
 
     <AppContentSection class="!px-4">
         <details class="mb-6">

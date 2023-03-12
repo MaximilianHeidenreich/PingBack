@@ -10,6 +10,7 @@
     import { openDialog } from "$lib/utils/utils";
     import {
         Icon123,
+        IconBell,
         IconChartHistogram,
         IconHash,
         IconPlus,
@@ -69,19 +70,19 @@
             </li>
             <li>
                 <a
-                    href="{baseURL}/charts"
-                    class:active={$page.url.pathname.endsWith("charts")}
+                    href="{baseURL}/metrics"
+                    class:active={$page.url.pathname.endsWith("matrics")}
                     ><IconChartHistogram
                         size={ICON_TOKENS.SIZE.SM}
-                        stroke={ICON_TOKENS.STROKE.BASE} /> Charts</a>
+                        stroke={ICON_TOKENS.STROKE.BASE} /> Metrics</a>
             </li>
             <li>
                 <a
-                    href="{baseURL}/metrics"
-                    class:active={$page.url.pathname.endsWith("matrics")}
-                    ><Icon123
+                    href="{baseURL}/monitor"
+                    class:active={$page.url.pathname.endsWith("monitoring")}
+                    ><IconBell
                         size={ICON_TOKENS.SIZE.SM}
-                        stroke={ICON_TOKENS.STROKE.BASE} /> Metrics</a>
+                        stroke={ICON_TOKENS.STROKE.BASE} /> Monitor</a>
             </li>
         </ul>
         <hr class="mt-5" />
@@ -108,7 +109,8 @@
                         <IconHash
                             class="-mr-2"
                             size={ICON_TOKENS.SIZE.SM}
-                            stroke={ICON_TOKENS.STROKE.BASE} />{channel.name}
+                            stroke={ICON_TOKENS.STROKE.BASE} />
+                        <span class="max-w-[15ch] truncate">{channel.name}</span>
                     </a>
                 </li>
             {/each}

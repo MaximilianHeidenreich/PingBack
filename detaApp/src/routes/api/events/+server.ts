@@ -50,33 +50,29 @@ export const GET = (async ({ url }) => {
     return response;
 }) satisfies RequestHandler;
 
-export const POST = (async ({ url, request }) => {
+export const POST = (async ({ request }) => {
     const reqBody = await request.json();
     const projectId = sanitizeProjectIdInternal(reqBody.project);
 
-    if (!(await validApiKey(request, projectId))) {
-        // TODO: improve -> We already fetch the project, so just return it for use in the route
+    /*if (!(await validApiKey(request, projectId))) {
+        return buildResponse().status(401).json({ ok: false, error: "Unauthorized!" }).build();
+    }*/
+
+    const p_validApiKey = validApiKey(request, projectId);
+    const p_project = db_projects.get(projectId) as Promise<IProject | null>;
+    
+    const [isValidApiKey, project] = await Promise.all([p_validApiKey, p_project]);
+
+    if (!isValidApiKey) {
         return buildResponse().status(401).json({ ok: false, error: "Unauthorized!" }).build();
     }
-
-    // TODO: zod validate reqBody
-
-    let project: IProject | undefined;
-    {
-        try {
-            // @ts-ignore -> Deta SDK / TypeScript shitting itself but we good :)
-            project = (await db_projects.get(projectId)) as IProject | undefined;
-        } catch (err) {
-            console.error(err);
-            return buildResponse()
-                .status(500)
-                .statusText("Internal error!")
-                .json({ ok: false, error: {} })
-                .build();
-        }
+    if (!project) {
+        return buildResponse().status(404).json({ ok: false, error: "Project not found!" }).build();
     }
 
-    if (!project!.channels.find((c) => c.name === reqBody.channel)) {
+    // TODO: zod validate reqBody 
+
+    if (!(project!.channels.find((c) => c.name === reqBody.channel))) {
         return buildResponse().status(404).json({ ok: false, error: "Channel not found!" }).build();
     }
 

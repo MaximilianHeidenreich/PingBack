@@ -44,6 +44,17 @@ export async function fetchAllProjects(query?: unknown) {
     return p;
 }
 
+export async function getProject(projectID: string): Promise<IProject | null> {
+    const response = await fetch(`/api/projects/${projectID}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    const json = await response.json();    
+    return json.data;
+}
+
 type TCreateProjectArgs = Pick<IProject, "name">;
 export async function createProject(project: TCreateProjectArgs) {
     const response = await fetch("/api/projects", {

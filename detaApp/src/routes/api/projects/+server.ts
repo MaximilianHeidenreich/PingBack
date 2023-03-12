@@ -58,6 +58,8 @@ export const POST = (async ({ url, request }) => {
     let pendingProject: IProject = {
         id: name, // TODO: Look into removing internal id prop in obj -> onyly if query by key is possible
         createdAt: Date.now(),
+        latestEventTimestamp: Date.now(),
+        eventSpecifiers: {},
 
         name: name,
         channels: []

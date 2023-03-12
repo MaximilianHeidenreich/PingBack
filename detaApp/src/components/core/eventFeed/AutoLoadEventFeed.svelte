@@ -11,14 +11,15 @@
     import EventFeed from "./EventFeed.svelte";
 
     // PROPS
-    export let query: object = {};
+    export let  query: object = {},
+                latestEventTimestamp = dayjs();
 
     // STATE
     let lastScrollPosition: number = 200;
 
     let eventGroups: IEvent[][] = []; // We split events into their individual groups from fetching -> We only need to sort the latest group
     let nextTimestampEnd: Dayjs = dayjs();
-    let lastTimestampEnd: Dayjs = dayjs();
+    let lastTimestampEnd: Dayjs = latestEventTimestamp;
 
     let canFetchMorePrevious = true;
     let canFetchMoreNext = true;
