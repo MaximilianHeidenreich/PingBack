@@ -1,0 +1,18 @@
+import type { IChannel } from "./IChannel";
+
+/**
+ * Projects are used to group events and channels.
+ */
+export interface IProject {
+    // META
+    id: string;             // Unique ID
+    createdAt: number;      // Unix timestamp
+
+    // SYSTEM META -> read only OR know what you're doing!
+    latestEventTimestamp: number;  // Unix timestamp of latest event in project -> efficient query
+    eventSpecifiers: Record<string, number>;  // Map of event names to number of events of its kind -> user filter ux
+
+    // PAYLOAD
+    displayName: string;           // Displayname of project
+    channels: IChannel[];
+}
