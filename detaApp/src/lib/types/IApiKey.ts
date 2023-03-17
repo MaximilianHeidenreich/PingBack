@@ -16,8 +16,8 @@ export type TApiKeyPermission =
  */
 export interface IApiKey {
     // META
-    key: string;                // Unique key -> ! Mirrors deta base "key" field
-    createdAt: number;          // Unix timestamp
+    key: string; // Unique key -> ! Mirrors deta base "key" field
+    createdAt: number; // Unix timestamp
     displayName: string;
-    project: string;            // Project for which key is valid
+    project: string; // Project for which key is valid
 }

@@ -4,6 +4,8 @@
 
     // HOOKS
     onMount(() => {
+        // Initial setup call to api -> Sets up system config etc.
+
         goto("/app", { replaceState: true });
     });
 </script>
@@ -15,4 +17,7 @@
             stroke={ICON_TOKENS.STROKE.BASE} />
     </div>-->
     todo laoding
+</div>
+<div class="w-full bg-red-100">
+foo
 </div>
