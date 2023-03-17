@@ -44,11 +44,13 @@
     "type": "module",
     "dependencies": {
         "@tabler/icons-svelte": "^2.4.0",
+        "@types/pouchdb": "^6.4.0",
         "@types/semver": "^7.3.13",
         "dayjs": "^1.11.7",
         "deta": "^1.1.0",
         "emoji-palette": "^0.0.3",
         "marked": "^4.2.12",
+        "pouchdb": "^8.0.1",
         "semver": "^7.3.8",
         "svelte-french-toast": "^1.0.3"
     }
