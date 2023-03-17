@@ -1,11 +1,9 @@
 <script lang="ts">
     import { clientFetchProjectEventsRaw } from "$lib/helpers/api/eventClient";
     import type { IEvent } from "$lib/types/IEvent";
-    import { TKN_ICON } from "$lib/utils/tokens";
-    import { IconLoader } from "@tabler/icons-svelte";
     import type { Dayjs } from "dayjs";
     import dayjs from "dayjs";
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import { writable } from "svelte/store";
     import EventList from "./EventList.svelte";
     import InfiniteEventListTrigger from "./InfiniteEventListTrigger.svelte";
@@ -17,10 +15,13 @@
     }
 
     // PROPS
-    export let startTimestamp: number = Date.now();
+    export let startTimestamp: number = Date.now(),
+        autoFetchFuture: boolean = false,
+        autoFetchFutureInterval = 1000 * 5;
 
     // STATE
     let scrollEl: HTMLElement;
+    let autoFetchFutureTimer: NodeJS.Timer | undefined;
 
     let loading = false;
     let endOfData = false; // ->
@@ -93,7 +94,11 @@
     // HOOKS
     onMount(async () => {
         await loadPast();
+        if (autoFetchFuture) autoFetchFutureTimer = setInterval(loadFuture, autoFetchFutureInterval);
     });
+    onDestroy(() => {
+        autoFetchFutureTimer && clearInterval(autoFetchFutureTimer);
+    })
 
 </script>
 
