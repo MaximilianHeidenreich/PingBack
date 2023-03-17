@@ -1,10 +1,10 @@
 /**
  * Builder implementation for easier response creation.
- * @returns 
+ * @returns
  */
 export function buildResponse() {
     class ResponseBuilder {
-        private m_body: string | object |  null;
+        private m_body: string | object | null;
         private m_headers: Map<string, string>;
         private m_status: number;
         private m_statusText: string | undefined;
@@ -16,7 +16,7 @@ export function buildResponse() {
         }
 
         build(): Response {
-            const response = new Response(JSON.stringify(this.body), {
+            const response = new Response(JSON.stringify(this.m_body), {
                 status: this.m_status,
                 statusText: this.m_statusText,
                 headers: Object.fromEntries(this.m_headers)
@@ -54,12 +54,14 @@ export function buildResponse() {
     return new ResponseBuilder();
 }
 
-
+export function respondBadRequest(body: string | object | null): Response {
+    return buildResponse().status(400).statusText("Bad Request").body(body).build();
+}
 
 export function respondUnauthenticated(body: string | object | null): Response {
-    return buildResponse()
-        .status(401)
-        .statusText("Unauthorized")
-        .body(body)
-        .build();
+    return buildResponse().status(401).statusText("Unauthorized").body(body).build();
+}
+
+export function respondInternalError(body: string | object | null): Response {
+    return buildResponse().status(500).statusText("Internal Server Error").body(body).build();
 }
