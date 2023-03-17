@@ -1,6 +1,9 @@
 <script lang="ts">
+    import { s_headerLoading } from "$cmp/core/scaffold/appHeader/s_headerLoading";
+    import { s_refresh } from "$cmp/core/scaffold/appHeader/s_refresh";
     import { clientFetchProjectEventsRaw } from "$lib/helpers/api/eventClient";
     import type { IEvent } from "$lib/types/IEvent";
+    import type { IProject } from "$lib/types/IProject";
     import type { Dayjs } from "dayjs";
     import dayjs from "dayjs";
     import { onDestroy, onMount } from "svelte";
@@ -15,7 +18,9 @@
     }
 
     // PROPS
-    export let startTimestamp: number = Date.now(),
+    export let project: IProject,
+        startTimestamp: number = Date.now(),
+        query: Record<string, any> | Record<string, any>[] = {},
         autoFetchFuture: boolean = false,
         autoFetchFutureInterval = 1000 * 5;
 
@@ -29,8 +34,8 @@
     let processingProgress: [number, number] = [0, 0]; // [current, total]
     let eventBuckets = writable<IBucket[]>([]);
 
-    let lastPastBucket: Dayjs = dayjs(startTimestamp).endOf("hour");
-    let lastFutureBucket: Dayjs = dayjs(startTimestamp);
+    let lastPastBucket: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now()).endOf("hour"); // TODO: can remove project latest
+    let lastFutureBucket: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now());
 
     // FN
     // TODO: make param lastPastBucket -> Parallel fetch 5 buckets
@@ -44,10 +49,12 @@
 
         // Fetch events
         // TODO !!: Retry when empty but more events
-        const p_fetchEvents = clientFetchProjectEventsRaw(fetch, "test-project", {
+        const p_fetchEvents = clientFetchProjectEventsRaw(fetch, project.key, {
+            ...query,
             "createdAt?r": [lastPastBucket.startOf("hour").valueOf(), lastPastBucket.endOf("hour").valueOf()]
         }, lastKey);
-        const p_moreEvents = clientFetchProjectEventsRaw(fetch, "test-project", {
+        const p_moreEvents = clientFetchProjectEventsRaw(fetch, project.key, {
+            ...query,
             "createdAt?lt": lastPastBucket.startOf("hour").subtract(1, "hour").endOf("hour").valueOf()
         }, undefined, 1);   // Try to fetch 1 previous event -> if none -> no more events
         let [res, moreEventsRes] = await Promise.all([p_fetchEvents, p_moreEvents]);  // TODO: throws?
@@ -56,7 +63,8 @@
         lastKey = res.last;
         if (moreEventsRes.count <= 0) endOfData = true;
         while (lastKey) {
-            res = await clientFetchProjectEventsRaw(fetch, "test-project", {
+            res = await clientFetchProjectEventsRaw(fetch, project.key, {
+                ...query,
                 "createdAt?r": [lastPastBucket.startOf("hour").valueOf(), lastPastBucket.endOf("hour").valueOf()]
             }, lastKey)
             fetchedEvents = fetchedEvents.concat(res.items);
@@ -84,17 +92,23 @@
         loading = false;
     }
 
-    function loadFuture() {}
+    async function loadFuture() {}
 
     // HANDLERS
     function onLoadPast() {
         loadPast();
     }
+    function onAutoLoadTrigger() {
+        console.log("Infinite event list: Auto load trigger!");
+        //s_headerLoading.set(true);
+        //loadFuture().then(() => s_headerLoading.set(false));
+        //s_headerLoading.set(false);
+    }
 
     // HOOKS
     onMount(async () => {
         await loadPast();
-        if (autoFetchFuture) autoFetchFutureTimer = setInterval(loadFuture, autoFetchFutureInterval);
+        if (autoFetchFuture) autoFetchFutureTimer = setInterval(onAutoLoadTrigger, autoFetchFutureInterval);
     });
     onDestroy(() => {
         autoFetchFutureTimer && clearInterval(autoFetchFutureTimer);
