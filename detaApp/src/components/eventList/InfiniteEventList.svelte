@@ -1,7 +1,5 @@
 <script lang="ts">
-    import { s_headerLoading } from "$cmp/core/scaffold/appHeader/s_headerLoading";
-    import { s_refresh } from "$cmp/core/scaffold/appHeader/s_refresh";
-    import { clientFetchProjectEventsRaw } from "$lib/helpers/api/eventClient";
+    import { clientFetchProjectEventFrame, clientFetchProjectEventsRaw } from "$lib/helpers/api/eventClient";
     import type { IEvent } from "$lib/types/IEvent";
     import type { IProject } from "$lib/types/IProject";
     import type { Dayjs } from "dayjs";
@@ -12,8 +10,8 @@
     import InfiniteEventListTrigger from "./InfiniteEventListTrigger.svelte";
 
     // TYPES
-    type IBucket = {
-        bucket: number; // Beginning Timestamp of bucket
+    type IFrame = {
+        frameEnd: number; // Beginning Timestamp of frame
         events: IEvent[];
     }
 
@@ -32,46 +30,54 @@
     let endOfData = false; // ->
     let processing = false; // True while sorting new events
     let processingProgress: [number, number] = [0, 0]; // [current, total]
-    let eventBuckets = writable<IBucket[]>([]);
+    let eventFrames = writable<IFrame[]>([]);
 
-    let lastPastBucket: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now()).endOf("hour"); // TODO: can remove project latest
-    let lastFutureBucket: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now());
+    let lastPastFrame: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now()).endOf("hour"); // TODO: can remove project latest
+    let lastFutureFrame: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now());
 
     // FN
-    // TODO: make param lastPastBucket -> Parallel fetch 5 buckets
+    // TODO: make param lastPastFrame -> Parallel fetch 5 frames
     async function loadPast() {
         if (loading || endOfData) return;
         loading = true; // TODO: Try reset on throw
-        console.log(`Loading past bucket from ${lastPastBucket}`);
 
         let fetchedEvents: IEvent[] = [];
         let lastKey: string | undefined;
 
         // Fetch events
         // TODO !!: Retry when empty but more events
-        const p_fetchEvents = clientFetchProjectEventsRaw(fetch, project.key, {
+        let [res, more] = await clientFetchProjectEventFrame(
+            fetch,
+            project.key,
+            lastPastFrame.valueOf(),
+            query,
+            true,
+            lastKey
+        );
+        /*const p_fetchEvents = clientFetchProjectEventsRaw(fetch, project.key, {
             ...query,
-            "createdAt?r": [lastPastBucket.startOf("hour").valueOf(), lastPastBucket.endOf("hour").valueOf()]
+            "createdAt?r": [lastPastFrame.startOf("hour").valueOf(), lastPastFrame.endOf("hour").valueOf()]
         }, lastKey);
         const p_moreEvents = clientFetchProjectEventsRaw(fetch, project.key, {
             ...query,
-            "createdAt?lt": lastPastBucket.startOf("hour").subtract(1, "hour").endOf("hour").valueOf()
+            "createdAt?lt": lastPastFrame.startOf("hour").subtract(1, "hour").endOf("hour").valueOf()
         }, undefined, 1);   // Try to fetch 1 previous event -> if none -> no more events
-        let [res, moreEventsRes] = await Promise.all([p_fetchEvents, p_moreEvents]);  // TODO: throws?
+        let [res, moreEventsRes] = await Promise.all([p_fetchEvents, p_moreEvents]);*/  // TODO: throws?
 
         fetchedEvents = res.items;
-        lastKey = res.last;
-        if (moreEventsRes.count <= 0) endOfData = true;
-        while (lastKey) {
+        //lastKey = res.last;
+        //if (moreEventsRes.count <= 0) endOfData = true;
+        if (!more) endOfData = true;
+        /*while (lastKey) {
             res = await clientFetchProjectEventsRaw(fetch, project.key, {
                 ...query,
-                "createdAt?r": [lastPastBucket.startOf("hour").valueOf(), lastPastBucket.endOf("hour").valueOf()]
+                "createdAt?r": [lastPastFrame.startOf("hour").valueOf(), lastPastFrame.endOf("hour").valueOf()]
             }, lastKey)
             fetchedEvents = fetchedEvents.concat(res.items);
             lastKey = res.last;
-        }
+        }*/
 
-        // Sort events & update buckets
+        // Sort events & update frames
         processingProgress = [0, fetchedEvents.length]
         processing = true;
         fetchedEvents.sort( (a, b) => {
@@ -80,19 +86,20 @@
         });
         processing = false;
 
-        eventBuckets.update(buckets => {
-            buckets.push({
-                bucket: lastPastBucket.startOf("hour").valueOf(),
+        eventFrames.update(frames => {
+            const pendingFrame = {
+                frameEnd: lastPastFrame.startOf("hour").valueOf(),
                 events: fetchedEvents
-            });
-            return buckets;
+            };
+            frames.push(pendingFrame);
+            return frames;
         });
 
-        lastPastBucket = lastPastBucket.subtract(1, "hour");
+        lastPastFrame = lastPastFrame.subtract(1, "hour");
         loading = false;
     }
 
-    async function loadFuture() {}
+    async function loadFuture() { /* TODO: impl */ }
 
     // HANDLERS
     function onLoadPast() {
@@ -117,9 +124,9 @@
 </script>
 
 <div bind:this={scrollEl}>
-    {#each $eventBuckets as bucket}
-        <div class="bucket">
-            <EventList events={bucket.events} />
+    {#each $eventFrames as frame}
+        <div class="frame">
+            <EventList events={frame.events} />
         </div>
     {/each}
 </div>

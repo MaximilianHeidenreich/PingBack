@@ -56,10 +56,10 @@ export async function serverCreateEvent(event: TCreateEvent): Promise<IEvent> {
 }
 
 /**
- * Gets the bucket for a given event timestamp.
- * "Buckets" are used for segmenting events into smaller chunks.
+ * Gets the frame for a given event timestamp.
+ * "Frames" are used for segmenting events into smaller chunks.
  * @param timestamp
  */
-function getEventBucket(timestamp: number): Dayjs {
+function getEventFrame(timestamp: number): Dayjs {
     return dayjs(timestamp).endOf("hour");
 }

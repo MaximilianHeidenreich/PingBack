@@ -1,27 +1,38 @@
 import type { IEvent } from "../types/IEvent";
+import { MD5 } from "$lib/utils/hash";
+//import PouchDB from "pouchdb";    -> fucks with sveltekit :/ we import it straight in html head...
 
-export interface ICachedEventBucket {
-    project: string;
-    bucketTimestampEnd: number;
+export interface ICachedEventFrame {
+    _id: string;    // ID is frame end
     events: IEvent[];
+    more: boolean;  // Whether there are previous event frames available
 }
 
-export interface IEventBucketCache {
-
-}
-// TODO: finish dis
-
-const cache = new Map<string, Map<number, IEvent[]>>();
-export function isBucketCached(project: string, bucketTimestampEnd: number): boolean {
-    if (!cache.has(project)) return false;
-    return cache.get(project)!.has(bucketTimestampEnd);
+const caches: Map<string, PouchDB.Database<ICachedEventFrame>> = new Map();
+export function getCache(projectID: string) {
+    const key = `eventFrameCache_${projectID}`;
+    if (!caches.has(key)) {
+        caches.set(key, new PouchDB<ICachedEventFrame>(key));
+    }
+    return caches.get(key)!;
 }
 
-export function getBucket(project: string, bucketTimestampEnd: number): IEvent[] | undefined {
-    return cache.get(project)?.get(bucketTimestampEnd);
+export function cacheSetEventFrame(projectID: string, frameEnd: number, events: IEvent[], query: Record<string, any> | Record<string, any>[], more: boolean) {
+    const queryHash = MD5(JSON.stringify(query));
+    const key = `${frameEnd}_${queryHash}`;
+    return getCache(projectID).put({
+        _id: key,
+        events,
+        more
+    });
 }
-
-export function setBucket(project: string, bucketTimestampEnd: number, events: IEvent[]): void {
-    if (!cache.has(project)) cache.set(project, new Map());
-    cache.get(project)!.set(bucketTimestampEnd, events);
+export async function cacheGetEventFrame(projectID: string, frameEnd: number, query: Record<string, any>) {
+    const queryHash = MD5(JSON.stringify(query));
+    const key = `${frameEnd}_${queryHash}`;
+    try {
+        return await getCache(projectID).get(key);
+    }
+    catch {
+        return null;
+    }
 }
