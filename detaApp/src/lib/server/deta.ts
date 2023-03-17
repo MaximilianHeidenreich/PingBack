@@ -12,7 +12,7 @@ export const deta = Deta(env.DETA_PROJECT_KEY);
  * @returns
  */
 const wrap_db = <T>(dbName: string) => {
-    type TReturn = T & { key: string };
+    type TReturn = T & { key: string }; // TODO: Could be removed? key property is in interfaces
     type TQuery = { [key: string]: unknown };
     const db = deta.Base(dbName);
 
@@ -37,8 +37,8 @@ const wrap_db = <T>(dbName: string) => {
          * @returns Item or null.
          * @throws Deta error.
          */
-        get: (key: string): Promise<TReturn> => {
-            return db.get(key) as Promise<TReturn>;
+        get: (key: string): Promise<TReturn | null> => {
+            return db.get(key) as Promise<TReturn | null>;
         },
 
         /**
