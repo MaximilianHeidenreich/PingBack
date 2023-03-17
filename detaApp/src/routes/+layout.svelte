@@ -2,7 +2,7 @@
     //import { db_events } from "$lib/server/deta";
     import type { IEvent } from "$lib/types/IEvent";
     import dayjs from "dayjs";
-    import "../css/app.postcss";
+    import "$css/app.postcss";
 
 
     // TODO: REMOVE; DEV ONLY!
@@ -42,7 +42,7 @@
             }
         },
     ];
-    const f = (arr: any[], hour: number, items: number = 5) => {
+    const f = (arr: any[], hour: number, items: number = 5, channel: string = "general") => {
         for (let i = 1; i <= items; i++) {
             arr.push({
                 key: crypto.randomUUID(),
@@ -63,8 +63,11 @@
             },);
         }
     }
-    for (let x = 1; x < 50; x++) {
-        f(dev_events, x, 120);
+    for (let x = 1; x < 30; x++) {
+        f(dev_events, x, 80);
+    }
+    for (let x = 1; x < 30; x++) {
+        f(dev_events, x, 80, "test");
     }
     //db_events.putMany(dev_events);
     dev_events.forEach(e => {
