@@ -44,7 +44,7 @@
                     intersecting = false;
                 }
             },
-            { root: observerRoot, threshold: 0 }
+            { root: observerRoot, threshold: 0 } // TOOD: if not rootMargin -> make absolute at end to fetch eralier for UX
         );
         observer.observe(triggerEl);
     });

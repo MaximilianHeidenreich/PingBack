@@ -95,7 +95,7 @@
     }
 
     li a.card {
-       @apply flex-1 w-full flex gap-4 mb-4;
+       @apply flex-1 w-full flex gap-4 mt-6;
        @apply bg-neutral-50 rounded-2xl p-4;
     }
     li a.card .icon-wrapper {
