@@ -1,9 +1,9 @@
 <script lang="ts">
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
-import type { IEvent } from "$lib/types/IEvent";
+    import type { IEvent } from "$lib/types/IEvent";
     import { TKN_ICON } from "$lib/utils/tokens";
     import { IconDotsVertical } from "@tabler/icons-svelte";
-
+    import { s_eventListStyle } from "./s_eventListStyle";
 
     // PROPS
     export let event: IEvent,
@@ -11,6 +11,7 @@ import type { IEvent } from "$lib/types/IEvent";
 </script>
 
 <li class:odd>
+    {#if $s_eventListStyle === "compact"}
     <a href="/" class="compact">
         <div class="title">
             <span class="icon">{event.icon}</span>
@@ -26,17 +27,19 @@ import type { IEvent } from "$lib/types/IEvent";
                         minute: "2-digit"
                     })}
             </span>
-            <IconButton>
+            <!--<IconButton>
                 <IconDotsVertical size={TKN_ICON.SIZE.BASE} stroke={TKN_ICON.STROKE.BASE} />
-            </IconButton>
+            </IconButton>-->
         </div>
     </a>
-    <!-- TODO: Card -->
+    {:else if $s_eventListStyle === "card"}
+    todo: card <!-- TODO: card -->
+    {/if}
 </li>
 
 <style lang="postcss">
     li {
-        @apply flex-1 py-1 px-4;
+        @apply flex-1 py-2 px-7;
     }
     li.odd {
         @apply bg-neutral-100;
