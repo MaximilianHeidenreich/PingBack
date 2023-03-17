@@ -5,12 +5,13 @@
         color: "pink" | "red" = "pink",
         target: "_blank" | "_self" = "_self",
         href: string = "",
-        disabled = false;
+        disabled = false,
+        clazz: string = "";
 </script>
 
 {#if type === "button"}
     <button
-        class="{style} col-{color}"
+        class="{style} col-{color} {clazz}"
         {...$$restProps}
         {disabled}
         on:click>
@@ -18,6 +19,7 @@
     </button>
 {:else if type === "link"}
     <a
+        class="{style} {clazz}"
         {href}
         {target}>
         <slot />
@@ -27,7 +29,7 @@
 <style lang="postcss">
     button, a {
         @apply inline-flex items-center justify-center;
-        @apply rounded-lg border px-6 py-2.5 text-sm font-medium;
+        @apply rounded-lg px-6 py-2.5 text-sm font-medium;
         @apply transition-colors duration-200 ease-in-out;
     }
 
@@ -44,13 +46,13 @@
     }
 
     /* SECONDARY */
-    button.secondary {
+    button.secondary,a.secondary {
         @apply text-black;
     }
-    button.secondary:hover {
+    button.secondary:hover,a.secondary:hover {
         @apply bg-neutral-100;
     }
-    button.secondary:active {
+    button.secondary:active,a.secondary:active {
         @apply bg-neutral-200;
     }
 </style>

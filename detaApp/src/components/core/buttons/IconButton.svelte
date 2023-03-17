@@ -10,6 +10,6 @@
         disabled = false;
 </script>
 
-<Button {type} {style} {target} {href} {disabled} class="!border-0 !p-2" on:click {...$$restProps}>
+<Button {type} style="secondary" {target} {href} {disabled} clazz="!p-2" on:click  {...$$restProps}>
     <slot/>
 </Button>
