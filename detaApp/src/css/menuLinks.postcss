@@ -1,0 +1,20 @@
+/* MENU LINKS */
+.m-links {
+    @apply w-full flex flex-col gap-1;
+}
+.m-links > li {
+    @apply w-full;
+}
+.m-links > li > a {
+    @apply flex w-full items-center gap-3 rounded-xl py-2 px-4;
+    @apply transition-colors duration-200 ease-in-out;
+}
+.m-links > li > a.active {
+    @apply bg-neutral-100;
+}
+.m-links > li > a:hover {
+    @apply bg-neutral-100;
+}
+.m-links > li > a:active {
+    @apply bg-neutral-200;
+}
