@@ -1,6 +1,6 @@
 {
     "name": "pingback",
-    "version": "2.0.0",
+    "version": "1.1.0",
     "private": true,
     "scripts": {
         "dev": "vite dev",
@@ -43,10 +43,12 @@
     "type": "module",
     "dependencies": {
         "@tabler/icons-svelte": "^2.4.0",
+        "@types/semver": "^7.3.13",
         "dayjs": "^1.11.7",
         "deta": "^1.1.0",
         "emoji-palette": "^0.0.3",
         "marked": "^4.2.12",
+        "semver": "^7.3.8",
         "svelte-french-toast": "^1.0.3"
     }
 }
