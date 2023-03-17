@@ -9,13 +9,15 @@
     import type { IProject } from "$lib/types/IProject";
     import { clientFetchProjectsRaw } from "$lib/helpers/api/projectsClient";
     import { page } from "$app/stores";
+    import { pushModal } from "../modals/modalStore";
+    import ModalCreateProject from "$cmp/modalContents/ModalCreateProject.svelte";
 
     // STATE
     let projects: IProject[] = [];
 
     // HANDLERS
     function onCreateProject() {
-
+        pushModal(ModalCreateProject);
     }
 
     function onOpenProject() {
@@ -44,7 +46,9 @@
                 <section>
                     <header class="flex justify-between items-center gap-6">
                         <span class="title">Projects</span>
-                        <IconButton><IconPlus size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/></IconButton>
+                        <IconButton on:click={onCreateProject}>
+                            <IconPlus size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/>
+                        </IconButton>
                     </header>
                     <ul class="m-links shrink-0">
                         {#each projects as project}
