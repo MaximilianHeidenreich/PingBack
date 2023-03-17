@@ -4,7 +4,7 @@ import type { RequestHandler } from "./$types";
 
 export const GET = (async ({ url }) => {
     const queryRaw = url.searchParams.get("query") || undefined;
-    const limit = url.searchParams.get("limit") || 50;
+    const limit = url.searchParams.get("limit") || undefined;
     const last = url.searchParams.get("lastKey") || undefined;
 
     // Unpack query
