@@ -7,9 +7,10 @@
         color: "pink" | "red" = "pink",
         target: "_blank" | "_self" = "_self",
         href: string = "",
-        disabled = false;
+        disabled = false,
+        clazz: string = "";
 </script>
 
-<Button {type} style="secondary" {target} {href} {disabled} clazz="!p-2" on:click  {...$$restProps}>
+<Button {type} style="secondary" {target} {href} {disabled} clazz="!p-2 {clazz}" on:click  {...$$restProps}>
     <slot/>
 </Button>
