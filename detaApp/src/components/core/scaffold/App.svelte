@@ -2,6 +2,7 @@
     import { navigating } from "$app/stores";
     import { Toaster } from "svelte-french-toast";
     import ModalPortal from "../modals/ModalPortal.svelte";
+    import AppHeader from "./appHeader/AppHeader.svelte";
     import AppSidebar from "./AppSidebar.svelte";
 
 </script>
@@ -12,7 +13,7 @@
 <div id="app-scaffold">
     <AppSidebar/>
     <main>
-        <slot name="pageHeader" />
+        <AppHeader></AppHeader>
         <div class="content">
             <slot />
         </div>
