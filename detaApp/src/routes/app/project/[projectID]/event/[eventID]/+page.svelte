@@ -21,7 +21,7 @@
     <p class="mx-auto max-w-[50ch] text-center">Event not found!</p>
 </AppContentSection>
 {:else}
-<AppContentSection class="!px-4">
+<AppContentSection class="!px-6">
     <header class="overview mb-2 flex w-full gap-8">
         <div class="icon">
             <div
