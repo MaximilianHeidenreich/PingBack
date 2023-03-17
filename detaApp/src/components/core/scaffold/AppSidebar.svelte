@@ -60,7 +60,7 @@
             <ul class="m-links">
                 <li><a href="/"><IconChartBar size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Stats</a></li>
                 <li><a href="/"><IconTool size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Settings</a></li>
-                <li><a href="/"><IconQuestionMark size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Help</a></li>
+                <li><a href="https://app.gitbook.com/o/rMdZB2j5lHPKIokA71eW/s/TtEkl8Cpmi1Pmbd3ND2d/"><IconQuestionMark size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Help</a></li>
             </ul>
         </div>
     </div>
