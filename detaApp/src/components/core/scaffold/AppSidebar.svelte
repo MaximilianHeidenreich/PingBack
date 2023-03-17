@@ -1,10 +1,17 @@
 <script lang="ts">
-    import ProjectSidebar from "./ProjectSidebar.svelte";
     import { IconChartBar, IconHome, IconPlus, IconQuestionMark, IconTool } from "@tabler/icons-svelte";
     import { TKN_ICON } from "$lib/utils/tokens";
     import IconButton from "../buttons/IconButton.svelte";
+    import ProjectSidebar from "./ProjectSidebar.svelte";
 
     import "$css/menuLinks.postcss";
+    import { onMount } from "svelte";
+    import type { IProject } from "$lib/types/IProject";
+    import { clientFetchProjectsRaw } from "$lib/helpers/api/projectsClient";
+    import { page } from "$app/stores";
+
+    // STATE
+    let projects: IProject[] = [];
 
     // HANDLERS
     function onCreateProject() {
@@ -14,6 +21,11 @@
     function onOpenProject() {
 
     }
+
+    onMount(async () => {
+        const res = await clientFetchProjectsRaw(fetch, {}, undefined, undefined);
+        projects = res.items;
+    })
 
 </script>
 
@@ -34,10 +46,14 @@
                         <span class="title">Projects</span>
                         <IconButton><IconPlus size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/></IconButton>
                     </header>
-                    <ul class="m-links">
-                        <li><a href="/">Stats</a></li>
-                        <li><a href="/">Settings</a></li>
-                        <li><a href="/">Help</a></li>
+                    <ul class="m-links shrink-0">
+                        {#each projects as project}
+                        <li><a
+                            href="/app/project/{project.key}/feed"
+                            class="truncate"
+                            class:active={$page.url.pathname.startsWith(`/app/project/${project.key}`)}>
+                            {project.displayName}</a></li>
+                        {/each}
                     </ul>
                 </section>
             </div>
@@ -60,6 +76,7 @@
     .nav-sidebar {
         @apply  bg-white;
         @apply px-6 py-6 border-r-2;
+        @apply max-w-[20ch];
     }
 
     section {
