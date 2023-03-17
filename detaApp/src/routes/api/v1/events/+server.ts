@@ -37,3 +37,43 @@ export const GET = (async ({ url }) => {
         .build();
 
 }) satisfies RequestHandler;
+
+export const POST = (async ({ request }) => {
+    const reqBody = await request.json();
+    const projectID = reqBody.projectID;
+
+    // TODO: Validate API KEY
+    //Todo impl.
+
+
+/*
+    // Unpack query
+    let query: Record<string, unknown> | Record<string, unknown>[] | undefined;
+    if (queryRaw) {
+        try {
+            query = JSON.parse(Buffer.from(queryRaw, "base64").toString());
+        } catch (err) {
+            console.error(err);
+            return respondBadRequest("Invalid query!");
+        }
+    }
+
+    const queryOptions: { [key: string]: unknown } = {};
+    if (limit) queryOptions["limit"] = Number(limit);
+    if (last) queryOptions["last"] = last;
+
+    let result;
+    try {
+        result = await db_events.fetch(query || {}, queryOptions);
+    } catch (err) {
+        console.error(err);
+        return respondInternalError("Failed to fetch events from database!");
+    }*/
+
+    return buildResponse()
+        .status(200)
+        .statusText("OK")
+        .json({})
+        .build();
+
+}) satisfies RequestHandler;
