@@ -20,7 +20,7 @@
 
 </script>
 
-{#if $s_projectSidebarActiveProject !== undefined}
+{#if $s_projectSidebarActiveProject !== null}
 <div class="project-nav"
     transition:fly={{
         duration: TKN_TRANSITION.DURATION,
