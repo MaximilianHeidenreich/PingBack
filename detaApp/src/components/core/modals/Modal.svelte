@@ -21,6 +21,7 @@
     });
 </script>
 
+<!-- TODO: Click outside close -->
 <dialog
     bind:this={dialog}
     on:close={onClose}
