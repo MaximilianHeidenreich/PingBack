@@ -1,13 +1,9 @@
 <script lang="ts">
     import Button from "$cmp/core/buttons/Button.svelte";
-    import AppHeader from "$cmp/core/scaffold/appHeader/AppHeader.svelte";
-</script>
+    import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
 
-<AppHeader>
-    <li>asd</li>
-    <li>asd</li>
-    <li>asd</li>
-</AppHeader>
+    s_headerTitle.set("Overview");
+</script>
 
 <div>
 foo bar
