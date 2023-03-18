@@ -33,7 +33,7 @@
     let eventFrames = writable<IFrame[]>([]);
 
     let lastPastFrame: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now()).endOf("hour"); // TODO: can remove project latest
-    let lastFutureFrame: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now());
+    let lastFutureFrame: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now()).add(1, "hour").endOf("hour");
 
     // FN
     // TODO: make param lastPastFrame -> Parallel fetch 5 frames
@@ -79,7 +79,43 @@
         loading = false;
     }
 
-    async function loadFuture() { /* TODO: impl */ }
+    async function loadFuture() {
+        let fetchedEvents: IEvent[] = [];
+        let lastKey: string | undefined;
+
+        // Fetch events
+        // TODO !!: Retry when empty but more events
+        let [res, more] = await clientFetchProjectEventFrame(
+            fetch,
+            project.key,
+            lastFutureFrame.valueOf(),
+            query,
+            true,
+            lastKey
+        );
+        fetchedEvents = res.items;
+        if (!more) endOfData = true;    // TODO: how to handle?
+
+        // Sort events & update frames
+        processingProgress = [0, fetchedEvents.length]
+        processing = true;
+        fetchedEvents.sort( (a, b) => {
+            processingProgress = [processingProgress[0] + 1, processingProgress[1]];
+            return b.createdAt - a.createdAt;
+        });
+        processing = false;
+
+        eventFrames.update(frames => {
+            const pendingFrame = {
+                frameEnd: lastFutureFrame.valueOf(), // startOf hour
+                events: fetchedEvents
+            };
+            frames = [pendingFrame, ...frames];
+            return frames;
+        });
+
+        lastFutureFrame = lastFutureFrame.add(1, "hour");
+    }
 
     // HANDLERS
     function onLoadPast() {
