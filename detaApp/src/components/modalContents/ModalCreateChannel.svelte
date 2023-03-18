@@ -21,7 +21,7 @@
     <svelte:fragment slot="title">Create Channel</svelte:fragment>
     <svelte:fragment slot="subtitle">
         Use channels to split events into easily accessible groups.
-        Visit the <a href="https://www" class="pretty-link">documentation</a> for more information. <!-- TODO: Link -->
+        Visit the <a href="https://maximilianheidenreich.gitbook.io/pingback/" target="_blank" class="pretty-link">documentation</a> for more information. <!-- TODO: Link -->
     </svelte:fragment>
     <svelte:fragment slot="body">
         <fieldset>

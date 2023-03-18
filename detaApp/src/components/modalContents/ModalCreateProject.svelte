@@ -21,7 +21,7 @@
     <svelte:fragment slot="title">Create Project</svelte:fragment>
     <svelte:fragment slot="subtitle">
         Use projects to split events, metrics and monitors into separate groups.
-        Visit the <a href="/" class="pretty-link">documentation</a> for more information. <!-- TODO: Link -->
+        Visit the <a href="https://maximilianheidenreich.gitbook.io/pingback/" target="_blank" class="pretty-link">documentation</a> for more information. <!-- TODO: Link -->
     </svelte:fragment>
     <svelte:fragment slot="body">
         <fieldset>
