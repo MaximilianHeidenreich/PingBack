@@ -16,6 +16,9 @@
     function onEnterSearch() {
         searchOpen = true;
     }
+    function onCloseSearch() {
+        searchOpen = false;
+    }
     function onToggleListStyle() {
         const curr = get(s_eventListStyle);
         if (curr === "compact") s_eventListStyle.set("card");
@@ -39,7 +42,7 @@
         <ul class="flex-1 grow flex justify-end items-center gap-2">
             <li class="{searchOpen ? 'flex-1' : ''}">
                 {#if searchOpen}
-                <SearchBar />
+                <SearchBar on:close={onCloseSearch}/>
                 {:else}
                 <IconButton on:click={onEnterSearch}>
                     <IconSearch
