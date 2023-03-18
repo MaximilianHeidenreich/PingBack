@@ -62,8 +62,8 @@
                 </section>
             </div>
             <ul class="m-links">
-                <li><a href="/"><IconChartBar size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Stats</a></li>
-                <li><a href="/"><IconTool size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Settings</a></li>
+                <li><a href="/app/stats"><IconChartBar size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Stats</a></li>
+                <li><a href="/app/settings"><IconTool size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Settings</a></li>
                 <li><a href="https://maximilianheidenreich.gitbook.io/pingback/" target="_blank"><IconQuestionMark size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Help</a></li>
             </ul>
         </div>
