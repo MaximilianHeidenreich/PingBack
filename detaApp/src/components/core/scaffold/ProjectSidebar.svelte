@@ -7,9 +7,16 @@
     import "$css/menuLinks.postcss";
     import { s_projectSidebarActiveProject } from "./s_projectSidebarActiveProject";
     import { page } from "$app/stores";
+    import ModalCreateChannel from "$cmp/modalContents/ModalCreateChannel.svelte";
+    import { pushModal } from "../modals/modalStore";
 
     // STATE
     $: BASE_URL = `/app/project/${$s_projectSidebarActiveProject?.key}`;
+
+    // HANDLERS
+    function onCreateChannel() {
+        pushModal(ModalCreateChannel);
+    }
 
 </script>
 
@@ -22,7 +29,7 @@
     }}>
     <header class="mb-12">
         <div class="flex items-center justify-between gap-4 shrink-0">
-            <span class="text-lg font-medium truncate">{$s_projectSidebarActiveProject?.displayName}</span>
+            <span class="text-lg font-medium truncate">{$s_projectSidebarActiveProject?.key}</span> <!-- TODO: Camel Case -->
             <IconButton
                 type="link"
                 href="{BASE_URL}/settings">
@@ -66,7 +73,7 @@
             <span class="title">Channels</span>
             <IconButton
                 type="button"
-                on:click={() => {}}>
+                on:click={onCreateChannel}>
                 <IconPlus
                     size={TKN_ICON.SIZE.BASE}
                     stroke={TKN_ICON.STROKE.BASE} />
