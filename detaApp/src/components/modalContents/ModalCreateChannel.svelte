@@ -18,19 +18,19 @@
 </script>
 
 <Modal bind:dialog>
-    <svelte:fragment slot="title">Create Project</svelte:fragment>
+    <svelte:fragment slot="title">Create Channel</svelte:fragment>
     <svelte:fragment slot="subtitle">
-        Use projects to split events, metrics and monitors into separate groups.
-        Visit the <a href="/" class="pretty-link">documentation</a> for more information. <!-- TODO: Link -->
+        Use channels to split events into easily accessible groups.
+        Visit the <a href="https://www" class="pretty-link">documentation</a> for more information. <!-- TODO: Link -->
     </svelte:fragment>
     <svelte:fragment slot="body">
         <fieldset>
             <label class="block">
-                <span class="text-gray-700">Project Name</span>
+                <span class="text-gray-700">Channel Name</span>
                 <Input
                     bind:value={projectName}
                     sanitizer={sanitizeProjectIdInput}
-                    placeholder="My-Project" /> <!-- TODO: space input should auto replace on input -->
+                    placeholder="general" /> <!-- TODO: space input should auto replace on input -->
             </label>
             <p class="mt-2 max-w-[35ch] px-0.5 leading-5">
                 <small class="mt-1">
