@@ -54,28 +54,8 @@
             true,
             lastKey
         );
-        /*const p_fetchEvents = clientFetchProjectEventsRaw(fetch, project.key, {
-            ...query,
-            "createdAt?r": [lastPastFrame.startOf("hour").valueOf(), lastPastFrame.endOf("hour").valueOf()]
-        }, lastKey);
-        const p_moreEvents = clientFetchProjectEventsRaw(fetch, project.key, {
-            ...query,
-            "createdAt?lt": lastPastFrame.startOf("hour").subtract(1, "hour").endOf("hour").valueOf()
-        }, undefined, 1);   // Try to fetch 1 previous event -> if none -> no more events
-        let [res, moreEventsRes] = await Promise.all([p_fetchEvents, p_moreEvents]);*/  // TODO: throws?
-
         fetchedEvents = res.items;
-        //lastKey = res.last;
-        //if (moreEventsRes.count <= 0) endOfData = true;
         if (!more) endOfData = true;
-        /*while (lastKey) {
-            res = await clientFetchProjectEventsRaw(fetch, project.key, {
-                ...query,
-                "createdAt?r": [lastPastFrame.startOf("hour").valueOf(), lastPastFrame.endOf("hour").valueOf()]
-            }, lastKey)
-            fetchedEvents = fetchedEvents.concat(res.items);
-            lastKey = res.last;
-        }*/
 
         // Sort events & update frames
         processingProgress = [0, fetchedEvents.length]
