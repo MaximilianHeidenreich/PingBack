@@ -40,3 +40,9 @@ export function sanitizeChannelName(input: string): string {
         .replace(/ +/, " ");
     return sane;
 }
+
+// TODO: Docs & tests
+export function sanitizeApiKeyName(input: string): string {
+    let sane = input.trim();
+    return sane;
+}
