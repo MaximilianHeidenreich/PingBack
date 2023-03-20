@@ -9,13 +9,14 @@
     import { page } from "$app/stores";
     import ModalCreateChannel from "$cmp/modalContents/ModalCreateChannel.svelte";
     import { pushModal } from "../modals/modalStore";
+    import { get } from "svelte/store";
 
     // STATE
     $: BASE_URL = `/app/project/${$s_projectSidebarActiveProject?.key}`;
 
     // HANDLERS
     function onCreateChannel() {
-        pushModal(ModalCreateChannel);
+        pushModal(ModalCreateChannel, { project: get(s_projectSidebarActiveProject) });
     }
 
 </script>
@@ -106,9 +107,9 @@
 
 <style lang="postcss">
     .project-nav {
-        @apply px-6 py-6 border-r-4;
+        @apply px-6 py-6 w-[24ch] border-r-4;
         @apply bg-white;
-        @apply min-w-[20ch] max-w-[24ch];
+        /*@apply min-w-[20ch] max-w-[24ch];*/
     }
 
     section {
