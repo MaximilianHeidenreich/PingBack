@@ -3,7 +3,8 @@
     import EventListItem from "./EventListItem.svelte";
 
     // PROPS
-    export let events: IEvent[];
+    export let events: IEvent[]
+        // odd={ (i === 0 ? oddOffset + 1 : i + 1) % 2 !== 0}
 </script>
 
 <ul>
