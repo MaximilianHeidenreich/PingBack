@@ -1,6 +1,7 @@
 import type { TFetcher } from "$lib/types/fetcher";
+import type { IChannel } from "$lib/types/IChannel";
 import type { IProject } from "$lib/types/IProject";
-import { sanitizeProjectIdInternal } from "$lib/utils/sanitizers";
+import { sanitizeChannelID, sanitizeProjectIdInternal } from "$lib/utils/sanitizers";
 import { VERSION } from "$lib/utils/version";
 
 /**
@@ -52,6 +53,36 @@ export async function clientDeleteProjectRaw(
     projectID: string
 ) {
     const res = await fetcher(`/api/v${VERSION.major}/projects/${sanitizeProjectIdInternal(projectID)}`, {    // TODO: error handling
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    return res;
+}
+
+type TCreateProjectChannelScaffold = Pick<IChannel, "id">;
+export async function clientCreateProjectChannelRaw(
+    fetcher: TFetcher,
+    projectID: string,
+    channel: TCreateProjectChannelScaffold
+) {
+    const res = await fetcher(`/api/v${VERSION.major}/projects/${sanitizeProjectIdInternal(projectID)}/channels`, {    // TODO: error handling
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(channel)
+    });
+    return res;
+}
+
+export async function clientDeleteProjectChannelRaw(
+    fetcher: TFetcher,
+    projectID: string,
+    channelID: string
+) {
+    const res = await fetcher(`/api/v${VERSION.major}/projects/${sanitizeProjectIdInternal(projectID)}/channels/${sanitizeChannelID(channelID)}`, {    // TODO: error handling
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
