@@ -12,10 +12,11 @@ micros:
       engine: nodejs16
       commands:
       - export
-      #- npm install
+      - npm install
       #- npm run build
       include:
       - build
+      - node_modules
       - package.json
       - package-lock.json
       run: node build
