@@ -62,6 +62,10 @@ export function respondUnauthenticated(body: string | object | null): Response {
     return buildResponse().status(401).statusText("Unauthorized").body(body).build();
 }
 
+export function respondNotFound(body: string | object | null): Response {
+    return buildResponse().status(404).statusText("Not Found").body(body).build();
+}
+
 export function respondInternalError(body: string | object | null): Response {
     return buildResponse().status(500).statusText("Internal Server Error").body(body).build();
 }
