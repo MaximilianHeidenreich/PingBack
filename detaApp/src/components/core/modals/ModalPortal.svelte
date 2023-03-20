@@ -8,7 +8,7 @@
 
 <div>
 
-    {#each $s_activeModals as modal}
+    {#each $s_activeModals as [modal, props]}
     <div
         class="dialog-wrapper"
         transition:fade={{
@@ -16,7 +16,7 @@
             duration: TKN_TRANSITION.DURATION,
             easing: TKN_TRANSITION.EASING
         }}>
-        <svelte:component this={modal} />
+        <svelte:component this={modal} {...props}/>
     </div>
     {/each}
 
