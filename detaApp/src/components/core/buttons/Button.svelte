@@ -27,7 +27,8 @@
 {/if}
 
 <style lang="postcss">
-    button, a {
+    button,
+    a {
         @apply inline-flex items-center justify-center;
         @apply rounded-lg px-6 py-2.5 text-sm font-medium;
         @apply transition-colors duration-200 ease-in-out;
@@ -36,7 +37,7 @@
     /* COLORS */
     /* PRIMARY */
     button.primary.col-pink {
-        @apply text-white bg-gradient-to-b from-pink-400 to-pink-500 border-2 border-pink-400;
+        @apply border-2 border-pink-400 bg-gradient-to-b from-pink-400 to-pink-500 text-white;
     }
     button.primary.col-pink:hover {
         @apply from-pink-400 to-pink-400;
@@ -56,13 +57,16 @@
     }
 
     /* SECONDARY */
-    button.secondary,a.secondary {
+    button.secondary,
+    a.secondary {
         @apply text-black;
     }
-    button.secondary:hover,a.secondary:hover {
+    button.secondary:hover,
+    a.secondary:hover {
         @apply bg-neutral-100;
     }
-    button.secondary:active,a.secondary:active {
+    button.secondary:active,
+    a.secondary:active {
         @apply bg-neutral-200;
     }
 </style>

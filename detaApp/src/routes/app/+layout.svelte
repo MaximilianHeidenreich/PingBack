@@ -3,5 +3,5 @@
 </script>
 
 <App>
-    <slot/>
+    <slot />
 </App>

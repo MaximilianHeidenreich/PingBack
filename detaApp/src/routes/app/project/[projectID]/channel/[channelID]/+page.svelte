@@ -10,14 +10,14 @@
 
     // STATE
     const project = getContext<IProject>("project");
-    const channel = project.channels.find(e => e.id === data.channelID);
+    const channel = project.channels.find((e) => e.id === data.channelID);
 
     s_headerTitle.set(`Channel – ${channel?.id}`);
 </script>
 
 {#key data.channelID}
-<InfiniteEventList
-    {project}
-    startTimestamp={channel?.latestEventTimestamp || Date.now()}
-    query={{ "channel": data.channelID }}/>
+    <InfiniteEventList
+        {project}
+        startTimestamp={channel?.latestEventTimestamp || Date.now()}
+        query={{ channel: data.channelID }} />
 {/key}

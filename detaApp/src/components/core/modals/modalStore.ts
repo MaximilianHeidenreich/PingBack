@@ -1,4 +1,3 @@
-import type { SvelteComponent, SvelteComponentTyped } from "svelte";
 import { writable } from "svelte/store";
 
 export const s_activeModals = writable<[SvelteComponentConstructor<any, any>, object][] | []>([]);

@@ -11,6 +11,14 @@
         clazz: string = "";
 </script>
 
-<Button {type} style="secondary" {target} {href} {disabled} clazz="!p-2 {clazz}" on:click  {...$$restProps}>
-    <slot/>
+<Button
+    {type}
+    style="secondary"
+    {target}
+    {href}
+    {disabled}
+    clazz="!p-2 {clazz}"
+    on:click
+    {...$$restProps}>
+    <slot />
 </Button>

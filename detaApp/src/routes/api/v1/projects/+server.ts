@@ -32,12 +32,7 @@ export const GET = (async ({ url }) => {
         return respondInternalError("Failed to fetch projects from database!");
     }
 
-    return buildResponse()
-        .status(200)
-        .statusText("OK")
-        .json(result)
-        .build();
-
+    return buildResponse().status(200).statusText("OK").json(result).build();
 }) satisfies RequestHandler;
 
 export const POST = (async ({ request }) => {
@@ -59,8 +54,7 @@ export const POST = (async ({ request }) => {
 
     try {
         await db_projects.insert(pendingProject as IProject, key);
-    }
-    catch (err) {
+    } catch (err) {
         // TODO: only handle duplicate key error
         return respondBadRequest("Project key already exists!");
     }
@@ -70,5 +64,4 @@ export const POST = (async ({ request }) => {
         .statusText("OK")
         .json({ ...pendingProject, key })
         .build();
-
 }) satisfies RequestHandler;

@@ -10,7 +10,7 @@ export const TKN_ICON = Object.freeze({
         SM: 1.5,
         BASE: 2,
         LG: 2.5
-    },
+    }
 });
 
 export const TKN_TRANSITION = Object.freeze({

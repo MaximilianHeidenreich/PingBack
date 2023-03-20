@@ -27,9 +27,13 @@
     on:close={onClose}
     transition:scale={{ duration: 500, delay: 0, opacity: 0, start: 0, easing: quintOut }}>
     <header class="mb-6">
-        <div class="flex justify-between items-center gap-4">
+        <div class="flex items-center justify-between gap-4">
             <span class="text-2xl font-semibold"><slot name="title" /></span>
-            <IconButton clazz="-mr-3" on:click={() => { dialog.close(); }}>
+            <IconButton
+                clazz="-mr-3"
+                on:click={() => {
+                    dialog.close();
+                }}>
                 <IconX
                     size={TKN_ICON.SIZE.LG}
                     stroke={TKN_ICON.STROKE.BASE} />

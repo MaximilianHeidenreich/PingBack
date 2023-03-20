@@ -18,10 +18,11 @@
 </script>
 
 {#if !data.project}
-<div class="w-full p-6 flex flex-col justify-center items-center">
-    <span class="text-lg font-medium">Project not found!</span>
-    <span class="text-sm"><span class="font-mono">{data.projectID}</span> does not exists!</span>
-</div>
+    <div class="flex w-full flex-col items-center justify-center p-6">
+        <span class="text-lg font-medium">Project not found!</span>
+        <span class="text-sm"
+            ><span class="font-mono">{data.projectID}</span> does not exists!</span>
+    </div>
 {:else}
-<slot/>
+    <slot />
 {/if}

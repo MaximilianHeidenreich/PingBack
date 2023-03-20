@@ -1,5 +1,4 @@
-
-import { valid, clean, parse, major, minor, patch } from "semver";
+import { clean, major, minor, parse, patch, valid } from "semver";
 
 if (!valid(__VERSION__)) throw new Error("Invalid app version string!"); // TODO: Better error handling.?
 

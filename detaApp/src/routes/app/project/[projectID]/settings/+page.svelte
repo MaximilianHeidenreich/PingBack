@@ -12,7 +12,15 @@
     import type { IProject } from "$lib/types/IProject";
     import { copyToClipboard } from "$lib/utils/clipboard";
     import { TKN_ICON } from "$lib/utils/tokens";
-    import { IconBell, IconBellOff, IconCopy, IconHash, IconKey, IconPlus, IconTrash } from "@tabler/icons-svelte";
+    import {
+        IconBell,
+        IconBellOff,
+        IconCopy,
+        IconHash,
+        IconKey,
+        IconPlus,
+        IconTrash
+    } from "@tabler/icons-svelte";
     import { getContext } from "svelte";
     import type { PageData } from "./$types";
 
@@ -27,13 +35,21 @@
 
     // HANDLERS
     function onDeleteChannel(channelID: string) {
-        pushModal(ModalDeleteChannel, { project, channelID, onDeleted: () => invalidate("project:settings") });
+        pushModal(ModalDeleteChannel, {
+            project,
+            channelID,
+            onDeleted: () => invalidate("project:settings")
+        });
     }
     function onCreateApiKey() {
         pushModal(ModalCreateApiKey);
     }
-    function onDeleteApiKey (key: string, name: string) {
-        pushModal(ModalDeleteApiKey, { apiKey: key, keyName: name, onDeleted: () => invalidate("project:settings") });
+    function onDeleteApiKey(key: string, name: string) {
+        pushModal(ModalDeleteApiKey, {
+            apiKey: key,
+            keyName: name,
+            onDeleted: () => invalidate("project:settings")
+        });
     }
     function onDeleteProject() {
         pushModal(ModalDeleteProject, {
@@ -42,34 +58,34 @@
             onDeleted: () => goto("/app")
         });
     }
-
 </script>
 
 <AppContentSection>
-        <header class="mb-2">
-            <span class="text-2xl font-medium">General</span>
-        </header>
-        <fieldset class="flex items-center justify-between">
-            <span class="font-mono">{project.displayName}</span>
-            <IconButton
-                on:click={() => { copyToClipboard(project.key) }}
-                ><IconCopy
-                    size={24}
-                    stroke={2} /></IconButton>
-        </fieldset>
-        <hr class="mt-4" />
-    </AppContentSection>
-    <AppContentSection>
-        <header class="mb-2">
-            <span class="text-2xl font-medium">Channels</span>
-        </header>
-        <ul class="flex flex-col gap-2">
-            {#if project.channels.length <= 0}
+    <header class="mb-2">
+        <span class="text-2xl font-medium">General</span>
+    </header>
+    <fieldset class="flex items-center justify-between">
+        <span class="font-mono">{project.displayName}</span>
+        <IconButton
+            on:click={() => {
+                copyToClipboard(project.key);
+            }}
+            ><IconCopy
+                size={24}
+                stroke={2} /></IconButton>
+    </fieldset>
+    <hr class="mt-4" />
+</AppContentSection>
+<AppContentSection>
+    <header class="mb-2">
+        <span class="text-2xl font-medium">Channels</span>
+    </header>
+    <ul class="flex flex-col gap-2">
+        {#if project.channels.length <= 0}
             <li><span class="text-gray-500">No channels yet.</span></li>
-            {:else}
+        {:else}
             {#each project.channels as channel}
-                <li
-                    class="flex items-center justify-between border-b-2 border-neutral-100 py-1">
+                <li class="flex items-center justify-between border-b-2 border-neutral-100 py-1">
                     <ul class="flex items-center">
                         <li>
                             <IconHash
@@ -94,14 +110,15 @@
                         </li>
                         <li>
                             <IconButton
-                                on:click={() => { copyToClipboard(channel.id) }}
+                                on:click={() => {
+                                    copyToClipboard(channel.id);
+                                }}
                                 ><IconCopy
                                     size={TKN_ICON.SIZE.BASE}
                                     stroke={TKN_ICON.STROKE.BASE} /></IconButton>
                         </li>
                         <li>
-                            <IconButton
-                                on:click={() => onDeleteChannel(channel.id)}
+                            <IconButton on:click={() => onDeleteChannel(channel.id)}
                                 ><IconTrash
                                     size={TKN_ICON.SIZE.BASE}
                                     stroke={TKN_ICON.STROKE.BASE} /></IconButton>
@@ -109,25 +126,24 @@
                     </ul>
                 </li>
             {/each}
-            {/if}
-        </ul>
-    </AppContentSection>
-    <AppContentSection>
-        <header class="mb-2 flex items-center gap-3">
-            <span class="mb-0.5 text-2xl font-medium">API Keys</span>
-            <IconButton on:click={onCreateApiKey}>
-                <IconPlus
-                    size={TKN_ICON.SIZE.BASE}
-                    stroke={TKN_ICON.STROKE.BASE} />
-            </IconButton>
-        </header>
-        <ul class="flex flex-col gap-2">
-            {#if apiKeys.length <= 0}
+        {/if}
+    </ul>
+</AppContentSection>
+<AppContentSection>
+    <header class="mb-2 flex items-center gap-3">
+        <span class="mb-0.5 text-2xl font-medium">API Keys</span>
+        <IconButton on:click={onCreateApiKey}>
+            <IconPlus
+                size={TKN_ICON.SIZE.BASE}
+                stroke={TKN_ICON.STROKE.BASE} />
+        </IconButton>
+    </header>
+    <ul class="flex flex-col gap-2">
+        {#if apiKeys.length <= 0}
             <li><span class="text-gray-500">No keys yet.</span></li>
-            {:else}
+        {:else}
             {#each apiKeys as apiKey}
-                <li
-                    class="flex items-center justify-between border-b-2 border-neutral-100 py-3">
+                <li class="flex items-center justify-between border-b-2 border-neutral-100 py-3">
                     <div class="flex flex-col gap-1">
                         <span class="font-mono text-sm">{apiKey.displayName}</span>
                         <ul class="flex items-center gap-2">
@@ -142,14 +158,18 @@
                     <ul class="flex">
                         <li>
                             <IconButton
-                                on:click={() => { copyToClipboard(apiKey.key) }}
+                                on:click={() => {
+                                    copyToClipboard(apiKey.key);
+                                }}
                                 ><IconCopy
                                     size={TKN_ICON.SIZE.BASE}
                                     stroke={TKN_ICON.STROKE.BASE} /></IconButton>
                         </li>
                         <li>
                             <IconButton
-                                on:click={() => { onDeleteApiKey(apiKey.key, apiKey.displayName) }}
+                                on:click={() => {
+                                    onDeleteApiKey(apiKey.key, apiKey.displayName);
+                                }}
                                 ><IconTrash
                                     size={TKN_ICON.SIZE.BASE}
                                     stroke={TKN_ICON.STROKE.BASE} /></IconButton>
@@ -157,14 +177,16 @@
                     </ul>
                 </li>
             {/each}
-            {/if}
-        </ul>
-    </AppContentSection>
-    <AppContentSection>
-        <header class="mb-2">
-            <span class="text-2xl font-medium">Danger Zone</span>
-        </header>
-        <!-- TODO: Delete project / data -->
-        <Button style="primary" color="red" on:click={onDeleteProject}>Delete Project</Button>
-    </AppContentSection>
-
+        {/if}
+    </ul>
+</AppContentSection>
+<AppContentSection>
+    <header class="mb-2">
+        <span class="text-2xl font-medium">Danger Zone</span>
+    </header>
+    <!-- TODO: Delete project / data -->
+    <Button
+        style="primary"
+        color="red"
+        on:click={onDeleteProject}>Delete Project</Button>
+</AppContentSection>

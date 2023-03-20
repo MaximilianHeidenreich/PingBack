@@ -2,24 +2,22 @@
     import { TKN_TRANSITION } from "$lib/utils/tokens";
     import { fade } from "svelte/transition";
     import { s_activeModals } from "./modalStore";
-
-
 </script>
 
 <div>
-
     {#each $s_activeModals as [modal, props]}
-    <div
-        class="dialog-wrapper"
-        transition:fade={{
-            delay: 0,
-            duration: TKN_TRANSITION.DURATION,
-            easing: TKN_TRANSITION.EASING
-        }}>
-        <svelte:component this={modal} {...props}/>
-    </div>
+        <div
+            class="dialog-wrapper"
+            transition:fade={{
+                delay: 0,
+                duration: TKN_TRANSITION.DURATION,
+                easing: TKN_TRANSITION.EASING
+            }}>
+            <svelte:component
+                this={modal}
+                {...props} />
+        </div>
     {/each}
-
 </div>
 
 <style lang="postcss">

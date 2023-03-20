@@ -8,10 +8,9 @@
 
     // STATE
     const project = getContext<IProject>("project");
-
 </script>
 
 <InfiniteEventList
     {project}
     startTimestamp={project.latestEventTimestamp}
-    query={{  }}/>
+    query={{}} />

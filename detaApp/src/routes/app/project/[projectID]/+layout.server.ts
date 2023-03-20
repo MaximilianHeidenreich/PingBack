@@ -13,6 +13,6 @@ export const load = (async ({ params, depends }) => {
 
     return {
         project,
-        projectID,
+        projectID
     };
 }) satisfies LayoutServerLoad;

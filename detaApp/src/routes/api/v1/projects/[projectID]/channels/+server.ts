@@ -11,9 +11,8 @@ export const POST = (async ({ request, params }) => {
 
     let project: IProject | null;
     try {
-         project = await db_projects.get(sanitizeProjectIdInternal(projectID));
-    }
-    catch (err) {
+        project = await db_projects.get(sanitizeProjectIdInternal(projectID));
+    } catch (err) {
         console.error(err);
         return respondInternalError("Could not get project!");
     }
@@ -28,23 +27,17 @@ export const POST = (async ({ request, params }) => {
     const pendingChannel: IChannel = {
         id: reqBody.id,
         latestEventTimestamp: Date.now(),
-        notify: reqBody.notify || true,
-    }
+        notify: reqBody.notify || true
+    };
 
     project.channels.push(pendingChannel);
 
     try {
         await db_projects.update(project, project.key);
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
         return respondInternalError("Could not update project to create channel!");
     }
 
-    return buildResponse()
-        .status(200)
-        .statusText("OK")
-        .json(pendingChannel)
-        .build();
-
+    return buildResponse().status(200).statusText("OK").json(pendingChannel).build();
 }) satisfies RequestHandler;

@@ -11,6 +11,4 @@
     });
 </script>
 
-<AppContentSection>
-    todo overview stats & latest events
-</AppContentSection>
+<AppContentSection>todo overview stats & latest events</AppContentSection>

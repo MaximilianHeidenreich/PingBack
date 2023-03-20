@@ -30,12 +30,7 @@ export const GET = (async ({ url }) => {
         return respondInternalError("Failed to fetch events from database!");
     }
 
-    return buildResponse()
-        .status(200)
-        .statusText("OK")
-        .json(result)
-        .build();
-
+    return buildResponse().status(200).statusText("OK").json(result).build();
 }) satisfies RequestHandler;
 
 export const POST = (async ({ request }) => {
@@ -45,8 +40,7 @@ export const POST = (async ({ request }) => {
     // TODO: Validate API KEY
     //Todo impl.
 
-
-/*
+    /*
     // Unpack query
     let query: Record<string, unknown> | Record<string, unknown>[] | undefined;
     if (queryRaw) {
@@ -70,10 +64,5 @@ export const POST = (async ({ request }) => {
         return respondInternalError("Failed to fetch events from database!");
     }*/
 
-    return buildResponse()
-        .status(200)
-        .statusText("OK")
-        .json({})
-        .build();
-
+    return buildResponse().status(200).statusText("OK").json({}).build();
 }) satisfies RequestHandler;

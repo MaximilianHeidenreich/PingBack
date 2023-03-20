@@ -6,7 +6,7 @@ export default function toastOptions(options?: Partial<ToastOptions>): ToastOpti
         position: "bottom-right",
         duration: 4000
     };
-    return { ...defaults, ...options};
+    return { ...defaults, ...options };
     // @ts-expect-error TODO: Invesigate why ts eeror
     //return Object.apply(defaults, options);
 }

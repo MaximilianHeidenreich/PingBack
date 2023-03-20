@@ -9,9 +9,8 @@ export const DELETE = (async ({ params }) => {
 
     let project: IProject | null;
     try {
-         project = await db_projects.get(sanitizeProjectIdInternal(projectID));
-    }
-    catch (err) {
+        project = await db_projects.get(sanitizeProjectIdInternal(projectID));
+    } catch (err) {
         console.error(err);
         return respondInternalError("Could not get project!");
     }
@@ -19,24 +18,18 @@ export const DELETE = (async ({ params }) => {
     if (!project) {
         return respondNotFound(`Project ${projectID} not found!`);
     }
-    if (!project.channels.find(e => e.id === channelID)) {
+    if (!project.channels.find((e) => e.id === channelID)) {
         return respondNotFound(`Channel ${channelID} not found!`);
     }
 
-    project.channels = project.channels.filter(e => e.id !== channelID);
+    project.channels = project.channels.filter((e) => e.id !== channelID);
 
     try {
         await db_projects.update(project, project.key);
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
         return respondInternalError("Could not update project to delete channel!");
     }
 
-    return buildResponse()
-        .status(200)
-        .statusText("OK")
-        .json({})
-        .build();
-
+    return buildResponse().status(200).statusText("OK").json({}).build();
 }) satisfies RequestHandler;

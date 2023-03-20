@@ -8,8 +8,7 @@ export async function copyToClipboard(text: string) {
     try {
         navigator.clipboard.writeText(text);
         toast.success("Copied to clipboard!", toastOptions());
-    }
-    catch (err) {
+    } catch (err) {
         toast.error("Unable to copy to clipboard.", toastOptions());
     }
 }

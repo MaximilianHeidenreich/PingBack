@@ -6,9 +6,7 @@
     import toast from "svelte-french-toast";
 
     // PROPS
-    export let apiKey: string,
-        keyName: string,
-        onDeleted: () => void;
+    export let apiKey: string, keyName: string, onDeleted: () => void;
 
     // STATE
     let dialog: HTMLDialogElement;
@@ -37,13 +35,17 @@
 <Modal bind:dialog>
     <svelte:fragment slot="title">Delete Api Key</svelte:fragment>
     <svelte:fragment slot="subtitle">
-        Are you sure you want to delete <strong class="text-pink-500">{keyName}</strong>?
-        This action cannot be reversed and access for all applications using this key will be revoked.
+        Are you sure you want to delete <strong class="text-pink-500">{keyName}</strong>? This
+        action cannot be reversed and access for all applications using this key will be revoked.
     </svelte:fragment>
     <svelte:fragment slot="footer">
-    <div class="flex justify-end gap-4">
-        <Button style="secondary" on:click={onCancel}>Cancel</Button>
-        <Button on:click={onDelete} color="red">Delete</Button>
-    </div>
+        <div class="flex justify-end gap-4">
+            <Button
+                style="secondary"
+                on:click={onCancel}>Cancel</Button>
+            <Button
+                on:click={onDelete}
+                color="red">Delete</Button>
+        </div>
     </svelte:fragment>
 </Modal>

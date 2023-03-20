@@ -11,16 +11,14 @@
     function onCloseBtn() {
         dispatch("close");
     }
-
 </script>
 
-<div class="flex-1 bg-white border-2 border-neutral-300 rounded-xl py-2 px-2 flex justify-between items-center">
-    <span class="ml-2">
-        search coming soon
-    </span>
+<div
+    class="flex flex-1 items-center justify-between rounded-xl border-2 border-neutral-300 bg-white py-2 px-2">
+    <span class="ml-2"> search coming soon </span>
     <IconButton on:click={onCloseBtn}>
         <IconX
             size={TKN_ICON.SIZE.SM}
-            stroke={TKN_ICON.STROKE.LG}/>
+            stroke={TKN_ICON.STROKE.LG} />
     </IconButton>
 </div>

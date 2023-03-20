@@ -51,8 +51,12 @@
 <Modal bind:dialog>
     <svelte:fragment slot="title">Create Api Key</svelte:fragment>
     <svelte:fragment slot="subtitle">
-        API Keys are used to authenticate requests to your project. You cannot create events without an API Key.
-        Visit the <a href="https://maximilianheidenreich.gitbook.io/pingback/" target="_blank" class="pretty-link">documentation</a> for more information. <!-- TODO: Link -->
+        API Keys are used to authenticate requests to your project. You cannot create events without
+        an API Key. Visit the <a
+            href="https://maximilianheidenreich.gitbook.io/pingback/"
+            target="_blank"
+            class="pretty-link">documentation</a>
+        for more information. <!-- TODO: Link -->
     </svelte:fragment>
     <svelte:fragment slot="body">
         <fieldset>
@@ -71,9 +75,11 @@
         </fieldset>
     </svelte:fragment>
     <svelte:fragment slot="footer">
-    <div class="flex justify-end gap-4">
-        <Button style="secondary" on:click={onCancel}>Cancel</Button>
-        <Button on:click={onCreate}>Create</Button>
-    </div>
+        <div class="flex justify-end gap-4">
+            <Button
+                style="secondary"
+                on:click={onCancel}>Cancel</Button>
+            <Button on:click={onCreate}>Create</Button>
+        </div>
     </svelte:fragment>
 </Modal>

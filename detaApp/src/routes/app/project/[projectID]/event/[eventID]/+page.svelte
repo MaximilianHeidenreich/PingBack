@@ -17,53 +17,53 @@
 </script>
 
 {#if !event}
-<AppContentSection class="!px-6">
-    <p class="mx-auto max-w-[50ch] text-center">Event not found!</p>
-</AppContentSection>
+    <AppContentSection class="!px-6">
+        <p class="mx-auto max-w-[50ch] text-center">Event not found!</p>
+    </AppContentSection>
 {:else}
-<AppContentSection class="!px-6">
-    <header class="overview mb-2 flex w-full gap-8">
-        <div class="icon">
-            <div
-                class="mt-1 flex aspect-square items-center justify-center rounded-3xl bg-[#8686861e] p-5"
-                style="background: gey;">
-                <span class="icon text-4xl">{event.icon}</span>
+    <AppContentSection class="!px-6">
+        <header class="overview mb-2 flex w-full gap-8">
+            <div class="icon">
+                <div
+                    class="mt-1 flex aspect-square items-center justify-center rounded-3xl bg-[#8686861e] p-5"
+                    style="background: gey;">
+                    <span class="icon text-4xl">{event.icon}</span>
+                </div>
             </div>
-        </div>
-        <div class="meta">
-            <header>
-                <span class="event-title">{event.title}</span>
-                <span class="event-name"
-                    >{event.eventName} · #{event.channel} · {new Date(
-                        event.createdAt
-                    ).toLocaleString("de-DE", {
-                        day: "numeric",
-                        month: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    })}</span>
-            </header>
-            <footer class="flex w-full justify-end">
-                <ul class="flex items-center gap-1.5">
-                    <li>
-                        <IconButton
-                            ><IconLink
-                                size={TKN_ICON.SIZE.BASE}
-                                stroke={TKN_ICON.STROKE.BASE} /></IconButton>
-                    </li>
-                    <li>
-                        <IconButton
-                            ><IconTrash
-                                size={TKN_ICON.SIZE.BASE}
-                                stroke={TKN_ICON.STROKE.BASE} /></IconButton>
-                    </li>
-                </ul>
-            </footer>
-        </div>
-    </header>
-    <hr class="mt-4" />
-</AppContentSection>
+            <div class="meta">
+                <header>
+                    <span class="event-title">{event.title}</span>
+                    <span class="event-name"
+                        >{event.eventName} · #{event.channel} · {new Date(
+                            event.createdAt
+                        ).toLocaleString("de-DE", {
+                            day: "numeric",
+                            month: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        })}</span>
+                </header>
+                <footer class="flex w-full justify-end">
+                    <ul class="flex items-center gap-1.5">
+                        <li>
+                            <IconButton
+                                ><IconLink
+                                    size={TKN_ICON.SIZE.BASE}
+                                    stroke={TKN_ICON.STROKE.BASE} /></IconButton>
+                        </li>
+                        <li>
+                            <IconButton
+                                ><IconTrash
+                                    size={TKN_ICON.SIZE.BASE}
+                                    stroke={TKN_ICON.STROKE.BASE} /></IconButton>
+                        </li>
+                    </ul>
+                </footer>
+            </div>
+        </header>
+        <hr class="mt-4" />
+    </AppContentSection>
 {/if}
 
 <style lang="postcss">

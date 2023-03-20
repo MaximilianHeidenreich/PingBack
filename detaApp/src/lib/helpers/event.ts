@@ -1,5 +1,4 @@
 import { db_events, db_projects } from "$lib/server/deta";
-import type { TFetcher } from "$lib/types/fetcher";
 import type { IEvent, TEventParser } from "$lib/types/IEvent";
 import { VERSION } from "$lib/utils/version";
 import dayjs, { Dayjs } from "dayjs";

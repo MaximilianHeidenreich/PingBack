@@ -39,20 +39,20 @@
             size={TKN_ICON.SIZE.BASE}
             stroke={TKN_ICON.STROKE.BASE} />
     </IconButton>
-    <div class="flex-1 grow flex justify-between items-center">
+    <div class="flex flex-1 grow items-center justify-between">
         {#if !searchOpen}
-        <span class="page-title">{$s_headerTitle}</span>
+            <span class="page-title">{$s_headerTitle}</span>
         {/if}
-        <ul class="flex-1 grow flex justify-end items-center gap-2">
-            <li class="{searchOpen ? 'flex-1' : ''}">
+        <ul class="flex flex-1 grow items-center justify-end gap-2">
+            <li class={searchOpen ? "flex-1" : ""}>
                 {#if searchOpen}
-                <SearchBar on:close={onCloseSearch}/>
+                    <SearchBar on:close={onCloseSearch} />
                 {:else}
-                <IconButton on:click={onEnterSearch}>
-                    <IconSearch
-                        size={TKN_ICON.SIZE.BASE}
-                        stroke={TKN_ICON.STROKE.BASE} />
-                </IconButton>
+                    <IconButton on:click={onEnterSearch}>
+                        <IconSearch
+                            size={TKN_ICON.SIZE.BASE}
+                            stroke={TKN_ICON.STROKE.BASE} />
+                    </IconButton>
                 {/if}
             </li>
             <li>
@@ -64,15 +64,15 @@
             </li>
             <li>
                 {#key $s_refresh}
-                <IconButton on:click={onRefresh}>
-                    {#key $s_headerLoading}
-                    <IconRefresh
-                        size={TKN_ICON.SIZE.BASE}
-                        stroke={TKN_ICON.STROKE.BASE}
-                        class={get(s_headerLoading) ? "animate-spin" : ""}
-                        style="animation-direction: reverse;" />
-                    {/key}
-                </IconButton>
+                    <IconButton on:click={onRefresh}>
+                        {#key $s_headerLoading}
+                            <IconRefresh
+                                size={TKN_ICON.SIZE.BASE}
+                                stroke={TKN_ICON.STROKE.BASE}
+                                class={get(s_headerLoading) ? "animate-spin" : ""}
+                                style="animation-direction: reverse;" />
+                        {/key}
+                    </IconButton>
                 {/key}
             </li>
         </ul>
@@ -81,8 +81,8 @@
 
 <style lang="postcss">
     header {
-        @apply w-full p-5 flex justify-start items-center gap-4;
-        @apply bg-white border-b-4 border-neutral-100;
+        @apply flex w-full items-center justify-start gap-4 p-5;
+        @apply border-b-4 border-neutral-100 bg-white;
     }
     .page-title {
         @apply text-xl font-medium;

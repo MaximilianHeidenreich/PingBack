@@ -15,5 +15,4 @@
     <header>
         <span class="title">coming soon</span>
     </header>
-
 </section>

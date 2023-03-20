@@ -8,6 +8,6 @@ export const load = (async ({ params }) => {
     //depends("app:projectID");
 
     return {
-        channelID: sanitizeChannelID(channelID),
+        channelID: sanitizeChannelID(channelID)
     };
 }) satisfies PageLoad;

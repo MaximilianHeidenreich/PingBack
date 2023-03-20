@@ -25,24 +25,22 @@
     async function onCreate() {
         const res = await clientCreateProjectRaw(fetch, {
             key: sanitizeProjectIdInput(projectName),
-            displayName: projectName,
+            displayName: projectName
         });
         console.debug("Create project fetch result", res);
 
         if (res.status === 200) {
             toast.success("Created project!", toastOptions());
             const body = (await res.json()) as IProject;
-            s_appSidebarProjects.update(projects => {
+            s_appSidebarProjects.update((projects) => {
                 projects = [...projects, body];
                 return projects;
             });
             dialog.close();
             return;
-        }
-        else if (res.status === 400) {
+        } else if (res.status === 400) {
             toast.error("Could not create project!", toastOptions());
-        }
-        else if (res.status === 409) {
+        } else if (res.status === 409) {
             toast.error("Prokect already exists!", toastOptions());
         }
 
@@ -53,8 +51,11 @@
 <Modal bind:dialog>
     <svelte:fragment slot="title">Create Project</svelte:fragment>
     <svelte:fragment slot="subtitle">
-        Use projects to split events, metrics and monitors into separate groups.
-        Visit the <a href="https://maximilianheidenreich.gitbook.io/pingback/" target="_blank" class="pretty-link">documentation</a> for more information. <!-- TODO: Link -->
+        Use projects to split events, metrics and monitors into separate groups. Visit the <a
+            href="https://maximilianheidenreich.gitbook.io/pingback/"
+            target="_blank"
+            class="pretty-link">documentation</a>
+        for more information. <!-- TODO: Link -->
     </svelte:fragment>
     <svelte:fragment slot="body">
         <fieldset>
@@ -63,7 +64,8 @@
                 <Input
                     bind:value={projectName}
                     sanitizer={sanitizeProjectIdInput}
-                    placeholder="My-Project" /> <!-- TODO: space input should auto replace on input -->
+                    placeholder="My-Project" />
+                <!-- TODO: space input should auto replace on input -->
             </label>
             <p class="mt-2 max-w-[35ch] px-0.5 leading-5">
                 <small class="mt-1">
@@ -73,9 +75,11 @@
         </fieldset>
     </svelte:fragment>
     <svelte:fragment slot="footer">
-    <div class="flex justify-end gap-4">
-        <Button style="secondary" on:click={onCancel}>Cancel</Button>
-        <Button on:click={onCreate}>Create</Button>
-    </div>
+        <div class="flex justify-end gap-4">
+            <Button
+                style="secondary"
+                on:click={onCancel}>Cancel</Button>
+            <Button on:click={onCreate}>Create</Button>
+        </div>
     </svelte:fragment>
 </Modal>

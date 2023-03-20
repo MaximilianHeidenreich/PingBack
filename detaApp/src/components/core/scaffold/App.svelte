@@ -4,16 +4,14 @@
     import ModalPortal from "../modals/ModalPortal.svelte";
     import AppHeader from "./appHeader/AppHeader.svelte";
     import AppSidebar from "./AppSidebar.svelte";
-
 </script>
 
-
-<ModalPortal/>
+<ModalPortal />
 
 <div id="app-scaffold">
-    <AppSidebar/>
+    <AppSidebar />
     <main>
-        <AppHeader></AppHeader>
+        <AppHeader />
         <div class="content">
             <slot />
         </div>

@@ -26,7 +26,9 @@
         dialog.close();
     }
     async function onCreate() {
-        const res = await clientCreateProjectChannelRaw(fetch, sanitizeProjectIdInput(project.key),
+        const res = await clientCreateProjectChannelRaw(
+            fetch,
+            sanitizeProjectIdInput(project.key),
             { id: channelID }
         );
         console.debug("Create channel fetch result", res);
@@ -35,18 +37,15 @@
             toast.success("Created project!", toastOptions());
             const body = (await res.json()) as IChannel;
             //s_appSidebarFetchAllProjects();
-            s_projectSidebarActiveProject.update(project => {
-                if (project)
-                    project.channels = [...project?.channels ?? [], body];
+            s_projectSidebarActiveProject.update((project) => {
+                if (project) project.channels = [...(project?.channels ?? []), body];
                 return project;
             });
             dialog.close();
             return;
-        }
-        else if (res.status === 400) {
+        } else if (res.status === 400) {
             toast.error("Could not create channel!", toastOptions());
-        }
-        else if (res.status === 409) {
+        } else if (res.status === 409) {
             toast.error("Channel already exists!", toastOptions());
         }
 
@@ -57,8 +56,11 @@
 <Modal bind:dialog>
     <svelte:fragment slot="title">Create Channel</svelte:fragment>
     <svelte:fragment slot="subtitle">
-        Use channels to split events into easily accessible groups.
-        Visit the <a href="https://maximilianheidenreich.gitbook.io/pingback/" target="_blank" class="pretty-link">documentation</a> for more information. <!-- TODO: Link -->
+        Use channels to split events into easily accessible groups. Visit the <a
+            href="https://maximilianheidenreich.gitbook.io/pingback/"
+            target="_blank"
+            class="pretty-link">documentation</a>
+        for more information. <!-- TODO: Link -->
     </svelte:fragment>
     <svelte:fragment slot="body">
         <fieldset>
@@ -67,7 +69,8 @@
                 <Input
                     bind:value={channelID}
                     sanitizer={sanitizeProjectIdInput}
-                    placeholder="general" /> <!-- TODO: space input should auto replace on input -->
+                    placeholder="general" />
+                <!-- TODO: space input should auto replace on input -->
             </label>
             <p class="mt-2 max-w-[35ch] px-0.5 leading-5">
                 <small class="mt-1">
@@ -78,9 +81,11 @@
         <!-- TODO: Add notify checkbox -->
     </svelte:fragment>
     <svelte:fragment slot="footer">
-    <div class="flex justify-end gap-4">
-        <Button style="secondary" on:click={onCancel}>Cancel</Button>
-        <Button on:click={onCreate}>Create</Button>
-    </div>
+        <div class="flex justify-end gap-4">
+            <Button
+                style="secondary"
+                on:click={onCancel}>Cancel</Button>
+            <Button on:click={onCreate}>Create</Button>
+        </div>
     </svelte:fragment>
 </Modal>

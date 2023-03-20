@@ -21,7 +21,7 @@ export async function clientFetchProjectEventsRaw(
         | (Partial<IEvent> & { [key: string]: unknown })[],
     lastKey?: string,
     limit?: number
-): Promise<{ items: IEvent[], count: number, last?: string }> {
+): Promise<{ items: IEvent[]; count: number; last?: string }> {
     // @ts-ignore -> TODO: better typing
     query["project"] = projectID;
 
@@ -44,7 +44,7 @@ export async function clientFetchProjectEventsRawAll(
         | (Partial<IEvent> & { [key: string]: unknown })[],
     lastKey?: string,
     limit?: number
-): Promise<{ items: IEvent[], count: number, last?: string }>  {
+): Promise<{ items: IEvent[]; count: number; last?: string }> {
     // @ts-ignore -> TODO: better typing
     query["project"] = projectID;
 
@@ -80,9 +80,13 @@ export async function clientFetchProjectEventFrame(
     useCache: boolean = true,
     lastKey?: string,
     limit?: number
-): Promise<[{ items: IEvent[], count: number, last?: string }, boolean]> {
+): Promise<[{ items: IEvent[]; count: number; last?: string }, boolean]> {
     frameEnd = dayjs(frameEnd).endOf("hour").valueOf(); // Make sure we use the end of hour as frame end
-    console.debug(`Requested event frame from ${frameEnd} (${dayjs(frameEnd).format()}) (useCache: ${useCache})`);
+    console.debug(
+        `Requested event frame from ${frameEnd} (${dayjs(
+            frameEnd
+        ).format()}) (useCache: ${useCache})`
+    );
 
     if (useCache) {
         const cacheHit = await cacheGetEventFrame(projectID, frameEnd, query);
@@ -95,14 +99,33 @@ export async function clientFetchProjectEventFrame(
 
     console.debug(`Cache miss! Fetching event frame ${frameEnd} (${dayjs(frameEnd).format()})...`);
     // TODO: FETCH ALL TO CACHE them!
-    const p_fetchEvents = clientFetchProjectEventsRawAll(fetcher, projectID, {
-        ...query,
-        "createdAt?r": [dayjs(frameEnd).startOf("hour").valueOf(), dayjs(frameEnd).endOf("hour").valueOf()]
-    }, lastKey, limit);
-    const p_moreEvents = clientFetchProjectEventsRaw(fetcher, projectID, {
-        ...query,
-        "createdAt?lt": dayjs(frameEnd).startOf("hour").subtract(1, "hour").endOf("hour").valueOf()
-    }, undefined, 1);   // Try to fetch 1 previous event -> if none -> no more events
+    const p_fetchEvents = clientFetchProjectEventsRawAll(
+        fetcher,
+        projectID,
+        {
+            ...query,
+            "createdAt?r": [
+                dayjs(frameEnd).startOf("hour").valueOf(),
+                dayjs(frameEnd).endOf("hour").valueOf()
+            ]
+        },
+        lastKey,
+        limit
+    );
+    const p_moreEvents = clientFetchProjectEventsRaw(
+        fetcher,
+        projectID,
+        {
+            ...query,
+            "createdAt?lt": dayjs(frameEnd)
+                .startOf("hour")
+                .subtract(1, "hour")
+                .endOf("hour")
+                .valueOf()
+        },
+        undefined,
+        1
+    ); // Try to fetch 1 previous event -> if none -> no more events
     let [fetchRes, moreEventsRes] = await Promise.all([p_fetchEvents, p_moreEvents]);
 
     if (useCache) {

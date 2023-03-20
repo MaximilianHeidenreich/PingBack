@@ -20,7 +20,7 @@ export async function clientFetchProjectsRaw(
         | (Partial<IProject> & { [key: string]: unknown })[],
     lastKey?: string,
     limit?: number
-): Promise<{ items: IProject[], count: number, last?: string }> {
+): Promise<{ items: IProject[]; count: number; last?: string }> {
     const url = new URL(`/api/v${VERSION.major}/projects`, window.location.origin);
     url.searchParams.set("query", btoa(JSON.stringify(query)));
     if (lastKey) url.searchParams.set("lastKey", lastKey);
@@ -32,13 +32,10 @@ export async function clientFetchProjectsRaw(
     return data;
 }
 
-
 type TCreateProjectScaffold = Pick<IProject, "key" | "displayName">;
-export async function clientCreateProjectRaw(
-    fetcher: TFetcher,
-    project: TCreateProjectScaffold
-) {
-    const res = await fetcher(`/api/v${VERSION.major}/projects`, {    // TODO: error handling
+export async function clientCreateProjectRaw(fetcher: TFetcher, project: TCreateProjectScaffold) {
+    const res = await fetcher(`/api/v${VERSION.major}/projects`, {
+        // TODO: error handling
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -48,16 +45,17 @@ export async function clientCreateProjectRaw(
     return res;
 }
 
-export async function clientDeleteProjectRaw(
-    fetcher: TFetcher,
-    projectID: string
-) {
-    const res = await fetcher(`/api/v${VERSION.major}/projects/${sanitizeProjectIdInternal(projectID)}`, {    // TODO: error handling
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
+export async function clientDeleteProjectRaw(fetcher: TFetcher, projectID: string) {
+    const res = await fetcher(
+        `/api/v${VERSION.major}/projects/${sanitizeProjectIdInternal(projectID)}`,
+        {
+            // TODO: error handling
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
         }
-    });
+    );
     return res;
 }
 
@@ -67,13 +65,17 @@ export async function clientCreateProjectChannelRaw(
     projectID: string,
     channel: TCreateProjectChannelScaffold
 ) {
-    const res = await fetcher(`/api/v${VERSION.major}/projects/${sanitizeProjectIdInternal(projectID)}/channels`, {    // TODO: error handling
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(channel)
-    });
+    const res = await fetcher(
+        `/api/v${VERSION.major}/projects/${sanitizeProjectIdInternal(projectID)}/channels`,
+        {
+            // TODO: error handling
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(channel)
+        }
+    );
     return res;
 }
 
@@ -82,11 +84,17 @@ export async function clientDeleteProjectChannelRaw(
     projectID: string,
     channelID: string
 ) {
-    const res = await fetcher(`/api/v${VERSION.major}/projects/${sanitizeProjectIdInternal(projectID)}/channels/${sanitizeChannelID(channelID)}`, {    // TODO: error handling
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
+    const res = await fetcher(
+        `/api/v${VERSION.major}/projects/${sanitizeProjectIdInternal(
+            projectID
+        )}/channels/${sanitizeChannelID(channelID)}`,
+        {
+            // TODO: error handling
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
         }
-    });
+    );
     return res;
 }

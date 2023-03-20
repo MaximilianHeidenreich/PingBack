@@ -1,5 +1,8 @@
 <script lang="ts">
-    import { clientFetchProjectEventFrame, clientFetchProjectEventsRaw } from "$lib/helpers/api/eventClient";
+    import {
+        clientFetchProjectEventFrame,
+        clientFetchProjectEventsRaw
+    } from "$lib/helpers/api/eventClient";
     import type { IEvent } from "$lib/types/IEvent";
     import type { IProject } from "$lib/types/IProject";
     import type { Dayjs } from "dayjs";
@@ -13,7 +16,7 @@
     type IFrame = {
         frameEnd: number; // Beginning Timestamp of frame
         events: IEvent[];
-    }
+    };
 
     // PROPS
     export let project: IProject,
@@ -32,8 +35,12 @@
     let processingProgress: [number, number] = [0, 0]; // [current, total]
     let eventFrames = writable<IFrame[]>([]);
 
-    let lastPastFrame: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now()).endOf("hour"); // TODO: can remove project latest
-    let lastFutureFrame: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now()).add(1, "hour").endOf("hour");
+    let lastPastFrame: Dayjs = dayjs(
+        startTimestamp || project.latestEventTimestamp || Date.now()
+    ).endOf("hour"); // TODO: can remove project latest
+    let lastFutureFrame: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now())
+        .add(1, "hour")
+        .endOf("hour");
 
     // FN
     // TODO: make param lastPastFrame -> Parallel fetch 5 frames
@@ -58,15 +65,15 @@
         if (!more) endOfData = true;
 
         // Sort events & update frames
-        processingProgress = [0, fetchedEvents.length]
+        processingProgress = [0, fetchedEvents.length];
         processing = true;
-        fetchedEvents.sort( (a, b) => {
+        fetchedEvents.sort((a, b) => {
             processingProgress = [processingProgress[0] + 1, processingProgress[1]];
             return b.createdAt - a.createdAt;
         });
         processing = false;
 
-        eventFrames.update(frames => {
+        eventFrames.update((frames) => {
             const pendingFrame = {
                 frameEnd: lastPastFrame.startOf("hour").valueOf(),
                 events: fetchedEvents
@@ -94,18 +101,18 @@
             lastKey
         );
         fetchedEvents = res.items;
-        if (!more) endOfData = true;    // TODO: how to handle?
+        if (!more) endOfData = true; // TODO: how to handle?
 
         // Sort events & update frames
-        processingProgress = [0, fetchedEvents.length]
+        processingProgress = [0, fetchedEvents.length];
         processing = true;
-        fetchedEvents.sort( (a, b) => {
+        fetchedEvents.sort((a, b) => {
             processingProgress = [processingProgress[0] + 1, processingProgress[1]];
             return b.createdAt - a.createdAt;
         });
         processing = false;
 
-        eventFrames.update(frames => {
+        eventFrames.update((frames) => {
             const pendingFrame = {
                 frameEnd: lastFutureFrame.valueOf(), // startOf hour
                 events: fetchedEvents
@@ -131,12 +138,12 @@
     // HOOKS
     onMount(async () => {
         await loadPast();
-        if (autoFetchFuture) autoFetchFutureTimer = setInterval(onAutoLoadTrigger, autoFetchFutureInterval);
+        if (autoFetchFuture)
+            autoFetchFutureTimer = setInterval(onAutoLoadTrigger, autoFetchFutureInterval);
     });
     onDestroy(() => {
         autoFetchFutureTimer && clearInterval(autoFetchFutureTimer);
-    })
-
+    });
 </script>
 
 <div bind:this={scrollEl}>
@@ -153,5 +160,4 @@
     {endOfData}
     {processing}
     {processingProgress}
-    on:loadPast={onLoadPast}/>
-
+    on:loadPast={onLoadPast} />
