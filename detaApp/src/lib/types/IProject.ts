@@ -11,7 +11,6 @@ export interface IProject {
 
     // SYSTEM META -> read only OR know what you're doing!
     latestEventTimestamp: number; // Unix timestamp of latest event in project -> efficient query by starting at latest
-    largestEventTimestampRange: number; // Largest difference between events in project -> efficient query by maximixing query range for less queries
     eventSpecifiers: Record<string, number>; // Map of event names to number of events of its kind -> user filter ux
 
     // PAYLOAD
