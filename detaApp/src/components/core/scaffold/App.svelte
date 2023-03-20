@@ -7,7 +7,7 @@
 
 </script>
 
-<Toaster/>
+
 <ModalPortal/>
 
 <div id="app-scaffold">
