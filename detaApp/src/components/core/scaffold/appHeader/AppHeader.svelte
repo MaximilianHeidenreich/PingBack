@@ -29,7 +29,7 @@
         else if (curr === "card") s_eventListStyle.set("compact");
     }
     function onRefresh() {
-        //s_refresh.set(!get(s_refresh));
+        s_refresh.update((v) => !v);
     }
 </script>
 
