@@ -6,6 +6,7 @@
     import AppContentSection from "$cmp/core/scaffold/AppContentSection.svelte";
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
     import ModalCreateApiKey from "$cmp/modalContents/ModalCreateApiKey.svelte";
+    import ModalDeleteApiKey from "$cmp/modalContents/ModalDeleteApiKey.svelte";
     import ModalDeleteProject from "$cmp/modalContents/ModalDeleteProject.svelte";
     import type { IProject } from "$lib/types/IProject";
     import { copyToClipboard } from "$lib/utils/clipboard";
@@ -59,6 +60,9 @@
             <span class="text-2xl font-medium">Channels</span>
         </header>
         <ul class="flex flex-col gap-2">
+            {#if project.channels.length <= 0}
+            <li><span class="text-gray-500">No channels yet.</span></li>
+            {:else}
             {#each project.channels as channel}
                 <li
                     class="flex items-center justify-between border-b-2 border-neutral-100 py-1">
@@ -100,6 +104,7 @@
                     </ul>
                 </li>
             {/each}
+            {/if}
         </ul>
     </AppContentSection>
     <AppContentSection>
@@ -112,6 +117,9 @@
             </IconButton>
         </header>
         <ul class="flex flex-col gap-2">
+            {#if apiKeys.length <= 0}
+            <li><span class="text-gray-500">No keys yet.</span></li>
+            {:else}
             {#each apiKeys as apiKey}
                 <li
                     class="flex items-center justify-between border-b-2 border-neutral-100 py-3">
@@ -136,6 +144,7 @@
                         </li>
                         <li>
                             <IconButton
+                                on:click={() => { onDeleteApiKey(apiKey.key, apiKey.displayName) }}
                                 ><IconTrash
                                     size={TKN_ICON.SIZE.BASE}
                                     stroke={TKN_ICON.STROKE.BASE} /></IconButton>
@@ -143,6 +152,7 @@
                     </ul>
                 </li>
             {/each}
+            {/if}
         </ul>
     </AppContentSection>
     <AppContentSection>
