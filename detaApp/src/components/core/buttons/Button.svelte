@@ -36,13 +36,13 @@
     /* COLORS */
     /* PRIMARY */
     button.primary.col-pink {
-        @apply bg-pink-500 text-white;
+        @apply text-white bg-gradient-to-b from-pink-400 to-pink-500 border-2 border-pink-400;
     }
     button.primary.col-pink:hover {
-        @apply bg-pink-400;
+        @apply from-pink-400 to-pink-400;
     }
     button.primary.col-pink:active {
-        @apply bg-pink-600;
+        @apply from-pink-500 to-pink-600;
     }
 
     button.primary.col-red {
