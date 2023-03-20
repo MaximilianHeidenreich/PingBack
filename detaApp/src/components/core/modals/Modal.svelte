@@ -51,7 +51,7 @@
     }
 
     footer {
-        @apply mt-4;
+        @apply mt-6;
     }
 
     @media screen and (inx-width: 768px) {
