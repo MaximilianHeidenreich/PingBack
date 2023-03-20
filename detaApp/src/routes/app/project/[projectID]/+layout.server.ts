@@ -5,9 +5,8 @@ import { sanitizeProjectIdInternal } from "$lib/utils/sanitizers";
 import type { LayoutServerLoad } from "./$types";
 
 export const load = (async ({ params, depends }) => {
+    //depends("route:project");
     const { projectID } = params;
-
-    //depends("app:projectID");
 
     let project: IProject | null;
     project = await db_projects.get(sanitizeProjectIdInternal(projectID));

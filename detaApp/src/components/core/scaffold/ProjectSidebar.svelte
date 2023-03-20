@@ -27,9 +27,10 @@
         easing: TKN_TRANSITION.EASING,
         x: -100
     }}>
+    {#key $s_projectSidebarActiveProject}
     <header class="mb-12">
         <div class="flex items-center justify-between gap-4 shrink-0">
-            <span class="text-lg font-medium truncate">{$s_projectSidebarActiveProject?.key}</span> <!-- TODO: Camel Case -->
+            <span class="text-lg font-medium truncate">{$s_projectSidebarActiveProject?.displayName}</span> <!-- TODO: Camel Case -->
             <IconButton
                 type="link"
                 href="{BASE_URL}/settings">
@@ -80,6 +81,9 @@
             </IconButton>
         </header>
         <ul class="m-links mt-1">
+            {#if $s_projectSidebarActiveProject.channels.length === 0}
+                <li class="text-gray-500"><span class="text-sm">No channels yet.</span></li>
+            {/if}
             {#each $s_projectSidebarActiveProject.channels as channel}
                 <li>
                     <a
@@ -96,6 +100,7 @@
             {/each}
         </ul>
     </section>
+    {/key}
 </div>
 {/if}
 

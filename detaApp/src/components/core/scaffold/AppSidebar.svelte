@@ -1,6 +1,6 @@
 <script lang="ts">
     import { IconChartBar, IconHome, IconPlus, IconQuestionMark, IconTool } from "@tabler/icons-svelte";
-    import { TKN_ICON } from "$lib/utils/tokens";
+    import { TKN_ICON, TKN_TRANSITION } from "$lib/utils/tokens";
     import IconButton from "../buttons/IconButton.svelte";
     import ProjectSidebar from "./ProjectSidebar.svelte";
 
@@ -12,6 +12,10 @@
     import { s_projectSidebarActiveProject } from "./s_projectSidebarActiveProject";
     import { s_appSidebarFetchAllProjects, s_appSidebarProjects, s_appSidebarProjectsLoading } from "./s_appSidebarProjects";
     import Spinner from "../utils/Spinner.svelte";
+    import type { IProject } from "$lib/types/IProject";
+    import { invalidate, invalidateAll } from "$app/navigation";
+    import { fly } from "svelte/transition";
+    import { s_appSidebarCollapsed } from "./s_appSidebarCollapsed";
 
     // STATE
     // foo
@@ -22,17 +26,19 @@
         //pushModal(ModalDeleteProject, { projectName: "teest", projectID: "sad" });
     }
 
-    function onOpenProject() {
-
-    }
-
     onMount(async () => {
         await s_appSidebarFetchAllProjects();
     })
 
 </script>
 
-<aside>
+{#if !$s_appSidebarCollapsed}
+<aside
+    transition:fly={{
+        duration: TKN_TRANSITION.DURATION,
+        easing: TKN_TRANSITION.EASING,
+        x: -100
+    }}>
     <div class="nav-sidebar flex flex-col">
         <header class="mb-12">
             <span class="text-xl font-semibold"><span class="text-pink-500">Ping</span>Back</span>
@@ -57,11 +63,14 @@
                             <Spinner />
                         </div>
                         {:else}
+                        {#if $s_appSidebarProjects.length === 0}
+                            <li class="text-gray-500"><span class="text-sm">No projects yet.</span></li>
+                        {/if}
                         {#each $s_appSidebarProjects as project}
                         <li><a
                             href="/app/project/{project.key}/feed"
                             class="truncate"
-                            class:active={$page.url.pathname.startsWith(`/app/project/${project.key}`)}>
+                            class:active={$page.url.pathname.startsWith(`/app/project/${project.key}`)}> <!-- TODO: handle issue same name starting with -->
                             {project.displayName}</a></li>
                         {/each}
                         {/if}
@@ -75,12 +84,11 @@
             </ul>
         </div>
     </div>
-    {#key $s_projectSidebarActiveProject}
     {#if $s_projectSidebarActiveProject}
     <ProjectSidebar/>
     {/if}
-    {/key}
 </aside>
+{/if}
 
 <style lang="postcss">
     aside {
@@ -89,7 +97,7 @@
         grid-column: 1;
     }
     .nav-sidebar {
-        @apply  bg-white;
+        @apply  bg-white z-10;
         @apply px-6 py-6 border-r-2;
         @apply max-w-[20ch];
     }
