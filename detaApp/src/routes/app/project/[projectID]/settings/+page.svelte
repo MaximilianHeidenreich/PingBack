@@ -27,6 +27,9 @@
     function onCreateApiKey() {
         pushModal(ModalCreateApiKey);
     }
+    function onDeleteApiKey (key: string, name: string) {
+        pushModal(ModalDeleteApiKey, { apiKey: key, keyName: name, onDeleted: () => { /* TODO */ } });
+    }
     function onDeleteProject() {
         pushModal(ModalDeleteProject, {
             projectID: project.key,
