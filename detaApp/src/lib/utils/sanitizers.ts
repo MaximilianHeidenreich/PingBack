@@ -32,7 +32,7 @@ export function sanitizeProjectIdInternal(input: string): string {
  * @param input
  * @returns
  */
-export function sanitizeChannelName(input: string): string {
+export function sanitizeChannelID(input: string): string {
     let sane = input
         .toLowerCase()
         .replaceAll(" ", "-")

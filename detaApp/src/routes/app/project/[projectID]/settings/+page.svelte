@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
+    import { goto, invalidate } from "$app/navigation";
     import Button from "$cmp/core/buttons/Button.svelte";
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
     import { pushModal } from "$cmp/core/modals/modalStore";
@@ -7,6 +7,7 @@
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
     import ModalCreateApiKey from "$cmp/modalContents/ModalCreateApiKey.svelte";
     import ModalDeleteApiKey from "$cmp/modalContents/ModalDeleteApiKey.svelte";
+    import ModalDeleteChannel from "$cmp/modalContents/ModalDeleteChannel.svelte";
     import ModalDeleteProject from "$cmp/modalContents/ModalDeleteProject.svelte";
     import type { IProject } from "$lib/types/IProject";
     import { copyToClipboard } from "$lib/utils/clipboard";
@@ -19,17 +20,20 @@
 
     // PROPS
     export let data: PageData;
-    let { apiKeys } = data;
+    let { apiKeys, project } = data;
 
     // STATE
-    const project = getContext<IProject>("project");
+    //const project = data.//getContext<IProject>("project");
 
     // HANDLERS
+    function onDeleteChannel(channelID: string) {
+        pushModal(ModalDeleteChannel, { project, channelID, onDeleted: () => invalidate("project:settings") });
+    }
     function onCreateApiKey() {
         pushModal(ModalCreateApiKey);
     }
     function onDeleteApiKey (key: string, name: string) {
-        pushModal(ModalDeleteApiKey, { apiKey: key, keyName: name, onDeleted: () => { /* TODO */ } });
+        pushModal(ModalDeleteApiKey, { apiKey: key, keyName: name, onDeleted: () => invalidate("project:settings") });
     }
     function onDeleteProject() {
         pushModal(ModalDeleteProject, {
@@ -97,6 +101,7 @@
                         </li>
                         <li>
                             <IconButton
+                                on:click={() => onDeleteChannel(channel.id)}
                                 ><IconTrash
                                     size={TKN_ICON.SIZE.BASE}
                                     stroke={TKN_ICON.STROKE.BASE} /></IconButton>

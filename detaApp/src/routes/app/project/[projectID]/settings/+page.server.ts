@@ -1,15 +1,19 @@
-import { db_apiKeys } from "$lib/server/deta";
-import type { PageServerLoad } from "./$types";
+import { db_apiKeys, db_projects } from "$lib/server/deta";
+import type { PageServerLoad } from "../event/[eventID]/$types";
 
-export const load = (async ({ params }) => {
+export const load = (async ({ params, depends }) => {
+    depends("project:settings");
     const { projectID } = params;
 
-    //depends("app:projectID");
-    const apiKeys = (await db_apiKeys.fetch({
+    const p_apiKeys = db_apiKeys.fetch({
         project: projectID
-    }, {})).items;
+    }, {});
+    const p_project = db_projects.get(projectID);
+
+    const [apiKeysResult, project] = await Promise.all([p_apiKeys, p_project]);
 
     return {
-        apiKeys
+        apiKeys: apiKeysResult.items,
+        project
     };
 }) satisfies PageServerLoad;

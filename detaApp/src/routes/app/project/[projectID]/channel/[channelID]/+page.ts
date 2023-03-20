@@ -1,4 +1,4 @@
-import { sanitizeChannelName } from "$lib/utils/sanitizers";
+import { sanitizeChannelID } from "$lib/utils/sanitizers";
 
 import type { PageLoad } from "./$types";
 
@@ -8,6 +8,6 @@ export const load = (async ({ params }) => {
     //depends("app:projectID");
 
     return {
-        channelID: sanitizeChannelName(channelID),
+        channelID: sanitizeChannelID(channelID),
     };
 }) satisfies PageLoad;
