@@ -2,7 +2,7 @@ import type { TFetcher } from "$lib/types/fetcher";
 import type { IEvent } from "$lib/types/IEvent";
 import { VERSION } from "$lib/utils/version";
 import dayjs from "dayjs";
-import { cacheGetEventFrame, cacheSetEventFrame } from "../Cache";
+import { cacheGetEventFrame, cacheSetEventFrame } from "../cache";
 
 /**
  * Raw fetch of events based on query, lastKey, and limit.

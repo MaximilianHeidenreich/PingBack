@@ -36,3 +36,8 @@ export async function cacheGetEventFrame(projectID: string, frameEnd: number, qu
         return null;
     }
 }
+export function cacheInvalidateProject(projectID: string) {
+    const cache = getCache(projectID);
+    caches.delete(projectID);
+    return cache.destroy();
+}
