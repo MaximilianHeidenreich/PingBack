@@ -1,5 +1,7 @@
 import { db_projects } from "$lib/server/deta";
 import { buildResponse, respondBadRequest, respondInternalError } from "$lib/server/responseHelper";
+import type { IProject } from "$lib/types/IProject";
+import { sanitizeProjectIdInternal } from "$lib/utils/sanitizers";
 import type { RequestHandler } from "./$types";
 
 export const GET = (async ({ url }) => {
@@ -34,6 +36,39 @@ export const GET = (async ({ url }) => {
         .status(200)
         .statusText("OK")
         .json(result)
+        .build();
+
+}) satisfies RequestHandler;
+
+export const POST = (async ({ request }) => {
+    const reqBody = await request.json();
+
+    // TOOD: Validate
+
+    const displayName = reqBody.displayName.trim();
+    const key = sanitizeProjectIdInternal(reqBody.key);
+
+    let pendingProject: Omit<IProject, "key"> = {
+        createdAt: Date.now(),
+        contentHash: crypto.randomUUID(),
+        latestEventTimestamp: Date.now(),
+        eventSpecifiers: {},
+        displayName,
+        channels: []
+    };
+
+    try {
+        await db_projects.insert(pendingProject as IProject, key);
+    }
+    catch (err) {
+        // TODO: only handle duplicate key error
+        return respondBadRequest("Project key already exists!");
+    }
+
+    return buildResponse()
+        .status(200)
+        .statusText("OK")
+        .json({ ...pendingProject, key })
         .build();
 
 }) satisfies RequestHandler;
