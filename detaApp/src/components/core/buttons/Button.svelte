@@ -45,6 +45,16 @@
         @apply bg-pink-600;
     }
 
+    button.primary.col-red {
+        @apply bg-red-500 text-white;
+    }
+    button.primary.col-red:hover {
+        @apply bg-red-400;
+    }
+    button.primary.col-red:active {
+        @apply bg-red-600;
+    }
+
     /* SECONDARY */
     button.secondary,a.secondary {
         @apply text-black;
