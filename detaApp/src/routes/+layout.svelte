@@ -3,6 +3,7 @@
     import type { IEvent } from "$lib/types/IEvent";
     import dayjs from "dayjs";
     import "$css/app.postcss";
+    import { Toaster } from "svelte-french-toast";
 
 
     // TODO: REMOVE; DEV ONLY!
@@ -76,4 +77,5 @@
 
 </script>
 
+<Toaster/>
 <slot />
