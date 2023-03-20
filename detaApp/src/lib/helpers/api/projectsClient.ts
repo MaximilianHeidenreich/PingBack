@@ -1,5 +1,6 @@
 import type { TFetcher } from "$lib/types/fetcher";
 import type { IProject } from "$lib/types/IProject";
+import { sanitizeProjectIdInternal } from "$lib/utils/sanitizers";
 import { VERSION } from "$lib/utils/version";
 
 /**
@@ -28,4 +29,33 @@ export async function clientFetchProjectsRaw(
     if (!res.ok) throw res;
     const data = await res.json();
     return data;
+}
+
+
+type TCreateProjectScaffold = Pick<IProject, "key" | "displayName">;
+export async function clientCreateProjectRaw(
+    fetcher: TFetcher,
+    project: TCreateProjectScaffold
+) {
+    const res = await fetcher(`/api/v${VERSION.major}/projects`, {    // TODO: error handling
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(project)
+    });
+    return res;
+}
+
+export async function clientDeleteProjectRaw(
+    fetcher: TFetcher,
+    projectID: string
+) {
+    const res = await fetcher(`/api/v${VERSION.major}/projects/${sanitizeProjectIdInternal(projectID)}`, {    // TODO: error handling
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    return res;
 }
