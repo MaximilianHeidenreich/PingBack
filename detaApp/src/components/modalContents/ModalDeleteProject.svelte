@@ -1,13 +1,15 @@
 <script lang="ts">
     import Button from "$cmp/core/buttons/Button.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
+    import { s_appSidebarFetchAllProjects } from "$cmp/core/scaffold/s_appSidebarProjects";
     import { clientDeleteProjectRaw } from "$lib/helpers/api/projectsClient";
     import toastOptions from "$lib/utils/toast";
     import toast from "svelte-french-toast";
 
     // PROPS
     export let projectID: string,
-        projectName: string;
+        projectName: string,
+        onDeleted: () => void;
 
     // STATE
     let dialog: HTMLDialogElement;
@@ -26,7 +28,10 @@
         else {
             toast.error("Could not delete project!", toastOptions());
         }
+
+        s_appSidebarFetchAllProjects();
         dialog.close();
+        onDeleted && onDeleted();
     }
 </script>
 
