@@ -1,15 +1,19 @@
 <script lang="ts">
+    import { s_headerLoading } from "$cmp/core/scaffold/appHeader/s_headerLoading";
+    import { s_refresh } from "$cmp/core/scaffold/appHeader/s_refresh";
     import {
-        clientFetchProjectEventFrame,
-        clientFetchProjectEventsRaw
+        clientFetchProjectEventFrame
     } from "$lib/helpers/api/eventClient";
     import type { IEvent } from "$lib/types/IEvent";
     import type { IProject } from "$lib/types/IProject";
+    import toastOptions from "$lib/utils/toast";
     import type { Dayjs } from "dayjs";
     import dayjs from "dayjs";
     import { onDestroy, onMount } from "svelte";
+    import toast from "svelte-french-toast";
     import { writable } from "svelte/store";
     import EventList from "./EventList.svelte";
+    import EventListItem from "./EventListItem.svelte";
     import InfiniteEventListTrigger from "./InfiniteEventListTrigger.svelte";
 
     // TYPES
@@ -22,8 +26,8 @@
     export let project: IProject,
         startTimestamp: number = Date.now(),
         query: Record<string, any> | Record<string, any>[] = {},
-        autoFetchFuture: boolean = false,
-        autoFetchFutureInterval = 1000 * 5;
+        autoFetchFuture: boolean = true,   // TODO: Make setting
+        autoFetchFutureInterval = 1000 * 10; // TODO: Make setting
 
     // STATE
     let scrollEl: HTMLElement;
@@ -37,10 +41,17 @@
 
     let lastPastFrame: Dayjs = dayjs(
         startTimestamp || project.latestEventTimestamp || Date.now()
-    ).endOf("hour"); // TODO: can remove project latest
-    let lastFutureFrame: Dayjs = dayjs(startTimestamp || project.latestEventTimestamp || Date.now())
-        .add(1, "hour")
-        .endOf("hour");
+    ).endOf("hour").subtract(1, "hour"); // TODO: can remove project latest
+
+    $: s_refresh: {
+        $s_refresh;
+        console.debug("Infinite event list: Refreshing!");
+        (async () => {
+            s_headerLoading.set(true);
+            await loadCurrent();
+            s_headerLoading.set(false);
+        })();
+    }
 
     // FN
     // TODO: make param lastPastFrame -> Parallel fetch 5 frames
@@ -86,22 +97,26 @@
         loading = false;
     }
 
-    async function loadFuture() {
+    /**
+     * Loads the current event frame.
+     */
+    async function loadCurrent() {
         let fetchedEvents: IEvent[] = [];
         let lastKey: string | undefined;
+        let currentFrameEnd = dayjs().endOf("hour");
 
         // Fetch events
         // TODO !!: Retry when empty but more events
         let [res, more] = await clientFetchProjectEventFrame(
             fetch,
             project.key,
-            lastFutureFrame.valueOf(),
+            currentFrameEnd.valueOf(),
             query,
-            true,
-            lastKey
+            false,
+            lastKey // TODO: Fetch multiple
         );
         fetchedEvents = res.items;
-        if (!more) endOfData = true; // TODO: how to handle?
+
 
         // Sort events & update frames
         processingProgress = [0, fetchedEvents.length];
@@ -113,26 +128,56 @@
         processing = false;
 
         eventFrames.update((frames) => {
-            const pendingFrame = {
-                frameEnd: lastFutureFrame.valueOf(), // startOf hour
-                events: fetchedEvents
-            };
-            frames = [pendingFrame, ...frames];
-            return frames;
+            const i = $eventFrames.findIndex((frame) => frame.frameEnd === currentFrameEnd.valueOf());
+            if (i < 0) {
+                const pendingFrame = {
+                    frameEnd: currentFrameEnd.valueOf(),
+                    events: fetchedEvents
+                };
+                frames = [pendingFrame, ...frames];
+                return frames;
+            }
+            else {
+                const oldEvents = frames[i].events;
+                frames[i].events = fetchedEvents;
+                if (oldEvents.length !== frames[i].events.length) { // TODO: needs to handle multipel db request with limit better
+                    const newEvents = fetchedEvents.filter((e) => oldEvents.findIndex(oe => oe.key === e.key) < 0);
+                    onNewEvents(newEvents);
+                }
+                return frames;
+            }
         });
-
-        lastFutureFrame = lastFutureFrame.add(1, "hour");
     }
 
     // HANDLERS
+    function onNewEvents(events: IEvent[]) {
+        console.debug("Infinite event list: New events!", events);
+        if (events.length > 4) {
+            toast(`${events.length} new events!`, toastOptions({
+                icon: "🔔"
+            }));
+        }
+        else {
+            events.forEach((e) => {
+                toast(`${e.title}`, toastOptions({
+                    icon: e.icon
+                }));
+                /*toast(EventListItem, toastOptions({
+                    icon: "🔔",
+                }));*/
+                /*toast(EventListItem, {
+                    // @ts-ignore asd
+                    foo: "bar"
+                });*/ // TODO: Custom toast renderable in matching style
+            });
+        }
+    }
     function onLoadPast() {
         loadPast();
     }
     function onAutoLoadTrigger() {
-        console.log("Infinite event list: Auto load trigger!");
-        //s_headerLoading.set(true);
-        //loadFuture().then(() => s_headerLoading.set(false));
-        //s_headerLoading.set(false);
+        console.debug("Infinite event list: Auto load trigger!");
+        s_refresh.update((v) => !v);
     }
 
     // HOOKS
@@ -147,7 +192,7 @@
 </script>
 
 <div bind:this={scrollEl}>
-    {#each $eventFrames as frame}
+    {#each $eventFrames as frame, i}
         <div class="frame">
             <EventList events={frame.events} />
         </div>
