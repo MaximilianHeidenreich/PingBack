@@ -30,14 +30,14 @@
     {#key $s_projectSidebarActiveProject}
     <header class="mb-12">
         <div class="flex items-center justify-between gap-4 shrink-0">
-            <span class="text-lg font-medium truncate">{$s_projectSidebarActiveProject?.displayName}</span> <!-- TODO: Camel Case -->
+            <span class="text-lg font-medium truncate">{$s_projectSidebarActiveProject?.displayName}</span>
             <IconButton
                 type="link"
                 href="{BASE_URL}/settings">
                 <IconSettings
                     size={TKN_ICON.SIZE.BASE}
                     stroke={TKN_ICON.STROKE.BASE} />
-            </IconButton>
+            </IconButton><!-- TODO: fix full navigate on click -> shoudl only switch page -->
         </div>
     </header>
     <section>
