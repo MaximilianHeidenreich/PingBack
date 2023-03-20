@@ -2,6 +2,7 @@ import { env } from "$env/dynamic/private";
 import type { IApiKey } from "$lib/types/IApiKey";
 import type { IEvent } from "$lib/types/IEvent";
 import type { IProject } from "$lib/types/IProject";
+import type { ISystemDoc } from "$lib/types/ISystemDoc";
 import { Deta } from "deta";
 
 export const deta = Deta(env.DETA_PROJECT_KEY);
@@ -110,4 +111,5 @@ const wrap_db = <T>(dbName: string) => {
 export const db_apiKeys = wrap_db<IApiKey>("apiKeys"); //deta.Base("apiKeys");
 export const db_events = wrap_db<IEvent>("events"); //deta.Base("events");
 export const db_projects = wrap_db<IProject>("projects"); //deta.Base("projects");
-export const db_system = wrap_db("system"); //deta.Base("system");       // System data -> configuration, migrations, etc. TODO: add sys config type
+export const db_system = wrap_db<ISystemDoc>("system"); //deta.Base("system");       // System data -> configuration, migrations, etc. TODO: add sys config type
+export const DB_SYS_KEY = "dont_touch_this";
