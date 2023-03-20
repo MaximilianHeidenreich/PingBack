@@ -6,18 +6,20 @@
 
     import "$css/menuLinks.postcss";
     import { onMount } from "svelte";
-    import type { IProject } from "$lib/types/IProject";
-    import { clientFetchProjectsRaw } from "$lib/helpers/api/projectsClient";
     import { page } from "$app/stores";
     import { pushModal } from "../modals/modalStore";
     import ModalCreateProject from "$cmp/modalContents/ModalCreateProject.svelte";
+    import { s_projectSidebarActiveProject } from "./s_projectSidebarActiveProject";
+    import { s_appSidebarFetchAllProjects, s_appSidebarProjects, s_appSidebarProjectsLoading } from "./s_appSidebarProjects";
+    import Spinner from "../utils/Spinner.svelte";
 
     // STATE
-    let projects: IProject[] = [];
+    // foo
 
     // HANDLERS
     function onCreateProject() {
         pushModal(ModalCreateProject);
+        //pushModal(ModalDeleteProject, { projectName: "teest", projectID: "sad" });
     }
 
     function onOpenProject() {
@@ -25,8 +27,7 @@
     }
 
     onMount(async () => {
-        const res = await clientFetchProjectsRaw(fetch, {}, undefined, undefined);
-        projects = res.items;
+        await s_appSidebarFetchAllProjects();
     })
 
 </script>
@@ -51,13 +52,19 @@
                         </IconButton>
                     </header>
                     <ul class="m-links shrink-0">
-                        {#each projects as project}
+                        {#if $s_appSidebarProjectsLoading}
+                        <div class="flex justify-center items-center py-2">
+                            <Spinner />
+                        </div>
+                        {:else}
+                        {#each $s_appSidebarProjects as project}
                         <li><a
                             href="/app/project/{project.key}/feed"
                             class="truncate"
                             class:active={$page.url.pathname.startsWith(`/app/project/${project.key}`)}>
                             {project.displayName}</a></li>
                         {/each}
+                        {/if}
                     </ul>
                 </section>
             </div>
@@ -68,7 +75,11 @@
             </ul>
         </div>
     </div>
+    {#key $s_projectSidebarActiveProject}
+    {#if $s_projectSidebarActiveProject}
     <ProjectSidebar/>
+    {/if}
+    {/key}
 </aside>
 
 <style lang="postcss">
