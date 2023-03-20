@@ -18,8 +18,8 @@
         dialog.close();
     }
     async function onDelete() {
-        /*const res = await clientDeleteProjectRaw(fetch, projectID);
-        console.debug("Delete project fetch result", res);
+        /*const res = await clientDe(fetch, projectID);
+        console.debug("Delete api key fetch result", res);
 
         if (res.status === 200) {
             toast.success("Deleted project!", toastOptions());
@@ -28,7 +28,7 @@
             toast.error("Could not delete project!", toastOptions());
         }
 
-        s_appSidebarFetchAllProjects();*/
+        s_appSidebarFetchAllProjects();*/ // TODO IMPL
         dialog.close();
         onDeleted && onDeleted();
     }

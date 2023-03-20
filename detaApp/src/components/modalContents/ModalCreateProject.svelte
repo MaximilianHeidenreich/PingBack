@@ -31,12 +31,12 @@
 
         if (res.status === 200) {
             toast.success("Created project!", toastOptions());
-            dialog.close();
             const body = (await res.json()) as IProject;
             s_appSidebarProjects.update(projects => {
                 projects = [...projects, body];
                 return projects;
             });
+            dialog.close();
             return;
         }
         else if (res.status === 400) {
