@@ -4,6 +4,7 @@
     import { TKN_ICON } from "$lib/utils/tokens";
     import { IconMenu2, IconRefresh, IconSearch, IconStack2 } from "@tabler/icons-svelte";
     import { get } from "svelte/store";
+    import { s_appSidebarCollapsed } from "../s_appSidebarCollapsed";
     import SearchBar from "./SearchBar.svelte";
     import { s_headerLoading } from "./s_headerLoading";
     import { s_headerTitle } from "./s_headerTitle";
@@ -13,6 +14,9 @@
     let searchOpen = false;
 
     // HANDLERS
+    function onToggleSidebar() {
+        s_appSidebarCollapsed.set(!get(s_appSidebarCollapsed));
+    }
     function onEnterSearch() {
         searchOpen = true;
     }
@@ -30,7 +34,7 @@
 </script>
 
 <header>
-    <IconButton on:click={() => {}}>
+    <IconButton on:click={onToggleSidebar}>
         <IconMenu2
             size={TKN_ICON.SIZE.BASE}
             stroke={TKN_ICON.STROKE.BASE} />
