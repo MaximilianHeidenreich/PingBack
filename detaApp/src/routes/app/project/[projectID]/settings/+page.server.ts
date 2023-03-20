@@ -5,7 +5,9 @@ export const load = (async ({ params }) => {
     const { projectID } = params;
 
     //depends("app:projectID");
-    const apiKeys = (await db_apiKeys.fetch({}, {})).items;
+    const apiKeys = (await db_apiKeys.fetch({
+        project: projectID
+    }, {})).items;
 
     return {
         apiKeys
