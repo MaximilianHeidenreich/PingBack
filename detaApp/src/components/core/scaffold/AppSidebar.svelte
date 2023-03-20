@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { IconChartBar, IconHome, IconPlus, IconQuestionMark, IconTool } from "@tabler/icons-svelte";
+    import { IconBolt, IconChartBar, IconHome, IconPlus, IconQuestionMark, IconTool } from "@tabler/icons-svelte";
     import { TKN_ICON, TKN_TRANSITION } from "$lib/utils/tokens";
     import IconButton from "../buttons/IconButton.svelte";
     import ProjectSidebar from "./ProjectSidebar.svelte";
@@ -78,8 +78,9 @@
                 </section>
             </div>
             <ul class="m-links">
-                <li><a href="/app/stats"><IconChartBar size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Stats</a></li>
-                <li><a href="/app/settings"><IconTool size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Settings</a></li>
+                <!--<li><a href="/app/stats"><IconChartBar size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Stats</a></li>
+                <li><a href="/app/settings"><IconTool size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Settings</a></li>-->
+                <li><a href="/app/playground"><IconBolt size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Playground</a></li>
                 <li><a href="https://maximilianheidenreich.gitbook.io/pingback/" target="_blank"><IconQuestionMark size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Help</a></li>
             </ul>
         </div>
