@@ -1,3 +1,3 @@
 import { writable } from "svelte/store";
 
-export const s_refresh = writable(false);
+export const s_refresh = writable(false); // TODO: Move to other location

@@ -1,45 +1,23 @@
 <script lang="ts">
     import {
-        IconBolt,
-        IconChartBar,
-        IconHome,
-        IconPlus,
+    IconArchive,
+    IconBell,
+        IconChartHistogram,
         IconQuestionMark,
-        IconTool
+        IconRss,
+        IconSettings,
     } from "@tabler/icons-svelte";
     import { TKN_ICON, TKN_TRANSITION } from "$lib/utils/tokens";
-    import IconButton from "../buttons/IconButton.svelte";
-    import ProjectSidebar from "./ProjectSidebar.svelte";
 
     import "$css/menuLinks.postcss";
-    import { onMount } from "svelte";
     import { page } from "$app/stores";
-    import { pushModal } from "../modals/modalStore";
-    import ModalCreateProject from "$cmp/modalContents/ModalCreateProject.svelte";
-    import { s_projectSidebarActiveProject } from "./s_projectSidebarActiveProject";
-    import {
-        s_appSidebarFetchAllProjects,
-        s_appSidebarProjects,
-        s_appSidebarProjectsLoading
-    } from "./s_appSidebarProjects";
-    import Spinner from "../utils/Spinner.svelte";
-    import type { IProject } from "$lib/types/IProject";
-    import { invalidate, invalidateAll } from "$app/navigation";
     import { fly } from "svelte/transition";
     import { s_appSidebarCollapsed } from "./s_appSidebarCollapsed";
+    import MenuLink from "./MenuLink.svelte";
 
     // STATE
     // foo
 
-    // HANDLERS
-    function onCreateProject() {
-        pushModal(ModalCreateProject);
-        //pushModal(ModalDeleteProject, { projectName: "teest", projectID: "sad" });
-    }
-
-    onMount(async () => {
-        await s_appSidebarFetchAllProjects();
-    });
 </script>
 
 {#if !$s_appSidebarCollapsed}
@@ -50,7 +28,85 @@
             x: -100
         }}>
         <div class="nav-sidebar flex flex-col">
-            <header class="mb-12">
+            <section>
+                <span class="text-xl font-semibold"><span class="text-pink-500">Ping</span>Back</span>
+            </section>
+            <section>
+                <ul class="m-links">
+                    <li>
+                        <MenuLink
+                            href="/app/feed"
+                            active={$page.url.pathname.startsWith("/app/feed")}>
+                            <IconRss
+                                size={TKN_ICON.SIZE.SM}
+                                stroke={TKN_ICON.STROKE.BASE} />
+                            <span>Feed</span>
+                        </MenuLink>
+                    </li>
+                    <li>
+                        <MenuLink
+                            disabled
+                            href="/app/metrics"
+                            active={$page.url.pathname.startsWith("/app/metrics")}>
+                            <IconChartHistogram
+                                size={TKN_ICON.SIZE.SM}
+                                stroke={TKN_ICON.STROKE.BASE} />
+                            <span>Metrics</span>
+                        </MenuLink>
+                    </li>
+                    <li>
+                        <MenuLink
+                            disabled
+                            href="/app/monitor"
+                            active={$page.url.pathname.startsWith("/app/monitor")}>
+                            <IconBell
+                                size={TKN_ICON.SIZE.SM}
+                                stroke={TKN_ICON.STROKE.BASE} />
+                            <span>Monitor</span>
+                        </MenuLink>
+                    </li>
+                    <li>
+                        <hr class="my-3">
+                    </li>
+                    <li>
+                        <MenuLink
+                            href="/app/projects"
+                            active={$page.url.pathname.startsWith("/app/projects")}>
+                            <IconArchive
+                                size={TKN_ICON.SIZE.SM}
+                                stroke={TKN_ICON.STROKE.BASE} />
+                            <span>Projects</span>
+                        </MenuLink>
+                    </li>
+                </ul>
+            </section>
+            <div class="flex-1"></div>
+            <section class="!mb-0">
+                <ul>
+                    <li>
+                        <MenuLink
+                            href="/app/settings"
+                            active={false}>
+                            <IconSettings
+                                size={TKN_ICON.SIZE.SM}
+                                stroke={TKN_ICON.STROKE.BASE} />
+                            <span>Settings</span>
+                        </MenuLink>
+                    </li>
+                    <li>
+                        <MenuLink
+                            href="/docs"
+                            active={false}>
+                            <IconQuestionMark
+                                size={TKN_ICON.SIZE.SM}
+                                stroke={TKN_ICON.STROKE.BASE} />
+                            <span>Help</span>
+                        </MenuLink>
+                    </li>
+                </ul>
+            </section>
+
+            <!--<header class="mb-12">
                 <span class="text-xl font-semibold"
                     ><span class="text-pink-500">Ping</span>Back</span>
             </header>
@@ -94,7 +150,7 @@
                                             class:active={$page.url.pathname.startsWith(
                                                 `/app/project/${project.key}`
                                             )}>
-                                            <!-- TODO: handle issue same name starting with -->
+                                            <!-- TODO: handle issue same name starting with
                                             {project.displayName}</a>
                                     </li>
                                 {/each}
@@ -104,7 +160,7 @@
                 </div>
                 <ul class="m-links">
                     <!--<li><a href="/app/stats"><IconChartBar size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Stats</a></li>
-                <li><a href="/app/settings"><IconTool size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Settings</a></li>-->
+                <li><a href="/app/settings"><IconTool size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Settings</a></li>
                     <li>
                         <a href="/app/playground"
                             ><IconBolt
@@ -113,18 +169,14 @@
                     </li>
                     <li>
                         <a
-                            href="https://maximilianheidenreich.gitbook.io/pingback/"
-                            target="_blank"
+                            href="/docs"
                             ><IconQuestionMark
                                 size={TKN_ICON.SIZE.SM}
                                 stroke={TKN_ICON.STROKE.SM} /> Help</a>
                     </li>
                 </ul>
-            </div>
+            </div>-->
         </div>
-        {#if $s_projectSidebarActiveProject}
-            <ProjectSidebar />
-        {/if}
     </aside>
 {/if}
 
@@ -137,7 +189,7 @@
     .nav-sidebar {
         @apply z-10 bg-white;
         @apply border-r-2 px-6 py-6;
-        @apply max-w-[20ch];
+        @apply w-fit;
     }
 
     section {
