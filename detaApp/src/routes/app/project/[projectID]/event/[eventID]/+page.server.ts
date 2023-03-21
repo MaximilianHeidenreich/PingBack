@@ -8,6 +8,8 @@ export const load = (async ({ params }) => {
     //depends("app:projectID");
     const event = await db_events.get(eventID);
 
+    // TODO: Compole description & emoji color?
+
     return {
         eventID,
         event
