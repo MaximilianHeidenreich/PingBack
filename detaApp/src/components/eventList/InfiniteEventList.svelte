@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { s_headerLoading } from "$cmp/core/scaffold/appHeader/s_headerLoading";
     import { s_refresh } from "$cmp/core/scaffold/appHeader/s_refresh";
     import {
         clientFetchProjectEventFrame
@@ -47,9 +46,7 @@
         $s_refresh;
         console.debug("Infinite event list: Refreshing!");
         (async () => {
-            s_headerLoading.set(true);
             await loadCurrent();
-            s_headerLoading.set(false);
         })();
     }
 
