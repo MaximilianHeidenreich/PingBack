@@ -66,7 +66,7 @@ export const POST = (async ({ request }) => {
         parser: reqBody.parser || "text",
 
         title: reqBody.title,
-        description: reqBody.description,
+        description: reqBody.description || "",
         tags: reqBody.tags || {}
     }
 
