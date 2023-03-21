@@ -2,9 +2,8 @@
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
     import AppContentSection from "$cmp/core/scaffold/AppContentSection.svelte";
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
-    import InfiniteEventList from "$cmp/eventList/InfiniteEventList.svelte";
     import { TKN_ICON } from "$lib/utils/tokens";
-    import { IconLink, IconTrash } from "@tabler/icons-svelte";
+    import { IconArrowsVertical, IconLink, IconTrash } from "@tabler/icons-svelte";
     import type { PageData } from "./$types";
 
     // PROPS
@@ -17,11 +16,11 @@
 </script>
 
 {#if !event}
-    <AppContentSection class="!px-6">
+    <AppContentSection>
         <p class="mx-auto max-w-[50ch] text-center">Event not found!</p>
     </AppContentSection>
 {:else}
-    <AppContentSection class="!px-6">
+    <AppContentSection>
         <header class="overview mb-2 flex w-full gap-8">
             <div class="icon">
                 <div
@@ -63,6 +62,37 @@
             </div>
         </header>
         <hr class="mt-4" />
+    </AppContentSection>
+    {#if Object.keys(event.tags).length > 0}
+    <AppContentSection>
+        <details class="mb-6">
+            <summary class="flex cursor-pointer items-center justify-between gap-2">
+                <span class="text-2xl font-medium"
+                    >Tags <span class="font-mono text-base">({Object.keys(event.tags).length})</span
+                    ></span>
+                <IconArrowsVertical
+                    size={TKN_ICON.SIZE.SM}
+                    stroke={TKN_ICON.STROKE.BASE} />
+            </summary>
+            <div class="mt-2">
+                <pre>{JSON.stringify(event.tags, null, 2)}</pre>
+            </div>
+        </details>
+        <hr class="mt-4" />
+    </AppContentSection>
+    {/if}
+    <AppContentSection>
+        <header class="mb-6">
+            <span class="text-2xl font-medium">Description</span>
+        </header>
+        {#if event.parser === "text"}
+            <p>
+                {event.description}
+            </p>
+        {:else if event.parser === "markdown"}
+            <strong>Markdown support coming soon!</strong><br>
+            {@html event.description}
+        {/if}
     </AppContentSection>
 {/if}
 
