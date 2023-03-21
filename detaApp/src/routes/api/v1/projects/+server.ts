@@ -47,7 +47,7 @@ export const POST = (async ({ request }) => {
         createdAt: Date.now(),
         contentHash: crypto.randomUUID(),
         latestEventTimestamp: Date.now(),
-        eventSpecifiers: {},
+        eventSpecifiers: { "_internal" : 0 },
         displayName,
         channels: []
     };
