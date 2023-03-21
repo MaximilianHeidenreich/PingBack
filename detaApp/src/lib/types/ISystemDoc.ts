@@ -8,3 +8,10 @@ export interface ISystemDoc {
     // STATS
     totalEvents: number;
 }
+export const DEFAULT_SYSTEM_DOC = () => {
+    return {
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        totalEvents: 0
+    } as ISystemDoc;;
+};

@@ -5,7 +5,6 @@
 
     // HOOKS
     onMount(() => {
-        // Initial setup call to api -> Sets up system config etc.
         goto("/app", { replaceState: true });
     });
 </script>
