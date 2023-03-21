@@ -7,8 +7,7 @@ micros:
       primary: true
       src: ./detaApp
       public_routes:
-      - "/api/events*"
-      - "/api/projects*"
+      - "/api/v*/events"
       engine: nodejs16
       commands:
       - export
