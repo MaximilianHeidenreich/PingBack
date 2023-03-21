@@ -69,4 +69,12 @@
     a.secondary:active {
         @apply bg-neutral-200;
     }
+
+    /* LINK */
+    button.link, a.link {
+        @apply text-pink-500 underline underline-offset-4 p-0;
+    }
+    button.link:hover, a.link:hover {
+        @apply text-pink-600;
+    }
 </style>
