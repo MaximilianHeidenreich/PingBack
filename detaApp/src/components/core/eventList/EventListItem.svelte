@@ -27,7 +27,27 @@
         </ul>
     </a>
     {:else}
-    todo
+    <a href="">
+        <div class="icon-wrapper">
+            <span class="icon">{event.icon}</span>
+        </div>
+        <div class="meta">
+            <span class="title">{event.title}</span>
+            <div class="description-preview">
+                <p>
+                    {event.description}<br>
+                    asd
+                </p>
+            </div>
+            <ul class="details">
+                <li class="font-mono">{event.project}</li>
+                <li>·</li>
+                <li class="font-mono">#{event.channel}</li>
+                <li>·</li>
+                <li>today at 7:53 PM</li>
+            </ul>
+        </div>
+    </a>
     {/if}
 </li>
 
@@ -56,5 +76,33 @@
     .item.compact li.meta {
         @aplly shrink-0;
         @apply text-sm font-medium text-neutral-500;
+    }
+
+    .item.card {
+        @apply w-full -mb-3 mt-8 px-8 max-w-2xl self-center;
+    }
+    .item.card a {
+        @apply w-full flex items-start p-5 gap-5 min-w-[40ch];
+        @apply bg-white border drop-shadow-xl rounded-3xl;
+    }
+    .item.card .icon-wrapper {
+       @apply aspect-square w-min shrink-0 flex justify-center items-center px-4;
+       @apply bg-red-100 rounded-2xl;
+    }
+    .item.card .icon-wrapper .icon {
+        @apply text-3xl;
+    }
+    .item.card .meta {
+        @apply flex flex-col justify-between;
+    }
+    .item.card .meta .title {
+        @apply text-xl font-medium text-gray-800;
+    }
+    .item.card .meta .description-preview {
+        @apply mt-1 mb-5;
+    }
+    .item.card .meta .details {
+        @apply flex gap-2;
+        @apply text-sm text-gray-500;
     }
 </style>

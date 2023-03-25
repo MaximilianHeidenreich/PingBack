@@ -1,5 +1,6 @@
 import { serverCreateEvent } from "$lib/helpers/event";
 import { db_events, db_projects, db_system, DB_SYS_KEY, db_timeFrames } from "$lib/server/deta";
+import { updateCurrentSysContentHash } from "$lib/stores/s_sysContentHash";
 import type { IEvent } from "$lib/types/IEvent";
 import type { IProject } from "$lib/types/IProject";
 import { DEFAULT_SYSTEM_DOC } from "$lib/types/ISystemDoc";

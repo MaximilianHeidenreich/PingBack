@@ -11,6 +11,9 @@ import { TKN_TRANSITION } from "$lib/utils/tokens";
         easing: TKN_TRANSITION.EASING,
         y: -120
     }}>
+    <header class="mt-6 mb-2 px-6">
+        <span class="text-xl font-medium">Filter results</span>
+    </header>
     <InfiniteEventList
         startTimestamp={Date.now()}
         query={{}}/>
@@ -18,6 +21,6 @@ import { TKN_TRANSITION } from "$lib/utils/tokens";
 
 <style lang="postcss">
     .filter-result {
-        @apply relative z-0 p-6 bg-white flex-1;
+        @apply relative z-0 p-0 bg-white flex-1;
     }
 </style>

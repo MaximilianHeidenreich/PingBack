@@ -89,6 +89,7 @@ export async function serverCreateEvent(
     }
 
     sysdoc.totalEvents += 1;
+    sysdoc.latestEventTimestamp = pendingEvent.createdAt;
     sysdoc.updatedAt = Date.now();
 
     await db_system.update(sysdoc, sysdoc.key); // TODO: Promise allSettled

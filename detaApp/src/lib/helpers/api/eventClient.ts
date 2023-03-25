@@ -3,7 +3,6 @@ import type { IEvent } from "$lib/types/IEvent";
 import { TIME_FRAME_OFFSET_SCALAR, TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
 import { VERSION } from "$lib/utils/version";
 import dayjs, { type ManipulateType } from "dayjs";
-import { cacheGetEventFrame, cacheSetEventFrame } from "../cache";
 
 /**
  * Raw fetch of events based on query, lastKey, and limit.

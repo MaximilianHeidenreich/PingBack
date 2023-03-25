@@ -1,52 +1,63 @@
+import { s_sysContentHash } from "$lib/stores/s_sysContentHash";
 import { MD5 } from "$lib/utils/hash";
+import { get } from "svelte/store";
 import type { IEvent } from "../types/IEvent";
-//import PouchDB from "pouchdb";    -> fucks with sveltekit :/ we import it straight in html head...
+//import PouchDB from "pouchdb";   // -> fucks with sveltekit :/ we import it straight in html head...
 
-export interface ICachedEventFrame {
+export interface ICachedTimeFrame {
     _id: string; // ID is frame end
     events: IEvent[];
-    more: boolean; // Whether there are previous event frames available
+    nextFrame: number;
+    previousFrame: number;
 }
 
-const caches: Map<string, PouchDB.Database<ICachedEventFrame>> = new Map();
+/*const caches: Map<string, PouchDB.Database<ICachedEventFrame>> = new Map();
 export function getCache(projectID: string) {
     const key = `eventFrameCache_${projectID}`;
     if (!caches.has(key)) {
         caches.set(key, new PouchDB<ICachedEventFrame>(key));
     }
     return caches.get(key)!;
-}
+}*/
+const cache = new PouchDB<ICachedTimeFrame>(`${get(s_sysContentHash)}_eventFrameCache`);
 
-export function cacheSetEventFrame(
-    projectID: string,
+export function cacheSetTimeFrame(
     frameEnd: number,
+    nextFrame: number,
+    previousFrame: number,
     events: IEvent[],
-    query: Record<string, any> | Record<string, any>[],
-    more: boolean
 ) {
-    const queryHash = MD5(JSON.stringify(query));
+    cache.put({
+        _id: frameEnd.toString(),
+        events,
+        nextFrame,
+        previousFrame
+    })
+    /*const queryHash = MD5(JSON.stringify(query));
     const key = `${frameEnd}_${queryHash}`;
     return getCache(projectID).put({
         _id: key,
         events,
         more
-    });
+    });*/
 }
-export async function cacheGetEventFrame(
-    projectID: string,
-    frameEnd: number,
-    query: Record<string, any>
+export async function cacheGetTimeFrame(
+    frameEnd: number
 ) {
-    const queryHash = MD5(JSON.stringify(query));
+    try {
+        return cache.get(frameEnd.toString());
+    }
+    catch (e) {
+        return null;
+    }
+    /*const queryHash = MD5(JSON.stringify(query));
     const key = `${frameEnd}_${queryHash}`;
     try {
         return await getCache(projectID).get(key);
     } catch {
         return null;
-    }
+    }*/
 }
-export function cacheInvalidateProject(projectID: string) {
-    const cache = getCache(projectID);
-    caches.delete(projectID);
+export function cacheInvalidateProject() { // TODO: Fix _> Invalidate on store update
     return cache.destroy();
 }

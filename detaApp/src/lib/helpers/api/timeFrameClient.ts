@@ -1,6 +1,7 @@
 import type { TFetcher } from "$lib/types/fetcher";
 import type { ITimeFrame } from "$lib/types/ITimeFrame";
 import { VERSION } from "$lib/utils/version";
+import { cacheGetTimeFrame, cacheSetTimeFrame, type ICachedTimeFrame } from "../cache";
 
 export async function clientQueryTimeFramesRaw(
     fetcher: TFetcher,
@@ -28,8 +29,14 @@ export async function clientQueryTimeFramesRaw(
 
 export async function clientGetTimeFrame(
     fetcher: TFetcher,
-    frameEnd: number
-): Promise<ITimeFrame | null> {
+    frameEnd: number,
+    useCache: boolean = true
+): Promise<ITimeFrame | ICachedTimeFrame | null> {
+    /*if (useCache) {
+        const cached = await cacheGetTimeFrame(frameEnd);
+        if (cached) return cached;
+    }*/
+
     const url = new URL(`/api/v${VERSION.major}/timeframes/${frameEnd}`, window.location.origin);
 
     const res = await fetcher(url, {
@@ -43,6 +50,7 @@ export async function clientGetTimeFrame(
         else throw res; // TODO: Err handling like rust
     }
     const data = await res.json();
+
     return data as ITimeFrame;
 }
 

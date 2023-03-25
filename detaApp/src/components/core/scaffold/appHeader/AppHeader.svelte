@@ -15,6 +15,7 @@
 
     // STATE
     let filterOpen = false;
+    let filterQuery = {};
 
     $: navigating: {
         $navigating;
@@ -69,8 +70,8 @@
         </div>
     </div>
     {#if filterOpen}
-    <FilterBar />
-    <FilterResultView />
+    <FilterBar query={filterQuery}/>
+    <FilterResultView query={filterQuery}/>
     {/if}
 </header>
 

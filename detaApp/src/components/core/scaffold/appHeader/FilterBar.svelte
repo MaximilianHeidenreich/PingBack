@@ -7,9 +7,17 @@
     import { fly } from "svelte/transition";
     import Select from "svelte-select";
     import type { IProject } from "$lib/types/IProject";
+    import Input from "$cmp/core/inputs/Input.svelte";
+
+    // PROPS
+    export let query: any;
 
     // STATE
     const dispatch = createEventDispatcher();
+    let filterValue: string = "";
+    $: {
+        query = filterValue;
+    }
 
     const projects: { value: string, label: string}[] = [
         {
@@ -57,6 +65,7 @@
     </header>
     <div class="filter-body">
         <div>
+            <Input bind:value={filterValue}/>
             searchbar
 
             searchable:

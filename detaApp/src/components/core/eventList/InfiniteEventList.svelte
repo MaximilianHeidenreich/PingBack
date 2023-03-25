@@ -2,6 +2,8 @@
     import { clientFetchAllEventsInFrame } from "$lib/helpers/api/eventClient";
     import { clientGetSysDoc } from "$lib/helpers/api/systemClient";
     import { clientGetTimeFrame } from "$lib/helpers/api/timeFrameClient";
+    import { cacheSetTimeFrame } from "$lib/helpers/cache";
+    import { handleNewEventsNotify } from "$lib/helpers/notifications/notifications";
     import type { IEvent } from "$lib/types/IEvent";
     import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
     import dayjs, { type ManipulateType } from "dayjs";
@@ -20,7 +22,8 @@
     export let startTimestamp: number = -1, // TODO: Remove?
         query: Record<string, any> | Record<string, any>[] = {},
         autoFetchFuture: boolean = true,
-        autoFetchFutureInterval = 1000 * 5;
+        autoFetchFutureInterval = 1000 * 2,
+        useCache = true;
 
     // STATE
     let scrollEl: HTMLElement;
@@ -48,9 +51,6 @@
         console.debug("InfiniteEventList: Triggered autoLoadFuture");
         loadCurrent();
     }
-    function onNewEvents(events: IEvent[]) {
-        console.debug("InfiniteEventList: New events", events);
-    }
     async function loadPast() {
         // TODO: Fix hack to prevent load trigger from list before getting sysdoc timestamp
         if (lastPastFrameEnd.valueOf() === dayjs(0).valueOf()) return;
@@ -60,15 +60,23 @@
         //const p_frame = clientFetchEventFrame(fetch, lastPastFrameEnd.valueOf(), query);
         //const [frame] = await Promise.allSettled([p_frame]);
         //if (!moreFrames) endOfData = true;
-        const frameFetchRes = await clientGetTimeFrame(fetch, lastPastFrameEnd.valueOf());
+        const frameFetchRes = await clientGetTimeFrame(fetch, lastPastFrameEnd.valueOf(), useCache);
         if (!frameFetchRes) {
             alert(`no frame for: ${lastPastFrameEnd.format()}`);
             return;
         }
         if (frameFetchRes?.previousFrame === -1) endOfData = true;
 
+        /*if (frameFetchRes instanceof ICac) {
+
+        }*/
+
         // Fetch events in frame
         const eventFetchRes = await clientFetchAllEventsInFrame(fetch, lastPastFrameEnd.valueOf(), query);
+
+        /*if (useCache) {
+            await cacheSetTimeFrame(frameFetchRes, data.nextFrame, data.previousFrame, data.items);
+        }*/
 
         // Sort events & update frames
         processingProgress = [0, eventFetchRes.items.length];
@@ -118,7 +126,7 @@
                 frames[i].events = eventFetchRes.items;
                 if (oldEvents.length !== frames[i].events.length) { // TODO: needs to handle multipel db request with limit better
                     const newEvents = eventFetchRes.items.filter((e) => oldEvents.findIndex(oe => oe.key === e.key) < 0);
-                    onNewEvents(newEvents);
+                    handleNewEventsNotify(newEvents);
                     // TODO: IMPL
                 }
                 return frames;
@@ -128,8 +136,8 @@
 
     onMount(async () => {
         lastPastFrameEnd = dayjs(await getSystemLatestEventTimestamp()).endOf(TIME_FRAME_OFFSET_UNIT);
+        await loadPast();
         loadCurrent();
-        loadPast();
         if (autoFetchFuture)
             autoFetchFutureTimer = setInterval(onTriggerAutoLoadFuture, autoFetchFutureInterval);
     });
