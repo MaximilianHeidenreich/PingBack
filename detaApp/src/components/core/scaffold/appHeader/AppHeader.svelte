@@ -1,6 +1,7 @@
 <script lang="ts">
+    import { navigating } from "$app/stores";
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
-    import { s_eventListStyle } from "$cmp/eventList/s_eventListStyle";
+    import { s_eventListStyle } from "$cmp/core/eventList/s_eventListStyle";
     import { TKN_ICON, TKN_TRANSITION } from "$lib/utils/tokens";
     import { IconMenu2, IconFilter, IconStack2, IconFilterOff } from "@tabler/icons-svelte";
     import { get } from "svelte/store";
@@ -8,11 +9,17 @@
     import { s_appSidebarCollapsed } from "../s_appSidebarCollapsed";
     import FilterBar from "./FilterBar.svelte";
     import SearchBar from "./FilterBar.svelte";
+    import FilterResultView from "./FilterResultView.svelte";
     import { s_headerTitle } from "./s_headerTitle";
     import { s_refresh } from "./s_refresh";
 
     // STATE
     let filterOpen = false;
+
+    $: navigating: {
+        $navigating;
+        filterOpen = false;
+    }
 
     // HANDLERS
     function onToggleSidebar() {
@@ -28,7 +35,7 @@
     }
 </script>
 
-<header>
+<header class="{filterOpen ? 'h-full flex flex-col' : ''}">
     <div class="controls">
         <IconButton on:click={onToggleSidebar}>
             <IconMenu2
@@ -63,6 +70,7 @@
     </div>
     {#if filterOpen}
     <FilterBar />
+    <FilterResultView />
     {/if}
 </header>
 
@@ -73,7 +81,7 @@
         @apply border-b-4 border-neutral-100 bg-white;*/
     }
     header .controls {
-        @apply relative z-10;
+        @apply relative z-20;
         @apply flex items-center gap-4 p-4;
         @apply bg-white border-b-4 border-neutral-100;
     }

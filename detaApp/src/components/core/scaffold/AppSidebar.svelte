@@ -86,7 +86,7 @@
                     <li>
                         <MenuLink
                             href="/app/settings"
-                            active={false}>
+                            active={$page.url.pathname.startsWith("/app/settings")}>
                             <IconSettings
                                 size={TKN_ICON.SIZE.SM}
                                 stroke={TKN_ICON.STROKE.BASE} />
@@ -178,11 +178,12 @@
             </div>-->
         </div>
     </aside>
+    <div class="mobile-bg" on:click={() => s_appSidebarCollapsed.set(true)}></div>
 {/if}
 
 <style lang="postcss">
     aside {
-        @apply isolate flex h-full max-h-full;
+        @apply isolate z-50 flex h-full max-h-full;
         grid-row: 1;
         grid-column: 1;
     }
@@ -190,6 +191,17 @@
         @apply z-10 bg-white;
         @apply border-r-2 px-6 py-6;
         @apply w-fit;
+    }
+
+    .mobile-bg {
+        display: none;
+    }
+    @media screen and (max-width: 768px) {
+        .mobile-bg {
+            @apply block bg-black opacity-30;
+            @apply absolute top-0 left-0 bottom-0 right-0;
+            @apply z-40;
+        }
     }
 
     section {
