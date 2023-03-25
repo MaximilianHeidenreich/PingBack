@@ -1,7 +1,8 @@
 import type { TFetcher } from "$lib/types/fetcher";
 import type { IEvent } from "$lib/types/IEvent";
+import { TIME_FRAME_OFFSET_SCALAR, TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
 import { VERSION } from "$lib/utils/version";
-import dayjs from "dayjs";
+import dayjs, { type ManipulateType } from "dayjs";
 import { cacheGetEventFrame, cacheSetEventFrame } from "../cache";
 
 /**
@@ -60,6 +61,52 @@ export async function clientFetchProjectEventsRawAll(
     return { items: events, count: events.length };
 }
 
+export async function clientFetchEventsRaw(
+    fetcher: TFetcher,
+    query:
+        | (Partial<IEvent> & { [key: string]: unknown })
+        | (Partial<IEvent> & { [key: string]: unknown })[],
+    lastKey?: string,
+    limit?: number
+): Promise<{ items: IEvent[]; count: number; last?: string }> {
+    const url = new URL(`/api/v${VERSION.major}/events`, window.location.origin);
+    url.searchParams.set("query", btoa(JSON.stringify(query)));
+    if (lastKey) url.searchParams.set("lastKey", lastKey);
+    if (limit) url.searchParams.set("limit", limit.toString());
+
+    const res = await fetcher(url, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+        }
+    });
+    if (!res.ok) throw res; // TODO: Err handling like rust
+    const data = await res.json();
+    return data;
+}
+
+export async function clientFetchAllEvents(
+    fetcher: TFetcher,
+    query:
+        | (Partial<IEvent> & { [key: string]: unknown })
+        | (Partial<IEvent> & { [key: string]: unknown })[]
+): Promise<{ items: IEvent[], count: number }> {
+    let lastKey: string | undefined;
+    let events: IEvent[] = [];
+
+    // Initial fetch.
+    let res: any = await clientFetchEventsRaw(fetcher, query, undefined); // TODO: Fix any type
+    events = events.concat(res.items);
+    lastKey = res.last;
+
+    while (lastKey) {
+        let res: any = await clientFetchEventsRaw(fetcher, query, lastKey === "" ? undefined : lastKey); // TODO: Fix any type
+        events = events.concat(res.items);
+        lastKey = res.last;
+    }
+    return { items: events, count: events.length };
+}
+
 /**
  * Fetches all events (up to 1MB at a time) inside the given timeframe.
  * @param fetcher
@@ -70,67 +117,61 @@ export async function clientFetchProjectEventsRawAll(
  * @param limit
  * @returns [events fetch result, more events available in some previous frame]
  */
-export async function clientFetchProjectEventFrame(
+export async function clientFetchAllEventsInFrame(
     fetcher: TFetcher,
-    projectID: string,
     frameEnd: number,
     query:
         | (Partial<IEvent> & { [key: string]: unknown })
         | (Partial<IEvent> & { [key: string]: unknown })[],
-    useCache: boolean = true,
-    lastKey?: string,
-    limit?: number
-): Promise<[{ items: IEvent[]; count: number; last?: string }, boolean]> {
-    frameEnd = dayjs(frameEnd).endOf("hour").valueOf(); // Make sure we use the end of hour as frame end
+    useCache: boolean = true
+): Promise<{ items: IEvent[]; count: number }> { // TODO: remove [] OR -> Cannot query -> if necessary query after fetch
+    frameEnd = dayjs(frameEnd).endOf(TIME_FRAME_OFFSET_UNIT).valueOf(); // Make sure we use the end of hour as frame end
     console.debug(
-        `Requested event frame from ${frameEnd} (${dayjs(
+        `Requested event frame for ${frameEnd} (${dayjs(
             frameEnd
         ).format()}) (useCache: ${useCache})`
     );
 
-    if (useCache) {
+    /*if (useCache) {
         const cacheHit = await cacheGetEventFrame(projectID, frameEnd, query);
         if (cacheHit) {
             console.debug(`Cache hit for event frame ${frameEnd} (${dayjs(frameEnd).format()})`);
             const { events, more } = cacheHit;
             return [{ items: events, count: events.length }, more];
         }
-    }
+    }*/
 
-    console.debug(`Cache miss! Fetching event frame ${frameEnd} (${dayjs(frameEnd).format()})...`);
-    // TODO: FETCH ALL TO CACHE them!
-    const p_fetchEvents = clientFetchProjectEventsRawAll(
+    console.debug(`Cache miss! Fetching event frame for ${frameEnd} (${dayjs(frameEnd).format()})...`);
+
+    const res = await clientFetchAllEvents(
         fetcher,
-        projectID,
         {
             ...query,
             "createdAt?r": [
-                dayjs(frameEnd).startOf("hour").valueOf(),
-                dayjs(frameEnd).endOf("hour").valueOf()
+                dayjs(frameEnd).startOf(TIME_FRAME_OFFSET_UNIT).valueOf(),
+                dayjs(frameEnd).endOf(TIME_FRAME_OFFSET_UNIT).valueOf()
             ]
-        },
-        lastKey,
-        limit
+        }
     );
-    const p_moreEvents = clientFetchProjectEventsRaw(
+    return res;
+    /*const p_moreEvents = clientFetchEventsRaw(
         fetcher,
-        projectID,
         {
             ...query,
             "createdAt?lt": dayjs(frameEnd)
-                .startOf("hour")
-                .subtract(1, "hour")
-                .endOf("hour")
+                .endOf(TIME_FRAME_OFFSET_UNIT)
+                .subtract(TIME_FRAME_OFFSET_SCALAR, TIME_FRAME_OFFSET_UNIT as ManipulateType)
+                .endOf(TIME_FRAME_OFFSET_UNIT)
                 .valueOf()
         },
         undefined,
         1
     ); // Try to fetch 1 previous event -> if none -> no more events
-    let [fetchRes, moreEventsRes] = await Promise.all([p_fetchEvents, p_moreEvents]);
+    let [fetchRes, moreEventsRes] = await Promise.all([p_fetchEvents, p_moreEvents]);*/   // TODO: Handle reject
 
     if (useCache) {
-        cacheSetEventFrame(projectID, frameEnd, fetchRes.items, query, moreEventsRes.count >= 1);
+        //cacheSetEventFrame(projectID, frameEnd, fetchRes.items, query, moreEventsRes.count >= 1);
     }
 
-    return [fetchRes, moreEventsRes.count >= 1];
+    //return [fetchRes, moreEventsRes.count >= 1];
 }
