@@ -1,0 +1,14 @@
+{
+    "index": "👋 Hello",
+    "getting_started": "⚡️ Getting Started",
+    "---": {
+        "type": "separator"
+    },
+    "guide": "🛟 Guide",
+    "----": {
+        "type": "separator"
+    },
+    "clientlibraries": "🧰 Client Libraries",
+    "endpoints": "🔗 API Endpoints",
+    "changelog": "Changelog"
+}
