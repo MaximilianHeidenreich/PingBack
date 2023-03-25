@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Button from "$cmp/core/buttons/Button.svelte";
+    import Button from "$cmp/core/buttons/OldButton.svelte";
     import { IconChevronLeft, IconChevronRight } from "@tabler/icons-svelte";
 
     // PROPS
