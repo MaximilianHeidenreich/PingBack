@@ -1,6 +1,6 @@
 <script lang="ts">
     import { goto, invalidate } from "$app/navigation";
-    import Button from "$cmp/core/buttons/Button.svelte";
+    import Button from "$cmp/core/buttons/OldButton.svelte";
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
     import { pushModal } from "$cmp/core/modals/modalStore";
     import AppContentSection from "$cmp/core/scaffold/AppContentSection.svelte";

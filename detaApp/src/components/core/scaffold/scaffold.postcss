@@ -1,0 +1,20 @@
+.app-area {
+    @apply bg-white p-6;
+}
+@media screen and (min-width: 768px) {
+    .app-area {
+        @apply rounded-3xl shadow-md border-2 border-neutral-100;
+    }
+}
+
+.content-area {
+    @apply bg-white p-6 overflow-y-scroll;
+}
+@media screen and (min-width: 768px) {
+    .content-area {
+        @apply rounded-3xl shadow-md border-2 border-neutral-100;
+    }
+    .content-area-transparent {
+        @apply px-6 py-2;
+    }
+}

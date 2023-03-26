@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Button from "$cmp/core/buttons/Button.svelte";
+    import Button from "$cmp/core/buttons/OldButton.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
     import { s_appSidebarFetchAllProjects } from "$cmp/core/scaffold/s_appSidebarProjects";
     import { clientDeleteProjectRaw } from "$lib/helpers/api/projectsClient";

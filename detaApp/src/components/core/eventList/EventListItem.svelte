@@ -3,7 +3,8 @@
     import type { IEvent } from "$lib/types/IEvent";
 
     // PROPS
-    export let event: IEvent;
+    export let event: IEvent,
+        index: number = 0;
 </script>
 
 <li class="item {$s_eventListStyle}">
@@ -57,7 +58,7 @@
     }
 
     .item.compact {
-        @apply px-6 py-3.5;
+        @apply px-6 py-3.5 px-0 py-3 border-b;
     }
     .item.compact a {
         @apply flex-1;
@@ -79,7 +80,7 @@
     }
 
     .item.card {
-        @apply w-full -mb-3 mt-8 px-8 max-w-2xl self-center;
+        @apply w-full -mb-3 mt-8 max-w-lg self-center;
     }
     .item.card a {
         @apply w-full flex items-start p-5 gap-5 min-w-[40ch];

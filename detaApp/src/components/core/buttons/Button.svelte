@@ -1,80 +1,48 @@
 <script lang="ts">
+    import Spinner from "../utils/Spinner.svelte";
+
+
     // PROPS
-    export let type: "button" | "link" = "button",
-        style: "primary" | "secondary" | "link" = "primary",
-        color: "pink" | "red" = "pink",
-        target: "_blank" | "_self" = "_self",
-        href: string = "",
-        disabled = false,
+    export let type: "normal" | "ghost" | "link" = "normal",
+        style: "normal" | "muted" | "red" = "normal",
+        loading: boolean = false,
+        disabled: boolean = false,
         clazz: string = "";
+
 </script>
 
-{#if type === "button"}
-    <button
-        class="{style} col-{color} {clazz}"
-        {...$$restProps}
-        {disabled}
-        on:click>
-        <slot />
-    </button>
-{:else if type === "link"}
-    <a
-        class="{style} {clazz}"
-        {href}
-        {target}>
-        <slot />
-    </a>
-{/if}
+<button class="{type} s-{style}" class:loading on:click>
+    <span class="content"><slot /></span>
+    {#if loading}
+    <span class="absolute top-0 left-0 bottom-0 right-0 flex justify-center items-center"><Spinner color="{style === "muted" ? 'dark' : 'light'}"/></span>
+    {/if}
+</button>
 
 <style lang="postcss">
-    button,
-    a {
-        @apply inline-flex items-center justify-center;
-        @apply rounded-lg px-6 py-2.5 text-sm font-medium;
-        @apply transition-colors duration-200 ease-in-out;
+
+    button {
+        @apply text-white font-medium rounded-xl;
+        @apply px-5 py-3;
+        @apply scale-100;
     }
 
-    /* COLORS */
-    /* PRIMARY */
-    button.primary.col-pink {
-        @apply border-2 border-pink-400 bg-gradient-to-b from-pink-400 to-pink-500 text-white;
+    button.loading {
+        @apply cursor-wait;
     }
-    button.primary.col-pink:hover {
-        @apply from-pink-400 to-pink-400;
-    }
-    button.primary.col-pink:active {
-        @apply from-pink-500 to-pink-600;
+    button.loading .content {
+        @apply opacity-0;
     }
 
-    button.primary.col-red {
-        @apply bg-red-500 text-white;
-    }
-    button.primary.col-red:hover {
-        @apply bg-red-400;
-    }
-    button.primary.col-red:active {
-        @apply bg-red-600;
+    button:active {
+        @apply translate-y-0.5 scale-[0.96];
+        transition: all 0.1s ease-in-out;
     }
 
-    /* SECONDARY */
-    button.secondary,
-    a.secondary {
-        @apply text-black;
+    button.s-normal {
+        @apply bg-[#2F2B43];
     }
-    button.secondary:hover,
-    a.secondary:hover {
-        @apply bg-neutral-100;
-    }
-    button.secondary:active,
-    a.secondary:active {
-        @apply bg-neutral-200;
+    button.s-muted {
+        @apply border bg-gray-50 text-black;
     }
 
-    /* LINK */
-    button.link, a.link {
-        @apply text-pink-500 underline underline-offset-4 p-0;
-    }
-    button.link:hover, a.link:hover {
-        @apply text-pink-600;
-    }
 </style>

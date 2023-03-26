@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Button from "$cmp/core/buttons/Button.svelte";
+    import Button from "$cmp/core/buttons/OldButton.svelte";
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
     import { TKN_ICON, TKN_TRANSITION } from "$lib/utils/tokens";
     import { IconX } from "@tabler/icons-svelte";

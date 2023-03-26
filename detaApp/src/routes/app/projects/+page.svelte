@@ -1,6 +1,7 @@
 <script lang="ts">
-    import Button from "$cmp/core/buttons/Button.svelte";
+    import Button from "$cmp/core/buttons/OldButton.svelte";
     import Input from "$cmp/core/inputs/Input.svelte";
+    import AppContent from "$cmp/core/scaffold/AppContent.svelte";
     import AppContentSection from "$cmp/core/scaffold/AppContentSection.svelte";
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
     import { TKN_ICON } from "$lib/utils/tokens";
@@ -19,6 +20,7 @@
 
 </script>
 
+<AppContent style="clear">
 todo: add
 <br>
 todo: no projects
@@ -50,4 +52,6 @@ err
     {/each}
     {/if}
 </AppContentSection>
+    <div class="bg-red-300" style="height: 200vh"></div>
 {/if}
+</AppContent>

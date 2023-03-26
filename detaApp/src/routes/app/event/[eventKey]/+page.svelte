@@ -1,6 +1,8 @@
 <script lang="ts">
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
+    import AppContent from "$cmp/core/scaffold/AppContent.svelte";
     import AppContentSection from "$cmp/core/scaffold/AppContentSection.svelte";
+    import AppContentSectionHeader from "$cmp/core/scaffold/AppContentSectionHeader.svelte";
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
     import { TKN_ICON } from "$lib/utils/tokens";
     import { IconArrowsVertical, IconLink, IconTrash } from "@tabler/icons-svelte";
@@ -15,6 +17,7 @@
     s_headerTitle.set(`Event – ${event?.key.split("-")[0]}`);
 </script>
 
+<AppContent>
 {#if !event}
     <AppContentSection>
         <p class="mx-auto max-w-[50ch] text-center">Event not found!</p>
@@ -61,14 +64,30 @@
                 </footer>
             </div>
         </header>
-        <hr class="mt-4" />
+        <!--<hr class="mt-4" />-->
+    </AppContentSection>
+    <AppContentSection clazz="!mt-4">
+        <AppContentSectionHeader>
+            <svelte:fragment slot="title">Description</svelte:fragment>
+        </AppContentSectionHeader>
+        {#if event.parser === "text"}
+            <p>
+                {event.description}
+            </p>
+        {:else if event.parser === "markdown"}
+            <strong>Markdown support coming soon!</strong><br>
+            {@html event.description}
+        {/if}
     </AppContentSection>
     {#if Object.keys(event.tags).length > 0}
     <AppContentSection>
+        <AppContentSectionHeader>
+            <svelte:fragment slot="title">Tags</svelte:fragment>
+        </AppContentSectionHeader>
         <details class="mb-6">
             <summary class="flex cursor-pointer items-center justify-between gap-2">
-                <span class="text-2xl font-medium"
-                    >Tags <span class="font-mono text-base">({Object.keys(event.tags).length})</span
+                <span class=""
+                    >Tags <span class="font-mono text-base">({Object.keys(event.tags).length}) (todo: pretty json view)</span
                     ></span>
                 <IconArrowsVertical
                     size={TKN_ICON.SIZE.SM}
@@ -81,20 +100,8 @@
         <hr class="mt-4" />
     </AppContentSection>
     {/if}
-    <AppContentSection>
-        <header class="mb-6">
-            <span class="text-2xl font-medium">Description</span>
-        </header>
-        {#if event.parser === "text"}
-            <p>
-                {event.description}
-            </p>
-        {:else if event.parser === "markdown"}
-            <strong>Markdown support coming soon!</strong><br>
-            {@html event.description}
-        {/if}
-    </AppContentSection>
 {/if}
+</AppContent>
 
 <style lang="postcss">
     .overview header {

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Button from "./Button.svelte";
+    import Button from "./OldButton.svelte";
 
     // PROPS
     export let type: "button" | "link" = "button",
@@ -17,7 +17,7 @@
     {target}
     {href}
     {disabled}
-    clazz="!p-2 {clazz}"
+    clazz="!p-2 {clazz} !rounded-xl"
     on:click
     {...$$restProps}>
     <slot />

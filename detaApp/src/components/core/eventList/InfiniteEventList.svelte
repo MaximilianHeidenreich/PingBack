@@ -150,7 +150,7 @@
 <div bind:this={scrollEl}>
     {#each $timeFrames as frame, i}
         <div class="frame">
-            <EventList events={frame.events} />
+            <EventList events={frame.events} indexOffset={i}/>
         </div>
     {/each}
 </div>

@@ -14,6 +14,14 @@
     import { fly } from "svelte/transition";
     import { s_appSidebarCollapsed } from "./s_appSidebarCollapsed";
     import MenuLink from "./MenuLink.svelte";
+    import Notification from "iconsax-svelte/Notification.svelte";
+    import Chart1 from "iconsax-svelte/Chart1.svelte";
+    import Setting2 from "iconsax-svelte/Setting2.svelte";
+    import Sun1 from "iconsax-svelte/Sun1.svelte";
+    import IconButton from "../buttons/IconButton.svelte";
+    import Maximize4 from "iconsax-svelte/Maximize4.svelte";
+    import Book1 from "iconsax-svelte/Book1.svelte";
+    import DirectInbox from "iconsax-svelte/DirectInbox.svelte";
 
     // STATE
     // foo
@@ -27,11 +35,68 @@
             easing: TKN_TRANSITION.EASING,
             x: -100
         }}>
-        <div class="nav-sidebar flex flex-col">
-            <section>
-                <span class="text-xl font-semibold"><span class="text-pink-500">Ping</span>Back</span>
+        <div class="nav-sidebar app-area">
+            <section class="pt-4">
+                <header>
+                    <span class="text-xl font-semibold"><span class="text-pink-500">Ping</span>Back</span>
+                </header>
+                <hr class="my-3 !mt-5 w-full">
+                <ul class="m-links">
+                    <li>
+                        <MenuLink
+                            href="/app/feed"
+                            active={$page.url.pathname.startsWith("/app/feed")}>
+                            <DirectInbox />
+                            <span>Feed</span>
+                        </MenuLink>
+                    </li>
+                    <li>
+                        <MenuLink
+                            disabled
+                            href="/app/metrics"
+                            active={$page.url.pathname.startsWith("/app/feed")}>
+                            <Chart1 />
+                            <span>Metrics</span>
+                        </MenuLink>
+                    </li>
+                    <li>
+                        <MenuLink
+                            disabled
+                            href="/app/monitor"
+                            active={$page.url.pathname.startsWith("/app/monitor")}>
+                            <Notification />
+                            <span>Monitor</span>
+                        </MenuLink>
+                    </li>
+                </ul>
             </section>
-            <section>
+
+            <section class="flex">
+                <ul class="m-links">
+                    <li>
+                        <MenuLink
+                            href="/app/settings"
+                            active={$page.url.pathname.startsWith("/app/settings")}>
+                            <Setting2 />
+                            <span>Settings</span>
+                        </MenuLink>
+                    </li>
+                    <li>
+                        <MenuLink
+                            href="/docs"
+                            active={$page.url.pathname.startsWith("/docs")}>
+                            <Book1 />
+                            <span>Help</span>
+                        </MenuLink>
+                    </li>
+                </ul>
+                <hr class="my-3 w-full">
+                <ul class="w-full flex justify-between gap-3">
+                    <li><IconButton><Maximize4 size={20}/></IconButton></li>
+                    <li><IconButton><Sun1 size={20}/></IconButton></li>
+                </ul>
+            </section>
+            <!--<section>
                 <ul class="m-links">
                     <li>
                         <MenuLink
@@ -104,7 +169,7 @@
                         </MenuLink>
                     </li>
                 </ul>
-            </section>
+            </section>-->
 
             <!--<header class="mb-12">
                 <span class="text-xl font-semibold"
@@ -159,7 +224,7 @@
                     </section>
                 </div>
                 <ul class="m-links">
-                    <!--<li><a href="/app/stats"><IconChartBar size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Stats</a></li>
+                    <li><a href="/app/stats"><IconChartBar size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Stats</a></li>
                 <li><a href="/app/settings"><IconTool size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/> Settings</a></li>
                     <li>
                         <a href="/app/playground"
@@ -187,10 +252,19 @@
         grid-row: 1;
         grid-column: 1;
     }
+
+    @media screen and (min-width: 768px) {
+        aside {
+            @apply block;
+            grid-row: 1 / 3;
+            grid-column: 1;
+        }
+    }
+
     .nav-sidebar {
         @apply z-10 bg-white;
-        @apply border-r-2 px-6 py-6;
-        @apply w-fit;
+        @apply p-4;
+        @apply h-full flex flex-col justify-between items-center pb-3;
     }
 
     .mobile-bg {
@@ -205,7 +279,10 @@
     }
 
     section {
-        @apply mb-8;
+        @apply flex flex-col items-center;
+    }
+    section + section {
+        @apply mt-8;
     }
     section header {
         @apply mb-2;

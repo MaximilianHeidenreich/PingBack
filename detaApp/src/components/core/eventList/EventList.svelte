@@ -4,13 +4,15 @@
 
 
     // PROPS
-    export let events: IEvent[];
+    export let events: IEvent[],
+        indexOffset: number = 0;
 </script>
 
 <ul>
     {#each events as event, i}
         <EventListItem
-            {event}/>
+            {event}
+            index={indexOffset + i}/>
     {/each}
 </ul>
 
