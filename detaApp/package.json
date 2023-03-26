@@ -27,6 +27,7 @@
         "@types/pouchdb": "^6.4.0",
         "@types/semver": "^7.3.13",
         "autoprefixer": "^10.4.7",
+        "iconsax-svelte": "^0.0.1-alpha.11",
         "jsdom": "^21.1.0",
         "postcss": "^8.4.14",
         "postcss-load-config": "^4.0.1",
