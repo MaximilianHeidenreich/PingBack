@@ -20,6 +20,7 @@
     import IconButton from "../buttons/IconButton.svelte";
     import Maximize4 from "iconsax-svelte/Maximize4.svelte";
     import Book1 from "iconsax-svelte/Book1.svelte";
+    import Archive2 from "iconsax-svelte/Archive2.svelte";
     import DirectInbox from "iconsax-svelte/DirectInbox.svelte";
     import ThemeToggle from "../buttons/ThemeToggle.svelte";
 
@@ -66,6 +67,17 @@
                             active={$page.url.pathname.startsWith("/app/monitor")}>
                             <Notification />
                             <span>Monitor</span>
+                        </MenuLink>
+                    </li>
+                </ul>
+                <hr class="my-3 !mt-5 w-full">
+                <ul>
+                    <li>
+                        <MenuLink
+                            href="/app/projects"
+                            active={$page.url.pathname.startsWith("/app/projects")}>
+                            <Archive2 />
+                            <span>Projects</span>
                         </MenuLink>
                     </li>
                 </ul>
