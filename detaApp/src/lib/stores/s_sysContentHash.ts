@@ -1,7 +1,7 @@
 import { clientGetSysDoc } from "$lib/helpers/api/systemClient";
-import { writable } from "svelte/store";
+import { localStorable } from "./localStorable";
 
-export const s_sysContentHash = writable<string>("rand");
+export const s_sysContentHash = localStorable<string>("rand", "pb_contentHash");
 
 export async function updateCurrentSysContentHash() {
     const sysDoc = await clientGetSysDoc(fetch);
