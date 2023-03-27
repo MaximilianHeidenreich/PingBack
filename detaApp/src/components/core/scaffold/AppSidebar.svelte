@@ -93,18 +93,22 @@
                             <span>Settings</span>
                         </MenuLink>
                     </li>
-                    <li>
+                    <!--<li>
                         <MenuLink
                             href="/docs"
                             active={$page.url.pathname.startsWith("/docs")}>
                             <Book1 />
                             <span>Help</span>
                         </MenuLink>
-                    </li>
+                    </li>-->
                 </ul>
                 <hr class="my-3 w-full">
                 <ul class="w-full flex justify-between gap-3">
-                    <li><IconButton><Maximize4 size={20}/></IconButton></li>
+                    <li>
+                        <IconButton type="link" href="/docs" target="_blank">
+                            <Book1 />
+                        </IconButton>
+                        </li>
                     <li>
                         <ThemeToggle />
                     </li>
