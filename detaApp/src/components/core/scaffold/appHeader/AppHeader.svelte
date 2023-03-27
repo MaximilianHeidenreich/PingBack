@@ -36,6 +36,7 @@
     header {
         grid-row: 1;
         grid-column: 1 / 3;
+        @apply isolate relative;
     }
     @media screen and (min-width: 768px) {
         header {

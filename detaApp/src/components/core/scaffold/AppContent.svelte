@@ -11,6 +11,6 @@
 
 <style lang="postcss">
     .app-content {
-        @apply flex-1 overflow-y-scroll; /* flex flex-col */
+        @apply flex-1 overflow-y-auto; /* flex flex-col */
     }
 </style>
