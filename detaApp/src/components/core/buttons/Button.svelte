@@ -12,7 +12,7 @@
 </script>
 
 <button class="{type} s-{style}" class:loading on:click>
-    <span class="content"><slot /></span>
+    <span class="content flex justify-center items-center gap-3"><slot /></span>
     {#if loading}
     <span class="absolute top-0 left-0 bottom-0 right-0 flex justify-center items-center"><Spinner color="{style === "muted" ? 'dark' : 'light'}"/></span>
     {/if}
@@ -22,7 +22,7 @@
 
     button {
         @apply text-white font-medium rounded-xl;
-        @apply px-5 py-3;
+        @apply px-5 py-3 w-fit min-w-max;
         @apply scale-100;
     }
 
