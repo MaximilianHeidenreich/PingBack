@@ -3,7 +3,7 @@
     export let href: string = "", active: boolean = false, disabled: boolean = false;
 </script>
 
-<a {href} class:active class:disabled>
+<a {href} class:active class:disabled on:click>
     <slot />
 </a>
 
