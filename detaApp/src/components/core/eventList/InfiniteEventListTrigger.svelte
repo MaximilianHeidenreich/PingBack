@@ -19,6 +19,7 @@
     // HANDLERS
     $: intersecting: {
         if (intersecting && !loading && !processing && !endOfData && !timer) { // TODO Check timer brainfucxk
+            console.debug("InfiniteEventListTrigger intersected -> Dispatching triggerLoad");
             timer = setInterval(handleIntersect, 100);
         } else {
             timer && clearInterval(timer);
@@ -27,7 +28,6 @@
     }
 
     function handleIntersect() {
-        console.debug("InfiniteEventListTrigger intersected -> Dispatching triggerLoad");
         dispatch("triggerLoad", {});
     }
 
@@ -54,7 +54,7 @@
 
 <div
     bind:this={triggerEl}
-    class="mt-6 mb-36 flex w-full flex-col items-center justify-center gap-2">
+    class="mt-6 mb-14 flex w-full flex-col items-center justify-center gap-2">
     <span class="opacity-0">trigger c:</span>
     {#if endOfData}
         <span class="text-sm text-neutral-500">No more events!</span>
