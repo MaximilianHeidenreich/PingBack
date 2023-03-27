@@ -262,14 +262,14 @@
 
 <style lang="postcss">
     aside {
-        @apply isolate z-50 flex h-full max-h-full;
-        grid-row: 1;
+        @apply isolate z-50 fixed top-0 bottom-0 flex h-full max-h-full py-6;
+        grid-row: 1 / 3;
         grid-column: 1;
     }
 
     @media screen and (min-width: 768px) {
         aside {
-            @apply block;
+            @apply relative block py-0;
             grid-row: 1 / 3;
             grid-column: 1;
         }
@@ -287,7 +287,7 @@
     @media screen and (max-width: 768px) {
         .mobile-bg {
             @apply block bg-black opacity-30;
-            @apply absolute top-0 left-0 bottom-0 right-0;
+            @apply fixed top-0 left-0 bottom-0 right-0;
             @apply z-40;
         }
     }

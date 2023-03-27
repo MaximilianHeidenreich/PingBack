@@ -36,12 +36,13 @@
     header {
         grid-row: 1;
         grid-column: 1 / 3;
-        @apply isolate relative;
+        @apply isolate fixed top-0 left-0 right-0 mx-6 mt-6 backdrop-blur-lg bg-white/50;
     }
     @media screen and (min-width: 768px) {
         header {
             grid-row: 1;
             grid-column: 2 / -1;
+            @apply mt-0 mx-0 relative ;
         }
         header.fullwidth {
             grid-column: 1 / -1;
