@@ -12,7 +12,7 @@
     {#each events as event, i}
         <EventListItem
             {event}
-            index={indexOffset + i}/>
+            odd={(indexOffset + i) % 2 !== 0}/>
     {/each}
 </ul>
 

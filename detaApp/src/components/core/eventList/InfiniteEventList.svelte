@@ -2,7 +2,6 @@
     import { clientFetchAllEventsInFrame } from "$lib/helpers/api/eventClient";
     import { clientGetSysDoc } from "$lib/helpers/api/systemClient";
     import { clientGetTimeFrame } from "$lib/helpers/api/timeFrameClient";
-    import { cacheSetTimeFrame } from "$lib/helpers/cache";
     import { handleNewEventsNotify } from "$lib/helpers/notifications/notifications";
     import type { IEvent } from "$lib/types/IEvent";
     import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
@@ -44,6 +43,13 @@
             alert("FATAL error, no system document!");
         }
         return sysdoc.latestEventTimestamp;
+    }
+    function sumPreviousEvents(index: number): number {
+        let sum = 0;
+        for (let i = 0; i < index; i++) {
+            sum += $timeFrames[i].events.length;
+        }
+        return sum;
     }
 
     // HANDLERS
@@ -150,7 +156,7 @@
 <div bind:this={scrollEl}>
     {#each $timeFrames as frame, i}
         <div class="frame">
-            <EventList events={frame.events} indexOffset={i}/>
+            <EventList events={frame.events} indexOffset={sumPreviousEvents(i)}/>
         </div>
     {/each}
 </div>

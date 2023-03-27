@@ -4,10 +4,10 @@
 
     // PROPS
     export let event: IEvent,
-        index: number = 0;
+        odd: boolean = true;
 </script>
 
-<li class="item {$s_eventListStyle}">
+<li class="item {$s_eventListStyle}" class:odd>
     {#if $s_eventListStyle === "compact"}
     <a href="/app/event/{event.key}">
         <ul>
@@ -56,9 +56,12 @@
     .item {
         @apply flex-1;
     }
+    .item.odd {
+        @apply bg-neutral-50;
+    }
 
     .item.compact {
-        @apply px-6 py-3.5 px-0 py-3 border-b;
+        @apply px-6 py-3.5 px-6 py-3 border-b;
     }
     .item.compact a {
         @apply flex-1;

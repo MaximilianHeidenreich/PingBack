@@ -9,7 +9,7 @@
 
 <AppContent
     style="{$s_eventListStyle === 'compact' ? 'section' : 'transparent'}"
-    clazz="{$s_eventListStyle === 'card' ? '!p-0' : ''}">
+    clazz="{$s_eventListStyle === 'card' ? '!p-0' : ''} !p-0">
     <InfiniteEventList
         query={{}}
         />
