@@ -51,7 +51,7 @@
 
 <style lang="postcss">
     dialog {
-        @apply block rounded-xl bg-white px-8 py-6 shadow-xl;
+        @apply block rounded-2xl bg-white px-8 py-6 shadow-xl;
     }
 
     footer {
