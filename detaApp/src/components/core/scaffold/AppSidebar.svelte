@@ -17,11 +17,11 @@
     import Notification from "iconsax-svelte/Notification.svelte";
     import Chart1 from "iconsax-svelte/Chart1.svelte";
     import Setting2 from "iconsax-svelte/Setting2.svelte";
-    import Sun1 from "iconsax-svelte/Sun1.svelte";
     import IconButton from "../buttons/IconButton.svelte";
     import Maximize4 from "iconsax-svelte/Maximize4.svelte";
     import Book1 from "iconsax-svelte/Book1.svelte";
     import DirectInbox from "iconsax-svelte/DirectInbox.svelte";
+    import ThemeToggle from "../buttons/ThemeToggle.svelte";
 
     // STATE
     // foo
@@ -93,7 +93,9 @@
                 <hr class="my-3 w-full">
                 <ul class="w-full flex justify-between gap-3">
                     <li><IconButton><Maximize4 size={20}/></IconButton></li>
-                    <li><IconButton><Sun1 size={20}/></IconButton></li>
+                    <li>
+                        <ThemeToggle />
+                    </li>
                 </ul>
             </section>
             <!--<section>
