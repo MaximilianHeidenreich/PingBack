@@ -21,24 +21,7 @@
     <div class="app-scaffold">
         <AppSidebar />
         <AppHeader />
-        {#key $navigating}
-        <main
-            transition:fly={{
-                duration: TKN_TRANSITION.DURATION,
-                easing: TKN_TRANSITION.EASING,
-                x: 100
-            }}
-            class:fullwidth={$s_appSidebarCollapsed}><!-- px-6 py-2 -->
-            <slot />
-            <!--<Button>Button</Button>
-            <br><br>
-            <Button style="muted">Button</Button>
-            <br><br>
-            <Button loading>Button</Button>
-            <br><br>
-            <Button style="muted" loading>Button</Button>-->
-        </main>
-        {/key}
+        <slot />
     </div>
 </div>
 
@@ -70,23 +53,6 @@
             @apply gap-8 px-8;
             @apply max-w-4xl mx-auto w-full h-5/6;
             @apply bg-none;
-        }
-    }
-
-    main {
-        grid-row: 1 / 3;
-        grid-column: 1 / 3;
-        @apply flex flex-col mt-28 h-auto -mx-6 /*overflow-hidden overflow-y-scroll*/;
-    }
-
-    @media screen and (min-width: 768px) {
-        main {
-            grid-row: 2;
-            grid-column: 2;
-            @apply m-0 h-auto;
-        }
-        main.fullwidth {
-            grid-column: 1 / -1;
         }
     }
 </style>
