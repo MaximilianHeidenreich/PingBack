@@ -55,6 +55,22 @@ export const load = (async ({  }) => {
         throw redirect(303, "/welcome");
     }
 
+    // Handle version updates.
+    if (sysdoc.latestAppVersion !== VERSION.semver!.version) {
+        console.log(`Version update detected (${sysdoc.latestAppVersion} -> ${VERSION.semver!.version})! Updating sysdoc & performing updates.`);
+
+        // TODO: Run updates
+        sysdoc.latestAppVersion = VERSION.semver!.version;
+        await db_system.update(sysdoc, DB_SYS_KEY);
+
+        // TODO: Redirect to update changelog page -> add refirect after continue query param
+    }
+
+    // Redirect wo welcome page if not finished / skipped tour.
+    if (!sysdoc.finishedWelcomeTour) {
+        throw redirect(303, "/welcome");
+    }
+
     const pickRand = (array: any[]) => array[Math.floor(Math.random() * array.length)];
     const dev_events: IEvent[] = [];
     const dev_projects = ["default"]//, "project2", "foobar"];
