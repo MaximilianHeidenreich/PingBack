@@ -114,7 +114,6 @@
         // Fetch events in frame
         const eventFetchRes = await clientFetchAllEventsInFrame(fetch, currentFrameEnd, query);
 
-
         // Sort events & update frames
         eventFetchRes.items.sort((a, b) => b.createdAt - a.createdAt);
         timeFrames.update(frames => {
@@ -148,7 +147,7 @@
             autoFetchFutureTimer = setInterval(onTriggerAutoLoadFuture, autoFetchFutureInterval);
     });
     onDestroy(() => {
-        autoFetchFutureTimer && clearInterval(autoFetchFutureTimer);
+        clearInterval(autoFetchFutureTimer);
     });
 
 </script>
