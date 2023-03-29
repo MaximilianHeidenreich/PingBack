@@ -1,8 +1,7 @@
 <script lang="ts">
-    import Button from "$cmp/core/buttons/OldButton.svelte";
+    import Button from "$cmp/core/buttons/Button.svelte";
     import Input from "$cmp/core/inputs/Input.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
-    import { s_appSidebarFetchAllProjects } from "$cmp/core/scaffold/s_appSidebarProjects";
     import { s_projectSidebarActiveProject } from "$cmp/core/scaffold/s_projectSidebarActiveProject";
     import { clientCreateProjectChannelRaw } from "$lib/helpers/api/projectsClient";
     import type { IChannel } from "$lib/types/IChannel";
@@ -12,7 +11,7 @@
     import toast from "svelte-french-toast";
 
     // PROPS
-    export let project: IProject;
+    export let project: IProject, onCreated: () => void;
 
     // STATE
     let dialog: HTMLDialogElement;
@@ -34,7 +33,7 @@
         console.debug("Create channel fetch result", res);
 
         if (res.status === 200) {
-            toast.success("Created project!", toastOptions());
+            toast.success(`Created channel #${channelID}!`, toastOptions());
             const body = (await res.json()) as IChannel;
             //s_appSidebarFetchAllProjects();
             s_projectSidebarActiveProject.update((project) => {
@@ -42,7 +41,7 @@
                 return project;
             });
             dialog.close();
-            return;
+            onCreated && onCreated();
         } else if (res.status === 400) {
             toast.error("Could not create channel!", toastOptions());
         } else if (res.status === 409) {
@@ -83,7 +82,7 @@
     <svelte:fragment slot="footer">
         <div class="flex justify-end gap-4">
             <Button
-                style="secondary"
+                style="muted"
                 on:click={onCancel}>Cancel</Button>
             <Button on:click={onCreate}>Create</Button>
         </div>

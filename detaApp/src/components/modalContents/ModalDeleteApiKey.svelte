@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Button from "$cmp/core/buttons/OldButton.svelte";
+    import Button from "$cmp/core/buttons/Button.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
     import { clientDeleteProjectRaw } from "$lib/helpers/api/projectsClient";
     import toastOptions from "$lib/utils/toast";
@@ -24,9 +24,8 @@
         }
         else {
             toast.error("Could not delete project!", toastOptions());
-        }
+        }*/
 
-        s_appSidebarFetchAllProjects();*/ // TODO IMPL
         dialog.close();
         onDeleted && onDeleted();
     }
@@ -41,11 +40,11 @@
     <svelte:fragment slot="footer">
         <div class="flex justify-end gap-4">
             <Button
-                style="secondary"
+                style="muted"
                 on:click={onCancel}>Cancel</Button>
             <Button
                 on:click={onDelete}
-                color="red">Delete</Button>
+                style="red">Delete</Button>
         </div>
     </svelte:fragment>
 </Modal>

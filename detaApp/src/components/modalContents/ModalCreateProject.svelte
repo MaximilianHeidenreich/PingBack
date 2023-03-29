@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { invalidate } from "$app/navigation";
     import Button from "$cmp/core/buttons/Button.svelte";
     import Input from "$cmp/core/inputs/Input.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
@@ -8,6 +9,9 @@
     import { sanitizeProjectIdInput } from "$lib/utils/sanitizers";
     import toastOptions from "$lib/utils/toast";
     import toast from "svelte-french-toast";
+
+    // PROPS
+    export let onCreated: () => void;
 
     // STATE
     let dialog: HTMLDialogElement;
@@ -37,6 +41,7 @@
                 return projects;
             });
             dialog.close();
+            onCreated && onCreated();
             return;
         } else if (res.status === 400) {
             toast.error("Could not create project!", toastOptions());

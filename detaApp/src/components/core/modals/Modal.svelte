@@ -1,11 +1,11 @@
 <script lang="ts">
     import { TKN_ICON } from "$lib/utils/tokens";
-    import { IconX } from "@tabler/icons-svelte";
     import { onMount } from "svelte";
 
     import { quintOut } from "svelte/easing";
     import { scale } from "svelte/transition";
     import IconButton from "../buttons/IconButton.svelte";
+    import CloseSquare from "iconsax-svelte/CloseSquare.svelte";
     import { popModal } from "./modalStore";
 
     // PROPS
@@ -34,9 +34,7 @@
                 on:click={() => {
                     dialog.close();
                 }}>
-                <IconX
-                    size={TKN_ICON.SIZE.LG}
-                    stroke={TKN_ICON.STROKE.BASE} />
+                <CloseSquare  />
             </IconButton>
         </div>
         <p class="mt-2 max-w-[45ch] text-base font-normal text-neutral-500">

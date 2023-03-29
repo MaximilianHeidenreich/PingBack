@@ -1,10 +1,13 @@
 <script lang="ts">
-    import Button from "$cmp/core/buttons/OldButton.svelte";
+    import Button from "$cmp/core/buttons/Button.svelte";
     import Input from "$cmp/core/inputs/Input.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
     import { sanitizeApiKeyName } from "$lib/utils/sanitizers";
     import toastOptions from "$lib/utils/toast";
     import toast from "svelte-french-toast";
+
+    // PROPS
+    export let projectKey: string, onCreated: () => void;
 
     // STATE
     let dialog: HTMLDialogElement;
@@ -20,6 +23,7 @@
         dialog.close();
     }
     async function onCreate() {
+        onCreated && onCreated();
         // TODO: impl
         /*const res = await clientCreateProjectRaw(fetch, {
             key: sanitizeProjectIdInput(projectName),
@@ -77,7 +81,7 @@
     <svelte:fragment slot="footer">
         <div class="flex justify-end gap-4">
             <Button
-                style="secondary"
+                style="muted"
                 on:click={onCancel}>Cancel</Button>
             <Button on:click={onCreate}>Create</Button>
         </div>

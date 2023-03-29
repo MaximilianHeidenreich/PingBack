@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Button from "$cmp/core/buttons/OldButton.svelte";
+    import Button from "$cmp/core/buttons/Button.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
     import { s_projectSidebarActiveProject } from "$cmp/core/scaffold/s_projectSidebarActiveProject";
     import {
@@ -25,17 +25,17 @@
         console.debug("Delete channel fetch result", res);
 
         if (res.status === 200) {
-            toast.success("Deleted channel!", toastOptions());
+            toast.success(`Deleted channel #${channelID}!`, toastOptions());
             s_projectSidebarActiveProject.update((project) => {
                 if (project) project.channels = project.channels.filter((e) => e.id !== channelID);
                 return project;
             });
+            onDeleted && onDeleted();
         } else {
             toast.error("Could not delete channel!", toastOptions());
         }
 
         dialog.close();
-        onDeleted && onDeleted();
     }
 </script>
 
@@ -49,11 +49,11 @@
     <svelte:fragment slot="footer">
         <div class="flex justify-end gap-4">
             <Button
-                style="secondary"
+                style="muted"
                 on:click={onCancel}>Cancel</Button>
             <Button
                 on:click={onDelete}
-                color="red">Delete</Button>
+                style="red">Delete</Button>
         </div>
     </svelte:fragment>
 </Modal>
