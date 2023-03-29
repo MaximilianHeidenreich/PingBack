@@ -28,7 +28,7 @@
         </ul>
     </a>
     {:else}
-    <a href="">
+    <a href="/app/event/{event.key}">
         <div class="icon-wrapper">
             <span class="icon">{event.icon}</span>
         </div>
@@ -83,7 +83,7 @@
     }
 
     .item.card {
-        @apply w-full -mb-3 mt-8 max-w-lg self-center;
+        @apply w-full mb-5 max-w-lg self-center;
     }
     .item.card a {
         @apply w-full flex items-start p-5 gap-5 min-w-[40ch];
