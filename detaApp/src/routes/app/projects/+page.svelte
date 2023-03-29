@@ -197,3 +197,33 @@
     </AppContentSection>
     {/if}
 </AppContent>
+
+<style lang="postcss">
+    .project-item {
+        @apply border-2 border-neutral-200 bg-neutral-50/30 p-2 px-6 rounded-xl;
+    }
+    .project-item > summary {
+        @apply cursor-pointer py-2;
+    }
+    .project-item > .content {
+        @apply mt-2 mb-4;
+    }
+    details[open].project-item > summary {
+        @apply border-b-2 border-neutral-200 pb-4;
+    }
+    .project-item + .project-item {
+        @apply mt-6;
+    }
+
+
+    details > summary {
+        list-style-type: '▶️';
+    }
+
+    details[open] > summary {
+        list-style-type: '▼';
+    }
+    details > summary > span {
+        @apply ml-2;
+    }
+</style>
