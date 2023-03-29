@@ -45,4 +45,8 @@
         @apply border bg-gray-50 text-black;
     }
 
+    button.s-red {
+        @apply bg-red-500;
+    }
+
 </style>
