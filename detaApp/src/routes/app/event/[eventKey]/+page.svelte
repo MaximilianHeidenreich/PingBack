@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { generatePalette } from "emoji-palette";
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
     import AppContent from "$cmp/core/scaffold/AppContent.svelte";
     import AppContentSection from "$cmp/core/scaffold/AppContentSection.svelte";
@@ -7,6 +8,7 @@
     import { TKN_ICON } from "$lib/utils/tokens";
     import { IconArrowsVertical, IconLink, IconTrash } from "@tabler/icons-svelte";
     import type { PageData } from "./$types";
+    import { browser } from "$app/environment";
 
     // PROPS
     export let data: PageData;
@@ -15,6 +17,13 @@
     const event = data.event;
 
     s_headerTitle.set(`Event – ${event?.key.split("-")[0]}`);
+
+    // FN
+    function getIconColor(): string {
+        if (!browser) return "#aaaaaa";
+        const iconPalette = generatePalette(event?.icon || "⚙️");
+        return iconPalette[0];
+    }
 </script>
 
 <AppContent>
@@ -28,7 +37,7 @@
             <div class="icon">
                 <div
                     class="mt-1 flex aspect-square items-center justify-center rounded-3xl bg-[#8686861e] p-5"
-                    style="background: gey;">
+                    style="background: {getIconColor()}55;">
                     <span class="icon text-4xl">{event.icon}</span>
                 </div>
             </div>

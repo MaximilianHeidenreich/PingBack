@@ -3,10 +3,19 @@
     import { s_eventListStyle } from "./s_eventListStyle";
     import type { IEvent } from "$lib/types/IEvent";
     import { s_timeFormat } from "$lib/stores/s_timeFormat";
+    import { browser } from "$app/environment";
+    import { generatePalette } from "emoji-palette";
 
     // PROPS
     export let event: IEvent,
         odd: boolean = true;
+
+    // FN
+    function getIconColor(): string {
+        if (!browser) return "#aaaaaa";
+        const iconPalette = generatePalette(event?.icon || "⚙️");
+        return iconPalette[0];
+    }
 </script>
 
 <li class="item {$s_eventListStyle}" class:odd>
@@ -36,7 +45,7 @@
     </a>
     {:else}
     <a href="/app/event/{event.key}">
-        <div class="icon-wrapper">
+        <div class="icon-wrapper" style="background: {getIconColor()}55;">
             <span class="icon">{event.icon}</span>
         </div>
         <div class="meta">
@@ -106,7 +115,7 @@
     }
 
     .item.card {
-        @apply w-full mb-5 max-w-lg self-center;
+        @apply w-full mb-5 px-2 max-w-lg self-center;
     }
     .item.card a {
         @apply w-full flex items-start p-5 gap-5 min-w-[40ch];
@@ -114,7 +123,7 @@
     }
     .item.card .icon-wrapper {
        @apply aspect-square w-min shrink-0 flex justify-center items-center px-4;
-       @apply bg-red-100 rounded-2xl;
+       @apply rounded-2xl;
     }
     .item.card .icon-wrapper .icon {
         @apply text-3xl;
