@@ -12,11 +12,7 @@
     // STATE
     let dialog: HTMLDialogElement;
     let keyName: string;
-
-    // FN
-    function reset() {
-        keyName = "";
-    }
+    let working = false;
 
     // HANDLERS
     function onCancel() {
@@ -48,7 +44,6 @@
             toast.error("Prokect already exists!", toastOptions());
         }
         */
-        reset();
     }
 </script>
 
@@ -83,7 +78,9 @@
             <Button
                 style="muted"
                 on:click={onCancel}>Cancel</Button>
-            <Button on:click={onCreate}>Create</Button>
+            <Button
+            on:click={onCreate}
+                loading={working}>Create</Button>
         </div>
     </svelte:fragment>
 </Modal>

@@ -11,23 +11,26 @@
 
     // STATE
     let dialog: HTMLDialogElement;
+    let working = false;
 
     // HANDLERS
     function onCancel() {
         dialog.close();
     }
     async function onDelete() {
+        working = true;
         const res = await clientDeleteProjectRaw(fetch, project.key);
         console.debug("Delete project fetch result", res);
 
         if (res.status === 200) {
             toast.success("Deleted project!", toastOptions());
+            dialog.close();
+            onDeleted && onDeleted();
+            return;
         } else {
-            toast.error("Could not delete project!", toastOptions());
+            toast.error(`Could not delete project ${project.key}!`, toastOptions());
         }
-
-        dialog.close();
-        onDeleted && onDeleted();
+        working = false;
     }
 </script>
 
@@ -36,8 +39,13 @@
     <svelte:fragment slot="subtitle">
         Are you sure you want to delete the project <strong class="text-pink-500"
             >{project.displayName}</strong
-        >? This action cannot be reversed and all data will be lost.
+        >?
     </svelte:fragment>
+    <!--<svelte:fragment slot="body">
+        <fieldset>
+            todo: checkbox delete associated events.
+        </fieldset>
+    </svelte:fragment>--> <!-- TODO: impl -->
     <svelte:fragment slot="footer">
         <div class="flex justify-end gap-4">
             <Button
@@ -45,6 +53,7 @@
                 on:click={onCancel}>Cancel</Button>
             <Button
                 on:click={onDelete}
+                loading={working}
                 style="red">Delete</Button>
         </div>
     </svelte:fragment>

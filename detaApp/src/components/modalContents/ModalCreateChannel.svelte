@@ -2,9 +2,7 @@
     import Button from "$cmp/core/buttons/Button.svelte";
     import Input from "$cmp/core/inputs/Input.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
-    import { s_projectSidebarActiveProject } from "$cmp/core/scaffold/s_projectSidebarActiveProject";
     import { clientCreateProjectChannelRaw } from "$lib/helpers/api/projectsClient";
-    import type { IChannel } from "$lib/types/IChannel";
     import type { IProject } from "$lib/types/IProject";
     import { sanitizeProjectIdInput } from "$lib/utils/sanitizers";
     import toastOptions from "$lib/utils/toast";
@@ -16,39 +14,33 @@
     // STATE
     let dialog: HTMLDialogElement;
     let channelID: string;
+    let working = false;
 
     // HANDLERS
-    function reset() {
-        channelID = "";
-    }
     function onCancel() {
         dialog.close();
     }
     async function onCreate() {
+        working = true;
         const res = await clientCreateProjectChannelRaw(
             fetch,
             sanitizeProjectIdInput(project.key),
             { id: channelID }
         );
-        console.debug("Create channel fetch result", res);
 
         if (res.status === 200) {
             toast.success(`Created channel #${channelID}!`, toastOptions());
-            const body = (await res.json()) as IChannel;
-            //s_appSidebarFetchAllProjects();
-            s_projectSidebarActiveProject.update((project) => {
-                if (project) project.channels = [...(project?.channels ?? []), body];
-                return project;
-            });
             dialog.close();
             onCreated && onCreated();
+            return;
         } else if (res.status === 400) {
+            console.error(await res.json());
             toast.error("Could not create channel!", toastOptions());
         } else if (res.status === 409) {
-            toast.error("Channel already exists!", toastOptions());
+            toast.error(`Channel #${channelID} already exists!`, toastOptions());
         }
 
-        reset();
+        working = false;
     }
 </script>
 
@@ -56,10 +48,10 @@
     <svelte:fragment slot="title">Create Channel</svelte:fragment>
     <svelte:fragment slot="subtitle">
         Use channels to split events into easily accessible groups. Visit the <a
-            href="https://maximilianheidenreich.gitbook.io/pingback/"
+            href="/docs"
             target="_blank"
             class="pretty-link">documentation</a>
-        for more information. <!-- TODO: Link -->
+        for more information.
     </svelte:fragment>
     <svelte:fragment slot="body">
         <fieldset>
@@ -68,7 +60,7 @@
                 <Input
                     bind:value={channelID}
                     sanitizer={sanitizeProjectIdInput}
-                    placeholder="general" />
+                    placeholder="payments" />
                 <!-- TODO: space input should auto replace on input -->
             </label>
             <p class="mt-2 max-w-[35ch] px-0.5 leading-5">
@@ -84,7 +76,7 @@
             <Button
                 style="muted"
                 on:click={onCancel}>Cancel</Button>
-            <Button on:click={onCreate}>Create</Button>
+            <Button on:click={onCreate} loading={working}>Create</Button>
         </div>
     </svelte:fragment>
 </Modal>

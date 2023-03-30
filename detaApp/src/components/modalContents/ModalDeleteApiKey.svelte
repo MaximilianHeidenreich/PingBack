@@ -1,7 +1,6 @@
 <script lang="ts">
     import Button from "$cmp/core/buttons/Button.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
-    import { clientDeleteProjectRaw } from "$lib/helpers/api/projectsClient";
     import toastOptions from "$lib/utils/toast";
     import toast from "svelte-french-toast";
 
@@ -10,12 +9,14 @@
 
     // STATE
     let dialog: HTMLDialogElement;
+    let working = false;
 
     // HANDLERS
     function onCancel() {
         dialog.close();
     }
     async function onDelete() {
+        working = true;
         /*const res = await clientDe(fetch, projectID);
         console.debug("Delete api key fetch result", res);
 
@@ -28,6 +29,7 @@
 
         dialog.close();
         onDeleted && onDeleted();
+        working = false;
     }
 </script>
 
@@ -44,6 +46,7 @@
                 on:click={onCancel}>Cancel</Button>
             <Button
                 on:click={onDelete}
+                loading={working}
                 style="red">Delete</Button>
         </div>
     </svelte:fragment>
