@@ -48,11 +48,27 @@
                 </p>
             </div>
             <ul class="details">
-                <li class="font-mono">{event.project}</li>
-                <li>·</li>
-                <li class="font-mono">#{event.channel}</li>
-                <li>·</li>
-                <li>today at 7:53 PM</li>
+                <li><span class="font-mono">{event.project}</span></li>
+                <li><span class="font-bold">·</span></li>
+                <li><span class="font-mono">#{event.channel}</span></li>
+                <li><span class="font-bold">·</span></li>
+                <li>
+                    {#if $s_timeFormat === "relative"}
+                    <span use:relativeTime={{ date: event.createdAt }}></span>
+                    {:else if $s_timeFormat === "absolute"}
+                    <span>
+                        {new Date(
+                                event.createdAt
+                            ).toLocaleString("de-DE", {
+                                day: "numeric",
+                                month: "short",
+                                year: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            })}
+                    </span>
+                    {/if}
+                </li>
             </ul>
         </div>
     </a>
