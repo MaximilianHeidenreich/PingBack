@@ -1,6 +1,8 @@
 <script lang="ts">
+    import { relativeTime } from "svelte-relative-time";
     import { s_eventListStyle } from "./s_eventListStyle";
     import type { IEvent } from "$lib/types/IEvent";
+    import { s_timeFormat } from "$lib/stores/s_timeFormat";
 
     // PROPS
     export let event: IEvent,
@@ -13,18 +15,23 @@
         <ul>
             <li class="icon"><span>{event.icon}</span></li>
             <li class="title"><span>{event.title}</span></li>
-            <li class="meta"><span>
-                <!-- TODO: Add setting for https://day.js.org/docs/en/plugin/relative-time short time -->
-                {event.project} · {new Date(
+            <li class="meta">
+                {#if $s_timeFormat === "relative"}
+                <span class="text-xs" use:relativeTime={{ date: event.createdAt }}></span>
+                {:else if $s_timeFormat === "absolute"}
+                <span class="text-xs">
+                    {new Date(
                             event.createdAt
                         ).toLocaleString("de-DE", {
                             day: "numeric",
-                            month: "2-digit",
+                            month: "short",
                             year: "2-digit",
                             hour: "2-digit",
                             minute: "2-digit"
                         })}
-            </span></li>
+                </span>
+                {/if}
+            </li>
         </ul>
     </a>
     {:else}
