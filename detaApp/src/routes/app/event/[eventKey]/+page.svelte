@@ -26,7 +26,7 @@
 
     // FN
     function getIconColor(): string {
-        if (!browser) return "#aaaaaa";
+        if (!browser) return "#ffffff";
         const iconPalette = generatePalette(event?.icon || "⚙️");
         return iconPalette[0];
     }
@@ -61,7 +61,7 @@
         <header class="overview mb-2 flex w-full gap-8">
             <div class="icon">
                 <div
-                    class="mt-1 flex aspect-square items-center justify-center rounded-3xl bg-[#8686861e] p-5"
+                    class="mt-1 p-5 flex aspect-square items-center justify-center rounded-3xl bg-transparent transition-all duration-300"
                     style="background: {getIconColor()}55;">
                     <span class="icon text-4xl">{event.icon}</span>
                 </div>
