@@ -6,13 +6,14 @@
     import AppContentSectionHeader from "$cmp/core/scaffold/AppContentSectionHeader.svelte";
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
     import { TKN_ICON } from "$lib/utils/tokens";
-    import { IconArrowsVertical, IconLink, IconTrash } from "@tabler/icons-svelte";
+    import { IconArrowsVertical, IconTrash } from "@tabler/icons-svelte";
     import type { PageData } from "./$types";
     import { browser } from "$app/environment";
     import { clientDeleteEvent } from "$lib/helpers/api/eventClient";
     import toast from "svelte-french-toast";
     import toastOptions from "$lib/utils/toast";
-    import { goto } from "$app/navigation";
+    import { s_timeFormat } from "$lib/stores/s_timeFormat";
+    import { relativeTime } from "svelte-relative-time";
 
     // PROPS
     export let data: PageData;
@@ -70,15 +71,23 @@
                 <header>
                     <span class="event-title">{event.title}</span>
                     <span class="event-name"
-                        >{event.eventName} · #{event.channel} · {new Date(
-                            event.createdAt
-                        ).toLocaleString("de-DE", {
-                            day: "numeric",
-                            month: "2-digit",
-                            year: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit"
-                        })}</span>
+                        >{event.eventName} · #{event.channel} ·
+                        {#if $s_timeFormat === "relative"}
+                        <span use:relativeTime={{ date: event.createdAt }}></span>
+                        {:else if $s_timeFormat === "absolute"}
+                        <span>
+                            {new Date(
+                                    event.createdAt
+                                ).toLocaleString("de-DE", {
+                                    day: "numeric",
+                                    month: "short",
+                                    year: "2-digit",
+                                    hour: "2-digit",
+                                    minute: "2-digit"
+                                })}
+                        </span>
+                        {/if}
+                        </span>
                 </header>
                 <footer class="flex w-full justify-end">
                     <ul class="flex items-center gap-1.5">
