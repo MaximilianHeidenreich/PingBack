@@ -9,12 +9,18 @@
     import { IconArrowsVertical, IconLink, IconTrash } from "@tabler/icons-svelte";
     import type { PageData } from "./$types";
     import { browser } from "$app/environment";
+    import { clientDeleteEvent } from "$lib/helpers/api/eventClient";
+    import toast from "svelte-french-toast";
+    import toastOptions from "$lib/utils/toast";
+    import { goto } from "$app/navigation";
 
     // PROPS
     export let data: PageData;
 
     // STATE
     const event = data.event;
+
+    let loadingDeleteEvent = false;
 
     s_headerTitle.set(`Event – ${event?.key.split("-")[0]}`);
 
@@ -23,6 +29,25 @@
         if (!browser) return "#aaaaaa";
         const iconPalette = generatePalette(event?.icon || "⚙️");
         return iconPalette[0];
+    }
+
+    // HANDLERS
+    async function onDeleteEvent() {
+        if (!event) return;
+        loadingDeleteEvent = true;
+        try {
+            await clientDeleteEvent(fetch, event.key);
+        }
+        catch (e) {
+            console.error(e);
+            toast.error("Could not delete event!", toastOptions());
+            loadingDeleteEvent = false;
+            return;
+        }
+        //goto("/app/feed");
+        history.back();
+        loadingDeleteEvent = false;
+        toast.success("Event deleted!", toastOptions());
     }
 </script>
 
@@ -57,14 +82,16 @@
                 </header>
                 <footer class="flex w-full justify-end">
                     <ul class="flex items-center gap-1.5">
-                        <li>
+                        <!--<li>
                             <IconButton
                                 ><IconLink
                                     size={TKN_ICON.SIZE.BASE}
                                     stroke={TKN_ICON.STROKE.BASE} /></IconButton>
-                        </li>
+                        </li>-->
                         <li>
                             <IconButton
+                                on:click={onDeleteEvent}
+                                loading={loadingDeleteEvent}
                                 ><IconTrash
                                     size={TKN_ICON.SIZE.BASE}
                                     stroke={TKN_ICON.STROKE.BASE} /></IconButton>

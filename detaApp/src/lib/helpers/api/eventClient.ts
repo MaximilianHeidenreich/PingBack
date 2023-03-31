@@ -174,3 +174,20 @@ export async function clientFetchAllEventsInFrame(
 
     //return [fetchRes, moreEventsRes.count >= 1];
 }
+
+export async function clientDeleteEvent(
+    fetcher: TFetcher,
+    eventID: string
+): Promise<void> {
+    const url = new URL(`/api/v${VERSION.major}/events/${eventID}`, window.location.origin);
+
+    const res = await fetcher(url, {
+        method: "DELETE",
+        headers: {
+            "Accept": "application/json",
+        }
+    });
+    if (!res.ok) throw res; // TODO: Err handling like rust
+    const data = await res.json();
+    return data;
+}
