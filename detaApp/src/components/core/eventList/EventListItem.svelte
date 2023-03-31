@@ -18,7 +18,7 @@
     }
 </script>
 
-<li class="item {$s_eventListStyle}" class:odd>
+<li class="item {$s_eventListStyle} {event.parser === "log" ? `log-${event.tags["_level"]}` : ''}" class:odd>
     {#if $s_eventListStyle === "compact"}
     <a href="/app/event/{event.key}">
         <ul>
@@ -92,6 +92,11 @@
         @apply bg-neutral-50;
     }
 
+    .item.log-debug .title { @apply text-violet-700; }
+    .item.log-info .title { @apply text-blue-700; }
+    .item.log-warning .title { @apply text-orange-500; }
+    .item.log-error .title { @apply text-red-600; }
+
     .item.compact {
         @apply px-6 py-3.5 px-6 py-3 border-b;
     }
@@ -132,7 +137,7 @@
         @apply flex flex-col justify-between;
     }
     .item.card .meta .title {
-        @apply text-xl font-medium text-gray-800;
+        @apply text-xl font-medium;
     }
     .item.card .meta .description-preview {
         @apply mt-1 mb-5;
