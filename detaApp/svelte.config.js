@@ -17,7 +17,8 @@ const config = {
     kit: {
         adapter: adapter(),
         alias: {
-            $cmp: "./src/components"
+            $cmp: "./src/components",
+            $css: "./src/css"
         }
     }
 };

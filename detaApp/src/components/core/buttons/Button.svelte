@@ -1,76 +1,52 @@
 <script lang="ts">
+    import Spinner from "../utils/Spinner.svelte";
+
+
     // PROPS
-    export let  type: "primary" | "secondary" = "primary",
-                color: "main" | "orange" | "red";
+    export let type: "normal" | "ghost" | "link" = "normal",
+        style: "normal" | "muted" | "red" = "normal",
+        loading: boolean = false,
+        disabled: boolean = false,
+        clazz: string = "";
+
 </script>
 
-<button
-    on:click
-    class="{type} {color}">
-    <slot />
+<button class="{type} s-{style}" class:loading on:click>
+    <span class="content flex justify-center items-center gap-3"><slot /></span>
+    {#if loading}
+    <span class="absolute top-0 left-0 bottom-0 right-0 flex justify-center items-center"><Spinner color="{style === "muted" ? 'dark' : 'light'}"/></span>
+    {/if}
 </button>
 
 <style lang="postcss">
+
     button {
-        /*@apply px-5 py-3 rounded-xl text-white bg-indigo-500;
-        @apply flex justify-center items-center;*/
-        @apply transition-colors duration-200 ease-in-out;
-
-        @apply mt-3 inline-flex w-full justify-center rounded-md border px-4 py-2;
-        @apply text-base font-medium shadow-sm;
-        @apply  sm:w-auto sm:text-sm; /* sm:mt-0 sm:ml-3 */
-    }
-    button:disabled {
-        @apply cursor-not-allowed;
-    }
-    button:focus {
-        @apply outline-none;
+        @apply text-white font-medium rounded-xl;
+        @apply px-5 py-3 w-fit min-w-max;
+        @apply scale-100;
     }
 
-    /* PRIMARY */
-    button.primary {
-        @apply border-neutral-300 bg-[#20282f] text-white;
+    button.loading {
+        @apply cursor-wait;
     }
-    button.primary:disabled {
-        @apply text-neutral-400;
-    }
-    button.primary:not(:disabled):hover {
-        @apply bg-neutral-100 text-neutral-800;
-    }
-    button.primary:not(:disabled):active {
-        @apply bg-neutral-200;
+    button.loading .content {
+        @apply opacity-0;
     }
 
-    /* SECONDARY */
-    button.secondary {
-        @apply border-neutral-200 bg-neutral-50 text-neutral-700;
-    }
-    button.secondary:disabled {
-        @apply bg-neutral-400 text-neutral-600;
-    }
-    button.secondary:not(:disabled):hover {
-        @apply bg-neutral-100 text-neutral-800;
-    }
-    button.secondary:not(:disabled):active {
-        @apply border-neutral-100 bg-neutral-200;
+    button:active {
+        @apply translate-y-0.5 scale-[0.96];
+        transition: all 0.1s ease-in-out;
     }
 
-    /* COLORS */
-    button.primary.main {
-        @apply bg-pb-blue-500;
+    button.s-normal {
+        @apply bg-[#2F2B43];
     }
-    button.primary.red {
-        @apply bg-red-500 border-red-700 text-white;
-    }
-    button.primary.red:hover {
-        @apply bg-red-600 text-white;
-    }
-    button.primary.red:active {
-        @apply bg-red-700 text-white;
+    button.s-muted {
+        @apply border bg-gray-50 text-black;
     }
 
-
-    button.secondary.orange {
-        @apply border-pb-blue-500;
+    button.s-red {
+        @apply bg-red-500;
     }
+
 </style>

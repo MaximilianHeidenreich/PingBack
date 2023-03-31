@@ -1,19 +1,19 @@
-export interface IChannel {
-    name: string; // Channel name, only lowercase letters, numbers and dashes and underscores
-    notify: boolean; // Whether to notify clients when an event is created
-}
+import type { IChannel } from "./IChannel";
 
+/**
+ * Projects are used to group events and channels.
+ */
 export interface IProject {
     // META
-    id: string;
-    createdAt: number;
+    key: string; // Unique ID
+    createdAt: number; // Unix timestamp
+    contentHash: string; // "Hash" of project -> Change inavlidates client cahces
 
-    // META - SYSTEM — Dont modify or shit will break ;)
-    latestEventTimestamp: number;   // Stores the last timestamp at which an event was added -> Used for efficient query in frontend
-    eventSpecifiers: Record<string, number>;    // Stores all different event specifiers and their count -> Used for efficient query & filtering in frontend
-
+    // SYSTEM META -> read only OR know what you're doing!
+    latestEventTimestamp: number; // Unix timestamp of latest event in project -> efficient query by starting at latest
+    eventSpecifiers: Record<string, number>; // Map of event names to number of events of its kind -> user filter ux
 
     // PAYLOAD
-    name: string; // Project name, only lowercase letters, numbers and dashes and underscores
+    displayName: string; // Displayname of project
     channels: IChannel[];
 }

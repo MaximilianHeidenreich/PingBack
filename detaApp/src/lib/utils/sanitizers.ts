@@ -6,14 +6,13 @@
 export function sanitizeProjectIdInput(input: string): string {
     let sane = input
         .trimStart()
-        .trimEnd()
-        .replace(/ +/, "-")
+        .replace(/\s+/g, "-")
         .replace(/[^0-9a-zA-Z-_]/g, "_");
     return sane;
 }
 
 /**
- * Similar to sanitizeProjectIdInput but also converts to lowercase for db use&lookup.
+ * Similar to sanitizeProjectIdInput but also converts to lowercase for db use & lookup.
  * @param input
  * @returns
  */
@@ -32,11 +31,17 @@ export function sanitizeProjectIdInternal(input: string): string {
  * @param input
  * @returns
  */
-export function sanitizeChannelName(input: string): string {
+export function sanitizeChannelID(input: string): string {
     let sane = input
         .toLowerCase()
-        .replaceAll(" ", "-")
+        .replace(/\s+/g, "-")
         .replace(/[^0-9a-zA-Z-_]/g, "_")
-        .replace(/ +/, " ");
+        .replace(/\s+/g, " ");
+    return sane;
+}
+
+// TODO: Docs & tests
+export function sanitizeApiKeyName(input: string): string {
+    let sane = input.trim();
     return sane;
 }

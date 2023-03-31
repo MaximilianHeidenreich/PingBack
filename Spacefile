@@ -3,19 +3,23 @@ v: 0
 app_name: "PingBack"
 icon: "./assets/logo/v1_pingback-logo_deta@512.png"
 micros:
-    - name: frontend
-      primary: true
-      src: ./detaApp
-      public_routes:
-      - "/api/events*"
-      - "/api/projects*"
-      engine: nodejs16
-      commands:
-      - export
-      #- npm install
-      #- npm run build
-      include:
-      - build
-      - package.json
-      - package-lock.json
-      run: node build
+  - name: docs
+    src: ./docs
+    path: docs
+    engine: next
+  - name: frontend
+    primary: true
+    src: ./detaApp
+    public_routes:
+    - "/api/v*/events"
+    engine: nodejs16
+    commands:
+    - export
+    - npm install
+    #- npm run build
+    include:
+    - build
+    - node_modules
+    - package.json
+    - package-lock.json
+    run: node build

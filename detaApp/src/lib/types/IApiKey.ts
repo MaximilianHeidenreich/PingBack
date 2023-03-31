@@ -1,3 +1,6 @@
+/**
+ * API Key Permissions can be used to restrict access to the API.
+ */
 export type TApiKeyPermission =
     | "event:create"
     | "event:query"
@@ -8,9 +11,13 @@ export type TApiKeyPermission =
     | "project:update"
     | "project:delete";
 
+/**
+ * Api Key used to authenticate with the API.
+ */
 export interface IApiKey {
-    createdAt: number;
-    apiKey: string; // The actual API key
-    name: string; // Displayname
-    project: string; // ProjectId for which the API is valid
+    // META
+    key: string; // Unique key -> ! Mirrors deta base "key" field
+    createdAt: number; // Unix timestamp
+    displayName: string;
+    project: string; // Project for which key is valid
 }

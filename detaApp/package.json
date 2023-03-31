@@ -1,7 +1,8 @@
 {
     "name": "pingback",
-    "version": "0.1.0",
+    "version": "1.1.0",
     "private": true,
+    "type": "module",
     "scripts": {
         "dev": "vite dev",
         "build": "vite build",
@@ -23,7 +24,10 @@
         "@tailwindcss/line-clamp": "^0.4.2",
         "@testing-library/svelte": "^3.2.2",
         "@types/marked": "^4.0.8",
+        "@types/pouchdb": "^6.4.0",
+        "@types/semver": "^7.3.13",
         "autoprefixer": "^10.4.7",
+        "iconsax-svelte": "^0.0.1-alpha.11",
         "jsdom": "^21.1.0",
         "postcss": "^8.4.14",
         "postcss-load-config": "^4.0.1",
@@ -40,13 +44,15 @@
         "vite": "^4.0.0",
         "vitest": "^0.29.1"
     },
-    "type": "module",
     "dependencies": {
         "@tabler/icons-svelte": "^2.4.0",
         "dayjs": "^1.11.7",
         "deta": "^1.1.0",
         "emoji-palette": "^0.0.3",
         "marked": "^4.2.12",
-        "svelte-french-toast": "^1.0.3"
+        "semver": "^7.3.8",
+        "svelte-french-toast": "^1.0.3",
+        "svelte-select": "^5.5.2",
+        "web-push": "^3.5.0"
     }
 }

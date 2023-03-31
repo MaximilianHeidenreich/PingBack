@@ -1,21 +1,28 @@
-export type TEventParser = "text" | "markdown";
+/**
+ * Parser to use when displaying event description.
+ *
+ * log -> special type, will use text description but apply special format in ui
+ */
+export type TEventParser = "text" | "markdown" | "json" | "log";
 
 /**
- * A single "notification" / "log" / "thing that happened".
+ * A single, immutable "thing that happened at a point in time".
  */
 export interface IEvent {
-    // METADATA
-    id: string; // Unique ID
+    // META
+    key: string; // Unique key for event
+    v: number; // Version of application -> used for migrations TODO: Only major version
     createdAt: number; // Unix timestamp
 
+    project: string; // Project associated with event
+    channel: string; // Channel in project associated with event
+    eventName: string; // Event name -> declarative, searchable, can "subdivide" events  e.g. "deploy", "deploy.success", "user.signup", "user.signout"
+    notify?: boolean; // Whether to notify clients of event
+    icon?: string; // Icon to use when displaying event -> Emoji or TODO: Build-in icons? svg allow? img url?
+    parser: TEventParser; // Parser to use when displaying event description
+
     // PAYLOAD
-    project: string; // Project associated with this event
-    channel: string; // Channel associated with this event
-    event: string; // Event name -> unique, simple and searchable e.g. "user.signup", "payment.success", "deploy"
-    notify: boolean; // Whether clients will be notified when event is created
-    title: string; // Title of the event
-    description: string; // Longer description -> Can include Markdown etc. (see parsers)
-    parser: TEventParser; // Parser to use for the description
-    icon: string; // Icon to display for this event
-    tags: Record<string, unknown>; // Tags to associate with this event
+    title: string; // Title of event
+    description: unknown; // Description of event
+    tags: Record<string, unknown>; // Tags (json data) associate with event -> can be used for filtering
 }

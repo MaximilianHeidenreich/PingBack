@@ -1,0 +1,24 @@
+.app-area {
+    @apply bg-white p-6;
+    @apply dark:bg-neutral-900 dark:border-neutral-800;
+    @apply rounded-3xl shadow-lg border-2 border-neutral-200;
+}
+/*@media screen and (min-width: 768px) {
+    .app-area {
+        @apply rounded-3xl shadow-lg border-2 border-neutral-200;
+    }
+}*/
+
+.content-area {
+    @apply bg-white p-6 overflow-y-scroll;
+    @apply dark:bg-neutral-900 dark:border-neutral-800;
+    @apply rounded-t-3xl shadow-lg border-2 border-neutral-200;
+}
+@media screen and (min-width: 768px) {
+    .content-area {
+        @apply rounded-3xl;
+    }
+    .content-area-transparent {
+        @apply px-6 py-2;
+    }
+}

@@ -1,4 +1,5 @@
 <script lang="ts">
+    // TODO: REVIEW & REWRITE?
     // PROPS
     export let type: "text" = "text",
         value: string = "",
@@ -19,9 +20,9 @@
 
 <style lang="postcss">
     input {
-        @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm;
+        @apply mt-1 block w-full rounded-xl border-2 border-gray-300 shadow-sm;
     }
     input:focus {
-        @apply border-neutral-700 ring ring-neutral-400 ring-opacity-0;
+        @apply border-pink-500 ring ring-neutral-400 ring-opacity-0;
     }
 </style>

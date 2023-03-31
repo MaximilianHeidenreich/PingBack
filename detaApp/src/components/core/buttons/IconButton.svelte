@@ -1,46 +1,30 @@
 <script lang="ts">
+    import Spinner from "../utils/Spinner.svelte";
+    import Button from "./OldButton.svelte"; // TODO: Fix move to new
+
     // PROPS
-    export let disabled: boolean = false,
-        type: "button" | "link" = "button",
-        href: string = "#";
+    export let type: "button" | "link" = "button",
+        style: "primary" | "secondary" | "link" = "secondary",
+        color: "pink" | "red" = "pink",
+        target: "_blank" | "_self" = "_self",
+        href: string = "",
+        disabled = false,
+        clazz: string = "",
+        loading = false;
 </script>
 
-{#if type === "button"}
-    <button
-        on:click
-        {disabled}
-        {...$$restProps}>
-        <slot name="icon" />
-    </button>
-{:else if type === "link"}
-    <a
-        {href}
-        class:disabled
-        {...$$restProps}>
-        <slot name="icon" />
-    </a>
-{/if}
-
-<style lang="postcss">
-    a,
-    button {
-        @apply rounded-xl p-2.5 text-black;
-        @apply flex items-center justify-center;
-        @apply transition-colors duration-200 ease-in-out;
-    }
-    a:disabled,
-    button:disabled {
-        @apply cursor-not-allowed text-neutral-400;
-    }
-    a:focues,
-    button:focus {
-    }
-    a:not(:disabled):hover,
-    button:not(:disabled):hover {
-        @apply bg-neutral-100;
-    }
-    a:not(:disabled):active,
-    button:not(:disabled):active {
-        @apply bg-neutral-200;
-    }
-</style>
+<Button
+    {type}
+    style="secondary"
+    {target}
+    {href}
+    {disabled}
+    clazz="!p-2 {clazz} !rounded-xl relative"
+    on:click
+    {...$$restProps}>
+    {#if loading}
+    <span class="flex justify-center items-center"><Spinner color="dark"/></span>
+    {:else}
+    <slot />
+    {/if}
+</Button>

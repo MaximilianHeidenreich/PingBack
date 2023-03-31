@@ -1,14 +1,19 @@
-// TODO: move transition tokens here
+import { quintOut } from "svelte/easing";
 
-export const ICON_TOKENS = Object.freeze({
+export const TKN_ICON = Object.freeze({
     SIZE: {
-        SM: 18,
+        SM: 20,
         BASE: 24,
         LG: 30
     },
     STROKE: {
-        LIGHT: 1.5,
+        SM: 1.5,
         BASE: 2,
-        THICK: 2.5
+        LG: 2.5
     }
+});
+
+export const TKN_TRANSITION = Object.freeze({
+    DURATION: 250,
+    EASING: quintOut
 });

@@ -1,0 +1,14 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build && next export"
+    },
+    "dependencies": {
+        "next": "^13.2.4",
+        "nextra": "^2.2.19",
+        "nextra-theme-docs": "^2.2.19",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    }
+}
