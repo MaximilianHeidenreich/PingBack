@@ -18,14 +18,14 @@ export function localStorable<T>(data: T, localStoreKey: string) {
    return {
       subscribe,
       set: (d: T) => {
-         browser && (localStorage.storable = JSON.stringify(d));
+         browser && (localStorage.setItem(localStoreKey, JSON.stringify(d)));
          set(d);
       },
       update: (updater: Updater<T>) => {
         update(updater);
          const updatedStore = get(store);
 
-         browser && (localStorage.storable = JSON.stringify(updatedStore));
+         browser && (localStorage.setItem(localStoreKey, JSON.stringify(updatedStore)));
          set(updatedStore);
       }
    };
