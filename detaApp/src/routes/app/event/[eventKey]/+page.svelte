@@ -106,12 +106,13 @@
         <AppContentSectionHeader>
             <svelte:fragment slot="title">Description</svelte:fragment>
         </AppContentSectionHeader>
-        {#if event.parser === "text"}
-            <p>
-                {event.description}
-            </p>
+        {#if event.parser === "text" || event.parser === "log"}
+            <p>{event.description}</p>
         {:else if event.parser === "markdown"}
-            <strong>Markdown support coming soon!</strong><br>
+            <strong>Markdown description support coming soon!</strong><br>
+            {@html event.description}
+        {:else if event.parser === "json"}
+            <strong>JSON description support coming soon!</strong><br>
             {@html event.description}
         {/if}
     </AppContentSection>
@@ -122,9 +123,9 @@
         </AppContentSectionHeader>
         <details class="mb-6">
             <summary class="flex cursor-pointer items-center justify-between gap-2">
-                <span class=""
-                    >Tags <span class="font-mono text-base">({Object.keys(event.tags).length}) (todo: pretty json view)</span
-                    ></span>
+                <span>
+                    Tags <span class="font-mono text-base">({Object.keys(event.tags).length})</span>
+                </span>
                 <IconArrowsVertical
                     size={TKN_ICON.SIZE.SM}
                     stroke={TKN_ICON.STROKE.BASE} />
