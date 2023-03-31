@@ -131,7 +131,7 @@
                     stroke={TKN_ICON.STROKE.BASE} />
             </summary>
             <div class="mt-2">
-                <pre>{JSON.stringify(event.tags, null, 2)}</pre>
+                <pre>{JSON.stringify(event.tags, null, 2)}</pre> <!-- TODO: impl pretty json view -->
             </div>
         </details>
         <hr class="mt-4" />
