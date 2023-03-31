@@ -2,10 +2,8 @@
     import Button from "$cmp/core/buttons/OldButton.svelte";
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
     import { TKN_ICON, TKN_TRANSITION } from "$lib/utils/tokens";
-    import { IconX } from "@tabler/icons-svelte";
     import { createEventDispatcher } from "svelte";
     import { fly } from "svelte/transition";
-    import Select from "svelte-select";
     import type { IProject } from "$lib/types/IProject";
     import Input from "$cmp/core/inputs/Input.svelte";
 

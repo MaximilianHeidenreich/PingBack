@@ -1,12 +1,4 @@
 <script lang="ts">
-    import {
-    IconArchive,
-    IconBell,
-        IconChartHistogram,
-        IconQuestionMark,
-        IconRss,
-        IconSettings,
-    } from "@tabler/icons-svelte";
     import { TKN_ICON, TKN_TRANSITION } from "$lib/utils/tokens";
 
     import "$css/menuLinks.postcss";
@@ -18,7 +10,6 @@
     import Chart1 from "iconsax-svelte/Chart1.svelte";
     import Setting2 from "iconsax-svelte/Setting2.svelte";
     import IconButton from "../buttons/IconButton.svelte";
-    import Maximize4 from "iconsax-svelte/Maximize4.svelte";
     import Book1 from "iconsax-svelte/Book1.svelte";
     import Archive2 from "iconsax-svelte/Archive2.svelte";
     import DirectInbox from "iconsax-svelte/DirectInbox.svelte";
@@ -118,7 +109,7 @@
                         </IconButton>
                         </li>
                     <li>
-                        <ThemeToggle />
+                        <ThemeToggle/>
                     </li>
                 </ul>
             </section>

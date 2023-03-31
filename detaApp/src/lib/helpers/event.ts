@@ -150,6 +150,6 @@ export async function serverCreateEvent(
  * Gets the frame for a given event timestamp. TODO: DOC
  * @param timestamp
  */
-function getTimeFrame(timestamp: number): Dayjs {
+export function getTimeFrame(timestamp: number): Dayjs {
     return dayjs(timestamp).endOf(TIME_FRAME_OFFSET_UNIT);
 }

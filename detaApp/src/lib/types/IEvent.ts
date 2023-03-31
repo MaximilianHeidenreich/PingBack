@@ -1,7 +1,9 @@
 /**
  * Parser to use when displaying event description.
+ *
+ * log -> special type, will use text description but apply special format in ui
  */
-export type TEventParser = "text" | "markdown" | "json";
+export type TEventParser = "text" | "markdown" | "json" | "log";
 
 /**
  * A single, immutable "thing that happened at a point in time".

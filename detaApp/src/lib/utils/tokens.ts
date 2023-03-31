@@ -14,6 +14,6 @@ export const TKN_ICON = Object.freeze({
 });
 
 export const TKN_TRANSITION = Object.freeze({
-    DURATION: 350,
+    DURATION: 250,
     EASING: quintOut
 });

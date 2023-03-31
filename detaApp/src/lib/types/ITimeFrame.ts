@@ -5,6 +5,7 @@ import type { OpUnitType } from "dayjs";
  * It is a linked list, with `nextFrame` and `previousFrame` pointing to the next and previous time frame.
  */
 export interface ITimeFrame {
+    key: string;    // timestamp of the end of the time frame
     frameEnd: number;   // timestamp of the end of the time frame
     nextFrame: number;  // key of next (future) frame
     previousFrame: number;  // key of previous (past) frame

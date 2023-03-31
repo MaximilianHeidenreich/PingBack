@@ -6,8 +6,7 @@
 export function sanitizeProjectIdInput(input: string): string {
     let sane = input
         .trimStart()
-        .trimEnd()
-        .replace(/ +/, "-")
+        .replace(/\s+/g, "-")
         .replace(/[^0-9a-zA-Z-_]/g, "_");
     return sane;
 }
@@ -35,9 +34,9 @@ export function sanitizeProjectIdInternal(input: string): string {
 export function sanitizeChannelID(input: string): string {
     let sane = input
         .toLowerCase()
-        .replaceAll(" ", "-")
+        .replace(/\s+/g, "-")
         .replace(/[^0-9a-zA-Z-_]/g, "_")
-        .replace(/ +/, " ");
+        .replace(/\s+/g, " ");
     return sane;
 }
 
