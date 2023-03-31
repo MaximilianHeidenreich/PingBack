@@ -39,14 +39,6 @@ export const DELETE = (async ({ params }) => {
     if (sysdoc.totalEvents === 0 && sysdoc.latestEventTimestamp === event.createdAt) sysdoc.latestEventTimestamp = -1;
     // TODO: rebuild latestEventTimestamp?
 
-    try {
-        await db_system.update(sysdoc, DB_SYS_KEY);
-    }
-    catch (e) {
-        console.error(e);
-        return respondInternalError("Could not update sysdoc!");
-    }
-
     // Update project
     let project: IProject | null;
     try {
@@ -104,6 +96,18 @@ export const DELETE = (async ({ params }) => {
     catch (e) {
         console.error(e);
         return respondInternalError("Could not delete associated event TimeFrame!");
+    }
+
+    // TODO: For now we just handle edge frames like this -> Think of bettwe rway
+    if (frame.nextFrame === -1) sysdoc.latestEventTimestamp = frame.previousFrame;
+    if (frame.previousFrame === -1 && frame.nextFrame !== -1) sysdoc.latestEventTimestamp = 1;
+
+    try {
+        await db_system.update(sysdoc, DB_SYS_KEY);
+    }
+    catch (e) {
+        console.error(e);
+        return respondInternalError("Could not update sysdoc!");
     }
 
     try {

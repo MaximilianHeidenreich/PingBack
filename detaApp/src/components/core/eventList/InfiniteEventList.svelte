@@ -60,6 +60,10 @@
     async function loadPast() {
         // TODO: Fix hack to prevent load trigger from list before getting sysdoc timestamp
         if (lastPastFrameEnd.valueOf() === dayjs(0).valueOf()) return;
+        if (lastPastFrameEnd.valueOf() === dayjs(-1).valueOf()) {
+            endOfData = true;
+            return;
+        }
         if (loading || endOfData) return;
         loading = true;
 
