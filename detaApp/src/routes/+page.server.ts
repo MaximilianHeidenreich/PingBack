@@ -124,4 +124,4 @@ export const load = (async ({  }) => {
     */
 
     return {};
-}) satisfies LayoutServerLoad;
+}) satisfies PageServerLoad;
