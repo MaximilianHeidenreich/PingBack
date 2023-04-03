@@ -8,7 +8,7 @@ import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
 import { VERSION } from "$lib/utils/version";
 import { redirect } from "@sveltejs/kit";
 import dayjs from "dayjs";
-import type { LayoutServerLoad } from "./$types";
+import type { PageServerLoad } from "./$types";
 
 export const load = (async ({  }) => {
     const sysdoc = await db_system.get(DB_SYS_KEY);
