@@ -25,6 +25,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
           cache-dependency-path: "detaApp/package-lock.json"
+      - name: Install dependencies
+        working-directory: detaApp
+        run: npm i
       - name: Run check
         run: |
           npm run check
@@ -39,6 +42,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
           cache-dependency-path: "detaApp/package-lock.json"
+      - name: Install dependencies
+        working-directory: detaApp
+        run: npm i
       - name: Run tests
         working-directory: detaApp
         run: |
@@ -54,6 +60,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
           cache-dependency-path: "detaApp/package-lock.json"
+      - name: Install dependencies
+        working-directory: detaApp
+        run: npm i
       - name: Run lint
         working-directory: detaApp
         run: |
