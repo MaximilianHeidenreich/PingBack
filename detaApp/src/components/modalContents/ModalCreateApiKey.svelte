@@ -43,10 +43,10 @@
     <svelte:fragment slot="subtitle">
         API Keys are used to authenticate requests to your project. You cannot create events without
         an API Key. Visit the <a
-            href="https://maximilianheidenreich.gitbook.io/pingback/"
+            href="/docs/guide/core_concepts#api-keys"
             target="_blank"
             class="pretty-link">documentation</a>
-        for more information. <!-- TODO: Link -->
+        for more information.
     </svelte:fragment>
     <svelte:fragment slot="body">
         <fieldset>

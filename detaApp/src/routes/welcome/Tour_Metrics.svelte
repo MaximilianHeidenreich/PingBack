@@ -10,10 +10,10 @@
         </h1>
         <p class="leading-relaxed mt-12 max-w-lg">
             Watch out for future updates which will add "metrics".
-            This will allow you to create charts and detailed reports on what kind of and how many events 
+            This will allow you to create charts and detailed reports on what kind of and how many events
             are being received.
             <br>
-            <a href="/docs" target="_blank" class="pretty-link">Learn more</a>. <!-- TODO: Add link -->
+            <a href="/docs/guide/metrics" target="_blank" class="pretty-link">Learn more</a>.
         </p>
     </div>
 </TourStep>

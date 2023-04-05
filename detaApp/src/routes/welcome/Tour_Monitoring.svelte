@@ -13,7 +13,7 @@
             This will allow you to create custom Notification, E-Mail or Webhook alerts whenever a specific thing happens.
             E.g. Your production system submit's an error event X times in 1 hour.
             <br>
-            <a href="/docs" target="_blank" class="pretty-link">Learn more</a>. <!-- TODO: Add link -->
+            <a href="/docs/guide/monitoring" target="_blank" class="pretty-link">Learn more</a>.
         </p>
     </div>
 </TourStep>
