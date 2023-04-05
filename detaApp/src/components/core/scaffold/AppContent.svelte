@@ -1,11 +1,17 @@
 <script lang="ts">
+    import { fetchSysContentHash } from "$lib/stores/s_sysContentHash";
     import { TKN_TRANSITION } from "$lib/utils/tokens";
+    import { onMount } from "svelte";
     import { fly } from "svelte/transition";
     import "./scaffold.postcss";
     import { s_appSidebarCollapsed } from "./s_appSidebarCollapsed";
     // PROPS
     export let style: "section" | "transparent" = "section",
         clazz = "";
+
+    onMount(() => {
+        fetchSysContentHash();
+    });
 </script>
 
 <main class:fullwidth={$s_appSidebarCollapsed}

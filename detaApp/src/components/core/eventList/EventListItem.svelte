@@ -52,8 +52,7 @@
             <span class="title">{event.title}</span>
             <div class="description-preview">
                 <p>
-                    {event.description}<br>
-                    asd
+                    {event.description}
                 </p>
             </div>
             <ul class="details">
@@ -88,7 +87,7 @@
     .item {
         @apply flex-1;
     }
-    .item.odd {
+    .item.compact.odd {
         @apply bg-neutral-50;
     }
 
