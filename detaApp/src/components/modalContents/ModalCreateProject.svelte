@@ -58,7 +58,6 @@
                     bind:value={projectName}
                     sanitizer={sanitizeProjectIdInput}
                     placeholder="My-Project" />
-                <!-- TODO: space input should auto replace on input -->
             </label>
             <p class="mt-2 max-w-[35ch] px-0.5 leading-5">
                 <small class="mt-1">

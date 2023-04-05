@@ -15,7 +15,7 @@
 </script>
 
 <header>
-    <div class="flex justify-end mb-4"><Button type="link" style="muted" on:click|once={onSkipTour}>Skip tour</Button></div><!-- TODO: same level with title -->
+    <div class="flex justify-end mb-4"><Button type="link" style="muted" on:click|once={onSkipTour}>Skip tour</Button></div>
     <h1 class="text-4xl font-bold mb-4">
         <slot name="title" />
     </h1>
