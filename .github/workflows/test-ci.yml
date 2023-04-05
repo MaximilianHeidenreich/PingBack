@@ -48,7 +48,7 @@ jobs:
         run: "pwd && ls detaApp"
   Build:
     runs-on: ubuntu-latest
-    needs: Build
+    needs: Lint
     steps:
       - name: Build docs
         run: |
