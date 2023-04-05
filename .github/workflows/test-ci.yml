@@ -14,26 +14,39 @@ on:
     #paths:
     #  - "detaApp/src**"
 jobs:
-  Setup:
+  Setup-docs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18.x]
     steps:
-      - uses: actions/setup-node@v3
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-          cache-dependency-path: "./**/package-lock.json"
-      - name: Check out repository code
-        uses: actions/checkout@v3
+          cache-dependency-path: "docs/package-lock.json"
       - name: Installing dependencies
         run: |
-          cd detaApp
-          npm i
-          cd ../docs
-          npm i
-          cd ../
+          curl -fsSL https://get.deta.dev/space-cli.sh | sh
+  Setup-frontend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: "detaApp/package-lock.json"
+      - name: Installing dependencies
+        run: |
           curl -fsSL https://get.deta.dev/space-cli.sh | sh
   Test:
     runs-on: ubuntu-latest
