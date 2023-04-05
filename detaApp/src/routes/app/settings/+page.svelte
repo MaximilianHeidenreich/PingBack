@@ -6,7 +6,7 @@
     import AppContentSectionHeader from "$cmp/core/scaffold/AppContentSectionHeader.svelte";
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
     import Spinner from "$cmp/core/utils/Spinner.svelte";
-    import { cache_GetCache } from "$lib/client/cache";
+    import { cache_Clear, cache_GetCache } from "$lib/client/cache";
     import { s_sysContentHash } from "$lib/stores/s_sysContentHash";
     import { sw_register } from "$lib/utils/serviceWorker";
     import { onMount } from "svelte";
@@ -17,6 +17,9 @@
     // HANDLERS
     function onEnablePushNotifications() {
         sw_register();
+    }
+    function onClearCache() {
+        cache_Clear();
     }
 
     // HOOKS
@@ -71,6 +74,6 @@
         <br>
         {/if}
         <br>
-        <Button disabled={!dbInfo}>Clear Cache</Button>
+        <Button on:click={onClearCache} disabled={!dbInfo}>Clear Cache</Button>
     </AppContentSection>
 </AppContent>

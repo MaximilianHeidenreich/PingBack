@@ -21,8 +21,11 @@ const config = {
         alias: {
             $cmp: "./src/components",
             $css: "./src/css"
+        },
+        serviceWorker: {
+            register: false
         }
-    }
+    },
 };
 
 export default config;

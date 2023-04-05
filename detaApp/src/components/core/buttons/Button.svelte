@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
     import Spinner from "../utils/Spinner.svelte";
 
 
@@ -9,8 +10,15 @@
         disabled: boolean = false,
         clazz: string = "";
 
-</script>
+    // STATE
+    const dispatch = createEventDispatcher();
 
+    // HANDLERS
+    /*function click(event: Event) {
+        dispatch("click", event);
+    }*/ // TODO: FIx
+
+</script>
 
 <button class="{type} s-{style}" class:loading class:disabled on:click {disabled}>
     <span class="content flex justify-center items-center gap-3"><slot /></span>

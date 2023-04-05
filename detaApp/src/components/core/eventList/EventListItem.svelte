@@ -5,10 +5,15 @@
     import { s_timeFormat } from "$lib/stores/s_timeFormat";
     import { browser } from "$app/environment";
     import { generatePalette } from "emoji-palette";
+    import { isMobile } from "$lib/utils/width";
 
     // PROPS
     export let event: IEvent,
         odd: boolean = true;
+
+    // STATE
+    $: truncatedDescription = event.parser === "text" ? `${(event.description as string).substring(0, isMobile() ? 83 : 200)}...` : "No preview available.";
+    
 
     // FN
     function getIconColor(): string {
@@ -51,8 +56,8 @@
         <div class="meta">
             <span class="title">{event.title}</span>
             <div class="description-preview">
-                <p>
-                    {event.description}
+                <p class="">
+                    {truncatedDescription}
                 </p>
             </div>
             <ul class="details">
@@ -122,7 +127,7 @@
         @apply w-full mb-5 px-2 max-w-lg self-center;
     }
     .item.card a {
-        @apply w-full flex items-start p-5 gap-5 min-w-[40ch];
+        @apply w-full flex items-start p-5 gap-5;
         @apply bg-white border drop-shadow-xl rounded-3xl;
     }
     .item.card .icon-wrapper {
@@ -142,7 +147,12 @@
         @apply mt-1 mb-5;
     }
     .item.card .meta .details {
-        @apply flex gap-2;
+        @apply flex gap-2 flex-wrap; /* TODO: better layout? */
         @apply text-sm text-gray-500;
+    }
+    @media screen and (min-width: 769px) {
+        .item.card a {
+            @apply min-w-[40ch];
+        }
     }
 </style>

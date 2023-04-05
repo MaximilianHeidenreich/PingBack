@@ -6,7 +6,21 @@ micros:
   - name: docs
     src: ./docs
     path: docs
-    engine: next
+    public_routes:
+      - "/*"
+    engine: static #nodejs16
+    serve: out
+    #include:
+    #  - out
+    #- .next
+    #- package.json
+    #- package-lock.json
+    #commands:
+    #- npm init --yes
+    #- npm i next
+    #run: next start
+    #- npm install --omit=dev
+    #run: next start
   - name: frontend
     primary: true
     src: ./detaApp
@@ -18,8 +32,11 @@ micros:
     - package.json
     #- package-lock.json
     engine: nodejs16
-    commands:
-    - export
-    - npm install
+    #commands:
+    #- export
+    #- export NODE_OPTIONS=--max-old-space-size=4096
+    #- export
+    #- npm install
+    #- DETA_PROJECT_KEY=a0 NODE_OPTIONS=--max-old-space-size=4096 npm run build
     #- npm run build
     run: node bundled #build

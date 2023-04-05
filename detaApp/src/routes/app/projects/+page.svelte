@@ -74,7 +74,7 @@
         no projects with filter
         {:else}
         {#each filteredProjects as project}
-        <details class="project-item"> <!-- TODO: Fix icon -->
+        <details class="project-item" open> <!-- TODO: Fix icon -->
             <summary class="text-xl font-medium"><span class="icon"></span>{project.displayName}</summary>
             <div class="content flex flex-col items-stretch gap-6">
                 <div class="flex-1">
@@ -89,14 +89,14 @@
                         <li class="py-3"><span class="text-gray-500">No channels yet.</span></li>
                     {:else}
                         {#each project.channels as channel}
-                            <li class="flex items-center justify-between border-b-2 border-neutral-100 py-1">
-                                <ul class="flex items-center">
-                                    <li>
+                            <li class="flex items-center justify-between border-b-2 border-neutral-100 py-1 shrink">
+                                <ul class="flex-1 flex items-center shrink grow overflow-hidden">
+                                    <li class="shrink-0">
                                         <IconHash
                                             size={18}
                                             stroke={2} />
                                     </li>
-                                    <li><span class="font-mono">{channel.id}</span></li>
+                                    <li class="truncate"><span class="font-mono">{channel.id}</span></li>
                                 </ul>
                                 <ul class="flex">
                                     <!--<li>
@@ -145,16 +145,16 @@
                         <li class="py-3"><span class="text-gray-500">No keys yet.</span></li>
                     {:else}
                         {#each data.apiKeys as apiKey}
-                            <li class="flex items-center justify-between border-b-2 border-neutral-100 py-3">
-                                <div class="flex flex-col gap-1">
+                            <li class="flex items-center justify-between border-b-2 border-neutral-100 py-3 shrink">
+                                <div class="flex flex-col gap-1 shrink grow overflow-hidden">
                                     <span class="font-mono text-sm">{apiKey.displayName}</span>
-                                    <ul class="flex items-center gap-2">
-                                        <li class="mt-0.5">
+                                    <ul class="flex-1 flex items-center gap-2">
+                                        <li class="mt-0.5 shrink-0">
                                             <IconKey
                                                 size={18}
                                                 stroke={2} />
                                         </li>
-                                        <li><span class="font-mono">{apiKey.key}</span></li>
+                                        <li class="truncate"><span class="font-mono">{apiKey.key}</span></li>
                                     </ul>
                                 </div>
                                 <ul class="flex">

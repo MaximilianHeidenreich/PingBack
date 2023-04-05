@@ -1,4 +1,5 @@
 import { env } from "$env/dynamic/private";
+// import { DETA_PROJECT_KEY } from "$env/static/private";
 import type { IApiKey } from "$lib/types/IApiKey";
 import type { IEvent } from "$lib/types/IEvent";
 import type { ITimeFrame } from "$lib/types/ITimeFrame";

@@ -30,9 +30,9 @@
 <div class="header-wrapper" class:fullwidth={$s_appSidebarCollapsed}>
     <header
         class="app-area flex items-center justify-between !py-3 !px-4">
-        <div class="flex items-center gap-3">
+        <div class="flex-1 flex items-center gap-3 overflow-hidden">
             <IconButton on:click={onToggleSidebar}><Menu /></IconButton>
-            <span class="text-lg font-medium">{$s_headerTitle}</span>
+            <span class="text-lg font-medium truncate">{$s_headerTitle}</span>
         </div>
         <ul class="flex items-center gap-3">
             <li><IconButton on:click={() => filterOpen = !filterOpen}><FilterSearch /></IconButton></li>

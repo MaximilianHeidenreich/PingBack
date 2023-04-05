@@ -1,1 +1,1 @@
-export type TEventParser = "text" | "markdown";
+export type TEventParser = "text" | "markdown" | "log";

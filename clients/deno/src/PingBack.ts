@@ -8,7 +8,7 @@ export interface IPingBackOptions {
 
 export interface IPublishEventArgs {
     channel: string;
-    event: string;
+    eventName: string;
     title: string;
     description?: string;
     parser?: TEventParser;
@@ -16,6 +16,16 @@ export interface IPublishEventArgs {
     notify?: boolean;
     tags?: Record<string, unknown>;
 }
+
+export type TLogLevel = "debug" | "info" | "warn" | "error";
+const DEFAULT_LOG_ICONS = new Map(
+    [
+        ["debug", "🔬"],
+        ["info", "ℹ️"],
+        ["warn", "⚠️"],
+        ["error", "❌"],
+    ]
+);
 
 export class PingBack {
     options: IPingBackOptions;
@@ -44,7 +54,7 @@ export class PingBack {
 
         const response = await responsePromise;
         console.log(response);
-        
+
         let body: { ok: boolean, error?: unknown, data?: unknown } | undefined = undefined;
         if (response.headers.get("content-type")?.startsWith("application/json")) {
             body = await response.json();
@@ -53,5 +63,22 @@ export class PingBack {
         if (!response.status.toString().startsWith("2")) {
             if (body) throw new Error(`PingBack: ${body.error}`);
         }
+    }
+
+    /**
+     *
+     * @param channel
+     */
+    async publishLog(channel: string, level: TLogLevel, message: string, payload: object, customIcon?: string) {
+        const eventName = `log.${level}`;
+        await this.publishEvent({
+            eventName,
+            channel,
+            parser: "log",
+            // @ts-ignore - TODO: fix
+            tags: payload,
+            title: message,
+            icon: customIcon || DEFAULT_LOG_ICONS.get(level) || "⚙️"
+        });
     }
 }

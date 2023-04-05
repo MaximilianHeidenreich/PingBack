@@ -1,5 +1,6 @@
 ## TODO
 
+- move zod schemas to Z... prefix
 -   !!!: Sanitizes markdown parsers, otherwise people can inject code into your backend when u expose an endpoint.
 -   Dark mode scheme: https://huemint.com/website-monochrome/#palette=20282f-f0f1f5
 -   <meta name="theme-color" content="#4285f4" />
@@ -23,3 +24,29 @@
 -   Webapp on phones using new APIS (Support IOS through new api)
 -   Accept ingest from webhooks
 -   Webhook -> On Event
+
+# Icons
+
+- General
+    - Plus / Add
+    - Alt Add
+    - Copy
+    - Delete / Trash
+    - Section open & closed
+    - Feed
+    - Metrics
+    - Monitor
+    - Projects
+    - Settings
+    - Docs
+    - Sun / Moon (Theme switch)
+- Header
+    - Menu Burger
+    - Filter
+    - Card style
+- Projects page
+    - Key
+    - (Hashtag) / channel
+- Event page
+    - Link
+

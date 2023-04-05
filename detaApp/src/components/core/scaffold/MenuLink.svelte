@@ -24,7 +24,7 @@
     }
 
     a.disabled {
-        @apply text-neutral-400;
+        @apply text-neutral-400 pointer-events-none;
     }
     a.disabled:hover {
         @apply cursor-not-allowed;
