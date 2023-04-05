@@ -4,13 +4,13 @@ on:
   pull_request:
     branches:
       - dev
-    paths:
-      - "detaApp/src**"
+    #paths:
+    #  - "detaApp/src**"
   push:
     branches:
       - dev
-    paths:
-      - "detaApp/src**"
+    #paths:
+    #  - "detaApp/src**"
 jobs:
   Setup:
     runs-on: ubuntu-latest
