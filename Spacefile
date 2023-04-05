@@ -12,14 +12,14 @@ micros:
     src: ./detaApp
     public_routes:
     - "/api/v*/events"
+    include:
+    - bundled
+    #- node_modules
+    - package.json
+    #- package-lock.json
     engine: nodejs16
     commands:
     - export
     - npm install
     #- npm run build
-    include:
-    - build
-    - node_modules
-    - package.json
-    - package-lock.json
-    run: node build
+    run: node bundled #build

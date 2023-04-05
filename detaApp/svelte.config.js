@@ -15,7 +15,9 @@ const config = {
     ],
 
     kit: {
-        adapter: adapter(),
+        adapter: adapter({
+            out: "bundled"
+        }),
         alias: {
             $cmp: "./src/components",
             $css: "./src/css"
