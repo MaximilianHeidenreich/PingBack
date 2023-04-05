@@ -1,4 +1,5 @@
-name: DetaApp (TEST) — CI
+#name: DetaApp (TEST) — CI
+name: tes
 on:
   pull_request:
     branches:
