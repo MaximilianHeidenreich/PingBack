@@ -32,8 +32,11 @@
     button.loading .content {
         @apply opacity-0;
     }
+    button.disabled {
+        @apply !bg-gray-600 cursor-not-allowed;
+    }
 
-    button:active {
+    button:not(.disabled, .loading):active {
         @apply translate-y-0.5 scale-[0.96];
         transition: all 0.1s ease-in-out;
     }
