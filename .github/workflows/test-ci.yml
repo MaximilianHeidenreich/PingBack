@@ -29,6 +29,7 @@ jobs:
         working-directory: detaApp
         run: npm i
       - name: Run check
+        working-directory: detaApp
         run: |
           npm run check
   Test-frontend:
