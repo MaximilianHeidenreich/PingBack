@@ -71,6 +71,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
           cache-dependency-path: "detaApp/package-lock.json"
+      - name: Install dependencies
+        working-directory: detaApp
+        run: npm i
       - name: Run build
         working-directory: detaApp
         run: |
@@ -94,6 +97,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
           cache-dependency-path: "docs/package-lock.json"
+      - name: Install dependencies
+        working-directory: docs
+        run: npm i
       - name: Run build
         working-directory: docs
         run: |
@@ -109,6 +115,7 @@ jobs:
 
   Deploy:
     runs-on: ubuntu-latest
+    needs: ["Build-frontend", "Build-docs"]
     steps:
       - name: Install dependencies
         run: |
