@@ -28,9 +28,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
           cache-dependency-path: "docs/package-lock.json"
-      - name: Installing dependencies
+      - name: Install other dependencies
         run: |
           curl -fsSL https://get.deta.dev/space-cli.sh | sh
+      - uses: actions/upload-artifact@master
+        with:
+          name: docs-setup
+          path: docs
   Setup-frontend:
     runs-on: ubuntu-latest
     strategy:
@@ -45,24 +49,42 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
           cache-dependency-path: "detaApp/package-lock.json"
-      - name: Installing dependencies
+      - name: Install other dependencies
         run: |
           curl -fsSL https://get.deta.dev/space-cli.sh | sh
-  Test:
+      - uses: actions/upload-artifact@master
+        with:
+          name: frontend-setup
+          path: detaApp
+  Test-frontend:
+    runs-on: ubuntu-latest
+    needs: Setup-frontend
+    steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: frontend-setup
+          path: detaApp
+      - name: foo
+        run: |
+          ls -al
+          space -h
+  Lint-frontend:
+    runs-on: ubuntu-latest
+    needs: Test-frontend
+    steps:
+      - name: foo
+        run: pwd
+  Build-docs:
     runs-on: ubuntu-latest
     needs: Setup-docs
     steps:
-      - name: foo
-        run: "ls -al && ls detaApp && cd detaApp && space -h"
-  Lint:
+      - name: Build docs
+        run: |
+          cd docs
+          npm run build
+  Build-frontend:
     runs-on: ubuntu-latest
-    needs: Test
-    steps:
-      - name: foo
-        run: "pwd && ls detaApp"
-  Build:
-    runs-on: ubuntu-latest
-    needs: Lint
+    needs: Lint-frontend
     steps:
       - name: Build docs
         run: |
