@@ -55,7 +55,7 @@
         <div class="flex items-center gap-2 mb-4 text-sm">
             <span class="font-semibold">Filter</span>
             <span class="font-bold">·</span>
-            <span><a href="/docs" class="pretty-link">Help</a></span>
+            <span><a href="/docs/guide/filter" class="pretty-link">Help</a></span>
         </div>
         <FilterInput on:filterChanged={(e) => s_filter.set(e.detail)} />
     </div>
