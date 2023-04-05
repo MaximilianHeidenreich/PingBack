@@ -23,7 +23,7 @@
         query: Record<string, any> | Record<string, any>[] = {},
         autoFetchFuture: boolean = true,
         autoFetchFutureInterval = 1000 * 2,
-        useCache = Object.keys(query).length === 0 ? true : false;//true; // TODO!: Fix cached query
+        useCache = false;// TOOD: Disabled, err after delete Object.keys(query).length === 0 ? true : false; // TODO!: Fix cached query
 
     // STATE
     let scrollEl: HTMLElement;
