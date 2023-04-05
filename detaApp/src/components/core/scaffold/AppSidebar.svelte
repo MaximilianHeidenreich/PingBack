@@ -109,7 +109,7 @@
                         </IconButton>
                         </li>
                     <li>
-                        <ThemeToggle/>
+                        <!--<ThemeToggle/>--> <!-- TODO: Re-Enable when good -->
                     </li>
                 </ul>
             </section>
