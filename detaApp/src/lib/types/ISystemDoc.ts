@@ -20,7 +20,7 @@ export const DEFAULT_SYSTEM_DOC = (): ISystemDoc => {
         createdAt: Date.now(),
         updatedAt: Date.now(),
         contentHash: crypto.randomUUID(),
-        latestEventTimestamp: Date.now(),
+        latestEventTimestamp: -1,
         finishedWelcomeTour: false,
         latestAppVersion: VERSION.semver!.version,
         totalEvents: 0

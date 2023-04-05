@@ -1,4 +1,4 @@
-import { DetaBaseError, Invalid, InvalidZod, NotFound } from "$lib/errors/core";
+import { DetaBaseError, InvalidZod, NotFound } from "$lib/errors/core";
 import { getTimeFrameEnd } from "$lib/shared/timeFrame";
 import { SEventIcon, SEventKey, SEventName, SEventTitle, type IEvent } from "$lib/types/IEvent";
 import { SProjectKey } from "$lib/types/IProject";
@@ -7,7 +7,6 @@ import { VERSION } from "$lib/utils/version";
 import dayjs from "dayjs";
 import { z } from "zod";
 import { db_events, db_projects, db_system, DB_SYS_KEY, db_timeFrames } from "./deta";
-
 
 /**
  * Type for creating a new event.
@@ -23,20 +22,22 @@ export interface ICreateEvent extends Partial<IEvent> {
 export const SCreateEvent = z.object({
     key: SEventKey.optional().default(() => crypto.randomUUID()),
     v: z.number().optional().default(VERSION.major),
-    createdAt: z.number().optional().default(() => dayjs().valueOf()),
+    createdAt: z
+        .number()
+        .optional()
+        .default(() => dayjs().valueOf()),
 
     project: SProjectKey,
     channel: z.string(),
     name: SEventName,
     notify: z.boolean().optional().default(true),
     icon: SEventIcon.optional().default("🔔"), // TODO: Default icon? or allow null icon
-    parser: z.enum(["text", "markdown", "json", "log"]),//z.string().optional().default("text"),// .infer<typeof TEvent>(),
+    parser: z.enum(["text", "markdown", "json", "log"]).default("text"), //z.string().optional().default("text"),// .infer<typeof TEvent>(),
 
     title: SEventTitle,
     description: z.string().optional().default(""),
-    tags: z.record(z.string(), z.unknown()).optional().default({}),
+    tags: z.record(z.string(), z.unknown()).optional().default({})
 });
-
 
 /**
  * Creates an event.
@@ -44,9 +45,7 @@ export const SCreateEvent = z.object({
  * @param event
  * @returns
  */
-export async function server_createEvent(
-    event: ICreateEvent
-): Promise<IEvent> {
+export async function server_createEvent(event: ICreateEvent): Promise<IEvent> {
     // Parse event args
     const parseRes = SCreateEvent.safeParse(event);
     if (!parseRes.success) throw new InvalidZod("Invalid data", parseRes.error);
@@ -54,47 +53,59 @@ export async function server_createEvent(
 
     // Fetch deps
     const p_sysdoc = db_system.get(DB_SYS_KEY);
-    const p_frame = db_timeFrames.get(dayjs(parsedEvent.createdAt).endOf(TIME_FRAME_OFFSET_UNIT).valueOf().toString());
+    const p_frame = db_timeFrames.get(
+        dayjs(parsedEvent.createdAt).endOf(TIME_FRAME_OFFSET_UNIT).valueOf().toString()
+    );
     const p_project = db_projects.get(event.project);
 
     let sysdoc, frame, project;
-    try { [sysdoc, frame, project] = await Promise.all([p_sysdoc, p_frame, p_project]); }
-    catch (e) { throw e; } // TODO!: HANDLE
-    if (!sysdoc) throw "nosysdoc server_createEvent"; // TODO!: HANDLE
-    if (!project) throw "noproject server_createEvent"; // TODO!: HANDLE
-    if (!project.channels.find((c) => c.id === event.channel)) throw "nochannel server_createEvent"; // TODO!: HANDLE
+    try {
+        [sysdoc, frame, project] = await Promise.all([p_sysdoc, p_frame, p_project]);
+    } catch (e) {
+        console.error("err: createEvent get [sydoc, frame, proejct]");
+        throw e;
+    } // TODO: HANDLE
+    if (!sysdoc) throw "nosysdoc server_createEvent"; // TODO: HANDLE
+    if (!project) throw "noproject server_createEvent"; // TODO: HANDLE
+    if (!project.channels.find((c) => c.id === event.channel)) throw "nochannel server_createEvent"; // TODO: HANDLE
 
     // Add / update time frame
     if (!frame) {
-        const latestFrame = sysdoc.latestEventTimestamp === -1 ? null : await db_timeFrames.get(getTimeFrameEnd(sysdoc.latestEventTimestamp).valueOf().toString());
+        const latestFrame =
+            sysdoc.latestEventTimestamp === -1
+                ? null
+                : await db_timeFrames.get(
+                    getTimeFrameEnd(sysdoc.latestEventTimestamp).valueOf().toString()
+                );
         //if (!latestFrame) throw "nolatestframe server_createEvent"; // TODO!: HANDLE
         const pendingTimeFrame: ITimeFrame = {
             key: "",
             frameEnd: dayjs(parsedEvent.createdAt).endOf(TIME_FRAME_OFFSET_UNIT).valueOf(),
             nextFrame: -1,
-            previousFrame: sysdoc.latestEventTimestamp === -1 ? -1 : getTimeFrameEnd(sysdoc.latestEventTimestamp).valueOf(),
+            previousFrame:
+                sysdoc.latestEventTimestamp === -1
+                    ? -1
+                    : getTimeFrameEnd(sysdoc.latestEventTimestamp).valueOf(),
             eventCount: 1,
             containsEventsFor: {
                 projects: [project.key],
                 channels: [`${project.key}#${event.channel}`]
             }
-        }
+        };
         if (latestFrame) latestFrame.nextFrame = pendingTimeFrame.frameEnd;
         try {
             await Promise.all([
                 db_timeFrames.put(pendingTimeFrame, pendingTimeFrame.frameEnd.toString()),
                 latestFrame ? db_timeFrames.update(latestFrame, latestFrame.key) : Promise.resolve()
             ]);
-        }
-        catch (e) {
+        } catch (e) {
             // NOTE: We don't throw because:
             // 1. Multipel requests, one thinks there is no frame yet, but another created it
             // -> We still want to insert the event
             //throw e; // TODO!: HANDLE
             console.error(e);
         }
-    }
-    else {
+    } else {
         frame.eventCount += 1;
         if (!frame.containsEventsFor.projects.includes(project.key))
             frame.containsEventsFor.projects.push(project.key);
@@ -106,11 +117,11 @@ export async function server_createEvent(
     sysdoc.totalEvents += 1;
     sysdoc.latestEventTimestamp = parsedEvent.createdAt;
     project.latestEventTimestamp = parsedEvent.createdAt;
-    project.channels.find((c) => c.id === event.channel)!.latestEventTimestamp = parsedEvent.createdAt;
+    project.channels.find((c) => c.id === event.channel)!.latestEventTimestamp =
+        parsedEvent.createdAt;
     if (!Object.keys(project.eventSpecifiers).includes(parsedEvent.name))
         project.eventSpecifiers[parsedEvent.name] = 1;
-    else
-        project.eventSpecifiers[parsedEvent.name] += 1;
+    else project.eventSpecifiers[parsedEvent.name] += 1;
 
     // Perform insert & updates
     let newEvent;
@@ -122,9 +133,9 @@ export async function server_createEvent(
             db_projects.update(project, project.key),
             frame ? db_timeFrames.update(frame, frame.key) : Promise.resolve()
         ]);
-    }
-    catch (e) {
-        throw e; // TODO!: HANDLE
+    } catch (e) {
+        console.error("err, insert newEvent & await sys updates");
+        throw e; // TODO: HANDLE
     }
 
     return newEvent;
@@ -137,22 +148,26 @@ export async function server_createEvent(
  * @param eventId
  * @throws NotFound, Invalid, DetaBaseError
  */
-export async function server_deleteEvent(
-    eventId: string
-) {
+export async function server_deleteEvent(eventId: string) {
     let event: IEvent | null;
-    try { event = await db_events.get(eventId); }
-    catch (e) {
+    try {
+        event = await db_events.get(eventId);
+    } catch (e) {
         throw new DetaBaseError("Error in get event!", e);
     }
-    if (!event) { throw new NotFound(`Event ${eventId} not found`); }
+    if (!event) {
+        throw new NotFound(`Event ${eventId} not found`);
+    }
 
     let frame: ITimeFrame | null;
-    try { frame = await db_timeFrames.get(getTimeFrameEnd(event.createdAt).valueOf().toString()); }
-    catch (e) {
+    try {
+        frame = await db_timeFrames.get(getTimeFrameEnd(event.createdAt).valueOf().toString());
+    } catch (e) {
         throw e; // TODO!: HANDLE
     }
-    if (!frame) { throw new NotFound(`Frame ${event.createdAt} not found`); }
+    if (!frame) {
+        throw new NotFound(`Frame ${event.createdAt} not found`);
+    }
 
     // Fetch deps
     const p_sysdoc = db_system.get(DB_SYS_KEY);
@@ -161,8 +176,16 @@ export async function server_deleteEvent(
     const p_project = db_projects.get(event.project);
 
     let sysdoc, prevFrame, nextFrame, project;
-    try { [sysdoc, prevFrame, nextFrame, project] = await Promise.all([p_sysdoc, p_prevFrame, p_nextFrame, p_project]); }
-    catch (e) { throw e; } // TODO!: HANDLE
+    try {
+        [sysdoc, prevFrame, nextFrame, project] = await Promise.all([
+            p_sysdoc,
+            p_prevFrame,
+            p_nextFrame,
+            p_project
+        ]);
+    } catch (e) {
+        throw e;
+    } // TODO!: HANDLE
     if (!sysdoc) throw new NotFound(`SYS_DOC not found`);
     if (!project) throw new NotFound(`Project ${event.project} not found`);
 
@@ -173,7 +196,8 @@ export async function server_deleteEvent(
     if (sysdoc.totalEvents === 0) sysdoc.latestEventTimestamp = -1;
     project.contentHash = crypto.randomUUID();
     if (project.eventSpecifiers[event.name]) {
-        if (project.eventSpecifiers[event.name] - 1 === 0) delete project.eventSpecifiers[event.name];
+        if (project.eventSpecifiers[event.name] - 1 === 0)
+            delete project.eventSpecifiers[event.name];
         else project.eventSpecifiers[event.name] -= 1;
     }
 
@@ -189,16 +213,23 @@ export async function server_deleteEvent(
         }
 
         // Change sysdoc.latestEventTimestamp only if inside current frame
-        if (dayjs(sysdoc.latestEventTimestamp).isAfter(dayjs(frame.frameEnd).startOf(TIME_FRAME_OFFSET_UNIT)) &&
-            dayjs(sysdoc.latestEventTimestamp).isBefore(dayjs(frame.frameEnd).endOf(TIME_FRAME_OFFSET_UNIT))) {
+        if (
+            dayjs(sysdoc.latestEventTimestamp).isAfter(
+                dayjs(frame.frameEnd).startOf(TIME_FRAME_OFFSET_UNIT)
+            ) &&
+            dayjs(sysdoc.latestEventTimestamp).isBefore(
+                dayjs(frame.frameEnd).endOf(TIME_FRAME_OFFSET_UNIT)
+            )
+        ) {
             if (nextFrame) sysdoc.latestEventTimestamp = nextFrame.frameEnd;
             else if (prevFrame) sysdoc.latestEventTimestamp = prevFrame.frameEnd;
             else sysdoc.latestEventTimestamp = -1; // TODO: This probably is a system state error.?
         }
 
         // Delete event frame
-        try { await db_timeFrames.delete(frame.key); }
-        catch (e) {
+        try {
+            await db_timeFrames.delete(frame.key);
+        } catch (e) {
             throw e; // TODO!: HANDLE
         }
         frame = null; // Prevent update later on
@@ -215,8 +246,7 @@ export async function server_deleteEvent(
             prevFrame ? db_timeFrames.update(prevFrame, prevFrame.key) : Promise.resolve(),
             nextFrame ? db_timeFrames.update(nextFrame, nextFrame.key) : Promise.resolve()
         ]);
-    }
-    catch (e) {
+    } catch (e) {
         throw e; // TODO!: HANDLE
     }
 }
