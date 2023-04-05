@@ -11,7 +11,8 @@
 
 </script>
 
-<button class="{type} s-{style}" class:loading on:click>
+
+<button class="{type} s-{style}" class:loading class:disabled on:click {disabled}>
     <span class="content flex justify-center items-center gap-3"><slot /></span>
     {#if loading}
     <span class="absolute top-0 left-0 bottom-0 right-0 flex justify-center items-center"><Spinner color="{style === "muted" ? 'dark' : 'light'}"/></span>
