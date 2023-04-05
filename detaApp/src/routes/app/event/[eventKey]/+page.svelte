@@ -14,6 +14,7 @@
     import toastOptions from "$lib/utils/toast";
     import { s_timeFormat } from "$lib/stores/s_timeFormat";
     import { relativeTime } from "svelte-relative-time";
+    import { fetchSysContentHash } from "$lib/stores/s_sysContentHash";
 
     // PROPS
     export let data: PageData;
@@ -46,9 +47,10 @@
             return;
         }
         //goto("/app/feed");
-        history.back();
-        loadingDeleteEvent = false;
         toast.success("Event deleted!", toastOptions());
+        await fetchSysContentHash();
+        loadingDeleteEvent = false;
+        history.back();
     }
 </script>
 
