@@ -28,6 +28,11 @@ export function cache_GetCache(): PouchDB.Database | null {
     return cache;
 }
 
+export async function cache_Clear() {
+    cache && await cache.destroy();
+    cache_GetCache();
+}
+
 export async function cache_GetDbInfo(): Promise<PouchDB.Core.DatabaseInfo | null> {
     try {
         const dbInfo = await cache.info();
