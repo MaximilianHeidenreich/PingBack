@@ -1,14 +1,16 @@
 #name: DetaApp (TEST) — CI
-name: tes
+name: test
 on:
   pull_request:
     branches:
       - dev
+      - main
     #paths:
     #  - "detaApp/src**"
   push:
     branches:
       - dev
+      - main
     #paths:
     #  - "detaApp/src**"
 jobs:
