@@ -78,6 +78,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: Setup-docs
     steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: docs-setup
+          path: docs
       - name: Build docs
         run: |
           cd docs
@@ -96,7 +100,7 @@ jobs:
           npm run build
   Deploy:
     runs-on: ubuntu-latest
-    needs: Build
+    needs: ["Build-docs", "Build-frontend"]
     steps:
       - name: Push code
         run: space push
