@@ -1,11 +1,50 @@
-# Hello WOrld Index
+# Welcome to PingBack.
 
-from Page :)
+> What is this all about and what can PingBack do?
 
-## getting started
+## TL;DR — Aggrgate, Filter and Monitor.
 
-foo bar
+Many times, be it a software project a website or a Saas product of yours, there is a need to track events
+like installations, page visits, user signups, payments etc.
 
-### something
+PingBack is a relatively unbiased yet powerful application which enables you to:
+1. **Aggregate** events from any source that can send a basic HTTP POST request.
+2. **Filter** all previous events and create data visualizations so that you can focus on the most important KPI's.
+3. **Monitor** single specific events, event frequency and create alerts to notify you / other systems through Push Notifications or Webhooks.
 
-## or else
+It is build on top of the wonderful [Deta Space](https://deta.space) platform, meaning that all of your data is only accessible and owned by you.
+At any time, you can import new or export your existing data.
+
+### Aggregate
+
+PingBack operates on the concept of single, atomic events. An event is an immutable, timestamped piece of data that can represent anything from a user 
+signup or application error to a raw JSON object.
+An event can store a title, description (*text, markdown, raw JSON*) and additional tags allowing you to use them for many different use cases and 
+effectively filter through them afterwards.
+
+Events are submitted simply by calling a HTTP POST endpoint or by using one of our [Client Libraries](/clientlibraries) for your favourite language.
+
+Finally, by default events have no expiration time, but there is the option to enable different cleanup strategies.
+
+### Filter
+
+The filter bar allows you to quickly find an event / a group of events by specifying one or many combinations of projects, channels, full text search and comparisons.
+
+#### Live Metrics (Coming soon)
+
+The Metrics page provides powerful and pretty data visualizations like graphs, flow charts and more which react to live changes.
+
+### Monitor (Coming soon)
+
+Something will break, evetually and even if it doesn't, it might be useful to be notified when thign happen in your application.
+PingBack offers you several features to stay informed about what's happening.
+
+#### Push Notifications (Coming soon)
+
+The most basic way is by enabling Notifications for the webapp or even Push Notifications if you have the PWA Version installed.
+Upon each new received event, you will be notified on all your devices (*Notifications can also selectively be disabled for specific projects, channels and events*).
+
+#### Alerts (Coming soon)
+
+Custom alerts can be defined which will trigger a custom action like a notification or a webhook if a specific requirement is met.
+E.g. This can be used to only be notified of a specific event which is submitted X amount of times in Y minutes.
