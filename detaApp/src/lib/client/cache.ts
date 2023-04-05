@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import { s_sysContentHash } from "$lib/stores/s_sysContentHash";
 import type { IEvent } from "$lib/types/IEvent";
 import type { ITimeFrame } from "$lib/types/ITimeFrame";
@@ -10,13 +11,32 @@ export interface ICachedTimeFrame extends ITimeFrame {
 }
 
 const _createCache = () => new PouchDB<ICachedTimeFrame>(`${get(s_sysContentHash)}_eventFrameCache`);
-let cache = _createCache();
+let cache: PouchDB.Database | null;
 s_sysContentHash.subscribe(async (hash) => {
+    if (!browser) return;
     console.info(`[Cache] Detected new system content hash ${hash}, destroying old cache...`);
-    await cache.destroy();
+    cache && await cache.destroy();
     console.info(`[Cache] Creating new cache...`);
-    cache = _createCache();
+    cache_GetCache();
 });
+
+export function cache_GetCache(): PouchDB.Database | null {
+    if (!browser) return null;
+    if (!cache) {
+        cache = _createCache();
+    }
+    return cache;
+}
+
+export async function cache_GetDbInfo(): Promise<PouchDB.Core.DatabaseInfo | null> {
+    try {
+        const dbInfo = await cache.info();
+        return dbInfo;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
 
 export async function cache_GetFrame(frameEnd: number): Promise<ICachedTimeFrame | null> {
     try { return await cache.get(frameEnd.toString()); }
