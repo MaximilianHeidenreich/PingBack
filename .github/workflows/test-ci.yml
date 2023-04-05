@@ -50,7 +50,7 @@ jobs:
           curl -fsSL https://get.deta.dev/space-cli.sh | sh
   Test:
     runs-on: ubuntu-latest
-    needs: Setup
+    needs: Setup-docs
     steps:
       - name: foo
         run: "ls -al && ls detaApp && cd detaApp && space -h"
