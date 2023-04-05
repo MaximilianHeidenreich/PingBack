@@ -39,8 +39,8 @@ export const POST = (async ({ request }) => {
     const reqBody = await request.json();
 
     // TODO: Validate API KEY
-    //Todo impl.
-
+    // Todo impl.
+    
     let newEvent;
     try {
         newEvent = await server_createEvent(reqBody);
@@ -54,26 +54,6 @@ export const POST = (async ({ request }) => {
         console.error(e);
         return respondInternalError("Internal error");
     }
-
-    /*const project = await db_projects.get(projectID);
-    if (!project) return respondNotFound(`Project ${projectID} not found!`);
-
-    const pendingEvent: Omit<IEvent, "key" | "createdAt" | "v"> = {
-        project: reqBody.project,
-        channel: reqBody.channel,
-        eventName: reqBody.eventName,
-        notify: reqBody.notify || true,
-        icon: reqBody.icon || "🔔",
-        parser: reqBody.parser || "text",
-
-        title: reqBody.title,
-        description: reqBody.description || "",
-        tags: reqBody.tags || {}
-    }
-
-    const createRes = await serverCreateEvent(pendingEvent, project);
-    if (!createRes) return respondInternalError("Failed to create event!");*/
-
 
     return buildResponse().status(200).statusText("OK").json(newEvent).build();
 }) satisfies RequestHandler;
