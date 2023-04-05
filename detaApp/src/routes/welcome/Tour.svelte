@@ -25,7 +25,13 @@
         currentStep = currentStep + 1; // Fix end -> callback onLast
     }
     async function onFinish() {
-        await client_UpdateSysDoc(fetch, { finishedWelcomeTour: true }); // TODO: handle errors
+        try {
+            await client_UpdateSysDoc(fetch, { finishedWelcomeTour: true }); // TODO: handle errors
+        } catch(e) {
+            console.error(e);
+            alert("Fatal error: Could not finish tour! Please contact developer.");
+            return;
+        }
         goto("/");
     }
 
