@@ -9,6 +9,7 @@ export interface ITimeFrame {
     frameEnd: number;   // timestamp of the end of the time frame
     nextFrame: number;  // key of next (future) frame
     previousFrame: number;  // key of previous (past) frame
+    eventCount: number; // number of events in this frame
     containsEventsFor: {
         "projects": string[];   // project
         "channels": string[];   // project#channel

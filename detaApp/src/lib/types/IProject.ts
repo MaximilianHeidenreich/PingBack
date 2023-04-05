@@ -1,3 +1,5 @@
+import { sanitizeProjectIdInternal } from "$lib/utils/sanitizers";
+import { z } from "zod";
 import type { IChannel } from "./IChannel";
 
 /**
@@ -17,3 +19,12 @@ export interface IProject {
     displayName: string; // Displayname of project
     channels: IChannel[];
 }
+
+export const SProjectKey = z.string()
+    .min(1)
+    .max(50)
+    .transform((s) => sanitizeProjectIdInternal(s));
+export const SProjectDisplayName = z.string()
+    .min(1)
+    .max(50);
+

@@ -71,7 +71,7 @@
                 <header>
                     <span class="event-title">{event.title}</span>
                     <span class="event-name"
-                        >{event.eventName} · #{event.channel} ·
+                        >{event.name} · #{event.channel} ·
                         {#if $s_timeFormat === "relative"}
                         <span use:relativeTime={{ date: event.createdAt }}></span>
                         {:else if $s_timeFormat === "absolute"}

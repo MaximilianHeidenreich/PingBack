@@ -1,0 +1,72 @@
+#name: DetaApp (TEST) — CI
+name: tes
+on:
+  pull_request:
+    branches:
+      - dev
+    #paths:
+    #  - "detaApp/src**"
+  push:
+    branches:
+      - dev
+    #paths:
+    #  - "detaApp/src**"
+jobs:
+  Setup:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Installing dependencies
+        run: |
+          cd detaApp
+          npm i
+          cd ../docs
+          npm i
+          cd ../
+          curl -fsSL https://get.deta.dev/space-cli.sh | sh
+  Test:
+    runs-on: ubuntu-latest
+    needs: Setup
+    steps:
+      - name: foo
+        run: "ls -al && ls detaApp && cd detaApp && space -h"
+  Lint:
+    runs-on: ubuntu-latest
+    needs: Test
+    steps:
+      - name: foo
+        run: "pwd && ls detaApp"
+  Build:
+    runs-on: ubuntu-latest
+    needs: Build
+    steps:
+      - name: Build docs
+        run: |
+          cd docs
+          npm run build
+      - name: Build frontend
+        run: |
+          cd detaApp
+          npm run build
+  Deploy:
+    runs-on: ubuntu-latest
+    needs: Build
+    steps:
+      - name: Push code
+        run: space push
+      - name: Create release
+        run: space release --id foobar --latest --version v0.0.2
+  Notify:
+    runs-on: ubuntu-latest
+    needs: Deploy
+    steps:
+      - name: foo
+        run: "echo todo"

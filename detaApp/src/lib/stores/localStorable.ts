@@ -8,7 +8,8 @@ import { get, writable, type Updater } from "svelte/store";
  * @returns
  */
 export function localStorable<T>(data: T, localStoreKey: string) {
-   const store = writable<T>(data);
+   const currStored = browser ? localStorage.getItem(localStoreKey) : null;
+   const store = writable<T>(currStored ? JSON.parse(currStored) : data);
    const { subscribe, set, update } = store;
 
    browser &&

@@ -19,10 +19,12 @@ export async function clientFetchProjectsRaw(
         | (Partial<IProject> & { [key: string]: unknown })
         | (Partial<IProject> & { [key: string]: unknown })[],
     lastKey?: string,
-    limit?: number
+    limit?: number,
+    sourceUrl?: URL
 ): Promise<{ items: IProject[]; count: number; last?: string }> {
-    const url = new URL(`/api/v${VERSION.major}/projects`, window.location.origin);
+    const url = new URL(`/api/v${VERSION.major}/projects`, sourceUrl || window.location.origin);
     url.searchParams.set("query", btoa(JSON.stringify(query)));
+
     if (lastKey) url.searchParams.set("lastKey", lastKey);
     if (limit) url.searchParams.set("limit", limit.toString());
 

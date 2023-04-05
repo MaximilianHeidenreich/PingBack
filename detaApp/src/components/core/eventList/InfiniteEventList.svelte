@@ -1,7 +1,8 @@
 <script lang="ts">
+    import { cache_SetFrame, type ICachedTimeFrame } from "$lib/client/cache";
+    import { client_GetTimeFrame } from "$lib/client/timeFrame";
     import { clientFetchAllEventsInFrame } from "$lib/helpers/api/eventClient";
     import { clientGetSysDoc } from "$lib/helpers/api/systemClient";
-    import { clientGetTimeFrame } from "$lib/helpers/api/timeFrameClient";
     import { handleNewEventsNotify } from "$lib/helpers/notifications/notifications";
     import type { IEvent } from "$lib/types/IEvent";
     import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
@@ -22,7 +23,7 @@
         query: Record<string, any> | Record<string, any>[] = {},
         autoFetchFuture: boolean = true,
         autoFetchFutureInterval = 1000 * 2,
-        useCache = true;
+        useCache = Object.keys(query).length === 0 ? true : false;//true; // TODO!: Fix cached query
 
     // STATE
     let scrollEl: HTMLElement;
@@ -70,23 +71,26 @@
         //const p_frame = clientFetchEventFrame(fetch, lastPastFrameEnd.valueOf(), query);
         //const [frame] = await Promise.allSettled([p_frame]);
         //if (!moreFrames) endOfData = true;
-        const frameFetchRes = await clientGetTimeFrame(fetch, lastPastFrameEnd.valueOf(), useCache);
+        const frameFetchRes = await client_GetTimeFrame(fetch, lastPastFrameEnd.valueOf(), useCache); // TODO: Handle error
         if (!frameFetchRes) {
             alert(`no frame for: ${lastPastFrameEnd.format()}`);
             return;
         }
-        if (frameFetchRes?.previousFrame === -1) endOfData = true;
-
-        /*if (frameFetchRes instanceof ICac) {
-
-        }*/
+        if (frameFetchRes.previousFrame === -1) endOfData = true;
 
         // Fetch events in frame
-        const eventFetchRes = await clientFetchAllEventsInFrame(fetch, lastPastFrameEnd.valueOf(), query);
-
-        /*if (useCache) {
-            await cacheSetTimeFrame(frameFetchRes, data.nextFrame, data.previousFrame, data.items);
-        }*/
+        let eventFetchRes: { items: IEvent[]; count: number };
+        // @ts-ignore - TODO: Fix type
+        if (frameFetchRes.cached) {
+            const cachedFrame = frameFetchRes as ICachedTimeFrame;
+            const evs = Object.values(cachedFrame.events).map((p) => p).flat();
+            eventFetchRes = {
+                items: evs,
+                count: evs.length
+            }
+            // TODO: Add query
+        }
+        else eventFetchRes = await clientFetchAllEventsInFrame(fetch, lastPastFrameEnd.valueOf(), query);
 
         // Sort events & update frames
         processingProgress = [0, eventFetchRes.items.length];
@@ -96,6 +100,10 @@
             return b.createdAt - a.createdAt;
         });
         processing = false;
+
+        // Cache frame with events
+        // @ts-ignore - TODO: Fix type
+        if (useCache && !frameFetchRes.cached) await cache_SetFrame(frameFetchRes, eventFetchRes.items);
 
         timeFrames.update((frames) => {
             const pendingFrame = {
@@ -112,7 +120,7 @@
 
     async function loadCurrent() {
         const currentFrameEnd = dayjs().endOf(TIME_FRAME_OFFSET_UNIT).valueOf();
-        const frame = await clientGetTimeFrame(fetch, currentFrameEnd);
+        const frame = await client_GetTimeFrame(fetch, currentFrameEnd, false);
         if (!frame) return;
 
         // Fetch events in frame

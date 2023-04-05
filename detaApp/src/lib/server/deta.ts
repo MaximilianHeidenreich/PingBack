@@ -85,6 +85,11 @@ const wrap_db = <T>(dbName: string) => {
         update: (updates: Partial<T>, key: string): Promise<null> => {
             // @ts-ignore try to always delete key from updates -> "Cannot change key" error otherwise.
             delete updates.key;
+            // @ts-ignore - TODO: Fix types
+            if (updates["updatedAt"]) {
+                // @ts-ignore - TODO: Fix types
+                updates["updatedAt"] = Date.now();
+            }
             // @ts-expect-error expect deta sdk to shit itself but we are fine :)
             return db.update(updates, key);
         },
@@ -115,4 +120,4 @@ export const db_timeFrames = wrap_db<ITimeFrame>("timeFrames");
 export const db_projects = wrap_db<IProject>("projects");
 
 export const DB_SYS_KEY = "dont_touch_this";
-export const db_system = wrap_db<ISystemDoc>("system"); // System data -> configuration, migrations, etc. TODO: add sys config type
+export const db_system = wrap_db<ISystemDoc>("system"); // System data -> configuration, migrations, etc.

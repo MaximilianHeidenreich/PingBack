@@ -1,6 +1,8 @@
 <script lang="ts">
     import Button from "$cmp/core/buttons/Button.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
+    import { client_DeleteApiKey } from "$lib/client/apiKey";
+    import { NotFound } from "$lib/errors/core";
     import toastOptions from "$lib/utils/toast";
     import toast from "svelte-french-toast";
 
@@ -17,16 +19,16 @@
     }
     async function onDelete() {
         working = true;
-        /*const res = await clientDe(fetch, projectID);
-        console.debug("Delete api key fetch result", res);
-
-        if (res.status === 200) {
-            toast.success("Deleted project!", toastOptions());
+        try {
+            const res = await client_DeleteApiKey(fetch, apiKey);
+        } catch (e) {
+            toast.error("Could not delete API key!", toastOptions());
+            if (e instanceof NotFound) alert(e);
+            console.error(e);
+            working = false;
+            return;
         }
-        else {
-            toast.error("Could not delete project!", toastOptions());
-        }*/
-
+        toast.success("Deleted API key!", toastOptions());
         dialog.close();
         onDeleted && onDeleted();
         working = false;

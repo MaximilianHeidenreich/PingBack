@@ -1,30 +1,24 @@
-import { serverCreateEvent } from "$lib/helpers/event";
-import { db_events, db_projects, db_system, DB_SYS_KEY, db_timeFrames } from "$lib/server/deta";
-import { updateCurrentSysContentHash } from "$lib/stores/s_sysContentHash";
+import { db_projects, db_system, DB_SYS_KEY } from "$lib/server/deta";
+import { server_createEvent, type ICreateEvent } from "$lib/server/event";
 import type { IEvent } from "$lib/types/IEvent";
 import type { IProject } from "$lib/types/IProject";
 import { DEFAULT_SYSTEM_DOC } from "$lib/types/ISystemDoc";
-import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
 import { VERSION } from "$lib/utils/version";
 import { redirect } from "@sveltejs/kit";
 import dayjs from "dayjs";
-import type { LayoutServerLoad } from "./$types";
+import type { PageServerLoad } from "./$types";
 
 export const load = (async ({  }) => {
     const sysdoc = await db_system.get(DB_SYS_KEY);
     if (!sysdoc) {
-        console.log("SYSDOC not found! Creating default one & Start initial setup!");
+        console.info("SYSDOC not found! Creating default one & Start initial setup!");
         await db_system.put(DEFAULT_SYSTEM_DOC(), DB_SYS_KEY);
 
-        // TODO: Add first event & timeframe manually.
-        const frameEnd = dayjs().endOf(TIME_FRAME_OFFSET_UNIT);
-        const initialEvent: IEvent = {
-            key: crypto.randomUUID(),
-            v: VERSION.major,
-            createdAt: dayjs().valueOf(),
+        // Add initial event.
+        const initialEvent: ICreateEvent = {
             project: "default",
             channel: "default",
-            eventName: "pingback.internal",
+            name: "pingback.internal",
             icon: "👋",
             parser: "text",
 
@@ -33,31 +27,25 @@ export const load = (async ({  }) => {
             description: "Todo insert a cool description here.",
             tags: {}
         }
-        await db_timeFrames.put({
-            frameEnd: frameEnd.valueOf(),
-            nextFrame: -1,
-            previousFrame: -1,
-            containsEventsFor: { projects: [initialEvent.project], channels: [`${initialEvent.project}#${initialEvent.channel}`] }
-        }, frameEnd.valueOf().toString());
-        await db_events.put(initialEvent, initialEvent.key);
-        // TODO: Add default project & default channel
-        await db_projects.put({
+        // Add default project & default channel
+        const initialProject: IProject = {
             key: "default",
             createdAt: dayjs().valueOf(),
             contentHash: "rand",
             displayName: "Default Project",
-            channels: [{ id: "default", notify: true, latestEventTimestamp: initialEvent.createdAt }],
+            channels: [{ id: "default", notify: true, latestEventTimestamp: Date.now() }],
             eventSpecifiers: {},
-            latestEventTimestamp: initialEvent.createdAt
-        }, "default");
-        // TODO!: Update sysdoc totalEvents +1
+            latestEventTimestamp: Date.now()
+        }
+        await db_projects.put(initialProject, "default");
+        await server_createEvent(initialEvent);
 
         throw redirect(303, "/welcome");
     }
 
     // Handle version updates.
     if (sysdoc.latestAppVersion !== VERSION.semver!.version) {
-        console.log(`Version update detected (${sysdoc.latestAppVersion} -> ${VERSION.semver!.version})! Updating sysdoc & performing updates.`);
+        console.info(`Version update detected (${sysdoc.latestAppVersion} -> ${VERSION.semver!.version})! Updating sysdoc & performing updates.`);
 
         // TODO: Run updates
         sysdoc.latestAppVersion = VERSION.semver!.version;
@@ -118,10 +106,9 @@ export const load = (async ({  }) => {
         console.log(`inserting ${i} / ${dev_events.length}`);
         const p = structuredClone(ps[e.project]);
 
-        await serverCreateEvent(e, p as IProject);
         i = i + 1;
     }
     */
 
     return {};
-}) satisfies LayoutServerLoad;
+}) satisfies PageServerLoad;

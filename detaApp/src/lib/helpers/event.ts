@@ -5,7 +5,7 @@ import { TIME_FRAME_OFFSET_UNIT, type ITimeFrame } from "$lib/types/ITimeFrame";
 import { VERSION } from "$lib/utils/version";
 import dayjs, { Dayjs } from "dayjs";
 
-export interface ICreateEvent {
+/*export interface ICreateEvent {
     project: string;
     channel: string;
     eventName: string;
@@ -17,13 +17,13 @@ export interface ICreateEvent {
     title: string;
     description: unknown;
     tags?: Record<string, unknown>;
-};
+};*/
 /**
  * Creates a new event.
  * @param event
  * @throws Deta error.
  */
-export async function serverCreateEvent(
+/*export async function serverCreateEvent(
     event: ICreateEvent,
     project: IProject
 ): Promise<IEvent | null> {
@@ -47,7 +47,7 @@ export async function serverCreateEvent(
         title: event.title,
         description: event.description || "",
         tags: event.tags || {}
-    }*/
+    }
     let pendingEvent: IEvent = {
         key: crypto.randomUUID(),
         createdAt: timestamp.valueOf(),
@@ -61,10 +61,11 @@ export async function serverCreateEvent(
     // Add / update event frame.
     if (!timeFrame) {
         const lastFrameEnd = getTimeFrame(sysdoc.latestEventTimestamp).valueOf();
-        const pendingTimeFrame: ITimeFrame = {
+        const pendingTimeFrame: Omit<ITimeFrame, "key"> = {
             frameEnd: timestamp.endOf(TIME_FRAME_OFFSET_UNIT).valueOf(),
             nextFrame: -1,
             previousFrame: lastFrameEnd,
+            eventCount: 1,
             containsEventsFor: {
                 projects: [project.key],   // TODO: impl
                 channels: [`${project.key}#${event.channel}`]    // TODO: impl
@@ -78,9 +79,10 @@ export async function serverCreateEvent(
         latestTimeFrame.nextFrame = pendingTimeFrame.frameEnd;
 
         await db_timeFrames.update(latestTimeFrame, latestTimeFrame.key); // TODO: Promise allSettled
-        await db_timeFrames.put(pendingTimeFrame, pendingTimeFrame.frameEnd.toString());
+        await db_timeFrames.put(pendingTimeFrame as ITimeFrame, pendingTimeFrame.frameEnd.toString()); // TODO: Fix typecast
     }
     else {
+        timeFrame.eventCount = timeFrame.eventCount + 1;
         if (!timeFrame.containsEventsFor.projects.includes(project.key))
             timeFrame.containsEventsFor.projects.push(project.key);
         if (!timeFrame.containsEventsFor.channels.includes(`${project.key}#${event.channel}`))
@@ -143,13 +145,7 @@ export async function serverCreateEvent(
     await db_projects.update(project, project.key);
 
     const res = await db_events.put(pending_event, pending_event.key); // TODO: Revert project on err?
-    return res;*/
+    return res;
 }
 
-/**
- * Gets the frame for a given event timestamp. TODO: DOC
- * @param timestamp
- */
-export function getTimeFrame(timestamp: number): Dayjs {
-    return dayjs(timestamp).endOf(TIME_FRAME_OFFSET_UNIT);
-}
+*/

@@ -45,3 +45,10 @@ export function sanitizeApiKeyName(input: string): string {
     let sane = input.trim();
     return sane;
 }
+
+// TODO: Docs & test
+export function sanitizeApiKeyNameInput(input: string): string {
+    let sane = input.trimStart();
+    if (sane.length > 25) sane = sane.substring(0, 25);
+    return sane;
+}
