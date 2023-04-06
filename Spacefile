@@ -8,12 +8,15 @@ micros:
     path: docs
     public_routes:
       - "/*"
-    engine: static #nodejs16
-    serve: out
+    engine: static
+    serve: detaOut
+    #engine: next
+    #engine: static
+    #serve: detaOut
     #include:
-    #  - out
+    #  - detaOut
     #- .next
-    #- package.json
+    #  - package.json
     #- package-lock.json
     #commands:
     #- npm init --yes
