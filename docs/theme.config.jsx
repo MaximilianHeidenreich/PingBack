@@ -1,4 +1,9 @@
 export default {
+    useNextSeoProps() {
+        return {
+            titleTemplate: "%s – PingBack"
+        }
+    },
     logo: (
         <>
             <svg width="30" height="30" viewBox="0 0 167 167" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,22 +29,22 @@ export default {
             <span style={{ color: "#ea4a8f" }}>Ping</span>Back
             </span>
         </>
-        ),
-        project: {
-            link: "https://github.com/MaximilianHeidenreich/PingBack",
-        },
-        docsRepositoryBase: "https://github.com/MaximilianHeidenreich/PingBack/blob/main/docs/pages",
-        primaryHue: 334,
-        navigation: {
-            prev: true,
-            next: true
-        },
-        footer: {
-            text: <span>
-            <span style={{ fontWeight: 800 }}>PingBack</span> | Made with ❤️ by <a href="https://github.com/MaximilianHeidenreich" target="_blank">Maximilian Heidenreich</a>.
-            </span>,
-        },
-        sidebar: {
-            defaultMenuCollapseLevel: 2
-        }
+    ),
+    project: {
+        link: "https://github.com/MaximilianHeidenreich/PingBack",
+    },
+    docsRepositoryBase: "https://github.com/MaximilianHeidenreich/PingBack/blob/main/docs/pages",
+    primaryHue: 334,
+    navigation: {
+        prev: true,
+        next: true
+    },
+    footer: {
+        text: <span>
+        <span style={{ fontWeight: 800 }}>PingBack</span> | Made with ❤️ by <a href="https://github.com/MaximilianHeidenreich" target="_blank">Maximilian Heidenreich</a>.
+        </span>,
+    },
+    sidebar: {
+        defaultMenuCollapseLevel: 2
     }
+}

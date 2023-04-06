@@ -2,39 +2,40 @@ import { Callout } from 'nextra-theme-docs'
 
 # Filters
 
-At any location inside PingBack it is possible to open up the filter view by pressing the `CMD+F / STRG+F` shortcut or the `filter` icon in the top right.
+Inside the filter bar, you can combine individual conditions to find the events you are looking for.
+Currently, the available conditions include:
+- **Project** - exact match
+- **Channel** - exact match
+- **Event Name** - exact match
+- **Event Titel** - contains
 
-## What you can filter by
-
-### Text
-*Included in:*
-- eventName
-- title
-- description
-
-### Projects
-foobar
-
-<Callout type="default" emoji="💡">
-    Use the prefix `p:<projectID / projectName>` to quickly add a project filter.
-</Callout>
-
-### Channels
+These conditions can be added by typing inside of the input field. The condition will 
+automatically be applied after pressing *enter* or inserting a space. Conditions can be 
+removed by clicking on the *X* button or by pressing *backspace* **twice** to highlight 
+and confirm the removal.
 
 <Callout type="default" emoji="💡">
-    Use the prefix `#<channel>` to quickly add a channel filter.
+    Different conditions can be inserted by using their prefixes described below in front of the value to filter by.
 </Callout>
+
+## Simple filtes
+
+### Project
+**Prefix** - p:\<projectKey\>
+
+### Channel
+**Prefix** - \#\<channelName\>
 
 ### Event Name
+**Prefix** - \:\<eventName\>
 
-<Callout type="default" emoji="💡">
-    Use the prefix `e:<projectID / projectName>` to quickly add an event filter.
+### Event Title
+**Prefix** - none
+
+
+## Advanced Filter
+
+<Callout type="warning" >
+    Not implemented yet!
 </Callout>
 
-### Tags
-
-#### Advanced queries
-
-<Callout type="default" emoji="💡">
-    Use the prefix `t:<tag>:<value>` to quickly add a tag filter.
-</Callout>
