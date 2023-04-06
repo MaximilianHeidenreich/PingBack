@@ -1,18 +1,18 @@
 #name: DetaApp (TEST) — CI
-name: test
+name: PingBack - Test, Build, Deploy
 on:
   pull_request:
     branches:
       - dev
       - main
     #paths:
-    #  - "detaApp/src**"
+    #  - "frontend/src**"
   push:
     branches:
       - dev
       - main
     #paths:
-    #  - "detaApp/src**"
+    #  - "frontend/src**"
 jobs:
   Check-frontend:
     runs-on: ubuntu-latest
@@ -24,12 +24,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-          cache-dependency-path: "detaApp/package-lock.json"
+          cache-dependency-path: "frontend/package-lock.json"
       - name: Install dependencies
-        working-directory: detaApp
+        working-directory: frontend
         run: npm i
       - name: Run check
-        working-directory: detaApp
+        working-directory: frontend
         run: |
           npm run check
   Test-frontend:
@@ -42,12 +42,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-          cache-dependency-path: "detaApp/package-lock.json"
+          cache-dependency-path: "frontend/package-lock.json"
       - name: Install dependencies
-        working-directory: detaApp
+        working-directory: frontend
         run: npm i
       - name: Run tests
-        working-directory: detaApp
+        working-directory: frontend
         run: |
           npm run test
   Lint-frontend:
@@ -60,17 +60,18 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-          cache-dependency-path: "detaApp/package-lock.json"
+          cache-dependency-path: "frontend/package-lock.json"
       - name: Install dependencies
-        working-directory: detaApp
+        working-directory: frontend
         run: npm i
       - name: Run lint
-        working-directory: detaApp
+        working-directory: frontend
         run: |
           npm run lint
 
   Build-frontend:
     runs-on: ubuntu-latest
+    if: ${{ always() }} # TODO: test only
     needs: ["Check-frontend", "Test-frontend", "Lint-frontend"]
     steps:
       - name: Check out repository code
@@ -80,12 +81,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-          cache-dependency-path: "detaApp/package-lock.json"
+          cache-dependency-path: "frontend/package-lock.json"
       - name: Install dependencies
-        working-directory: detaApp
+        working-directory: frontend
         run: npm i
       - name: Run build
-        working-directory: detaApp
+        working-directory: frontend
         run: |
           npm run build
       - name: Upload build artifacts
@@ -93,11 +94,12 @@ jobs:
         with:
           name: frontend-build-bundle
           path: |
-            detaApp/package-lock.json
-            detaApp/package.json
-            detaApp/bundled
+            frontend/package-lock.json
+            frontend/package.json
+            frontend/bundled
   Build-docs:
     runs-on: ubuntu-latest
+    if: ${{ always() }} # TODO: test only
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -126,12 +128,15 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     needs: ["Build-frontend", "Build-docs"]
+    environment: production
     steps:
-      - name: Install dependencies
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Install dependencies & authenticate Space CLI
         run: |
           curl -fsSL https://get.deta.dev/space-cli.sh | sh
-      - name: Authenticate Deta CLI
-        run: ls -al
+          echo '/home/runner/.detaspace/bin' >> $GITHUB_PATH
+          echo "SPACE_ACCESS_TOKEN=${{ secrets.SPACE_ACCESS_TOKEN }}" >> $GITHUB_ENV
       - name: Download docs build artifacts
         uses: actions/download-artifact@v3
         with:
@@ -141,14 +146,18 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: frontend-build-bundle
-          path: detaApp/
+          path: frontend/
+      - name: Push changes to Deta Space
+        run: |
+          echo "pid ${{ vars.PROJECT_ID }}"
+        #  space push --id "${{ vars.PROJECT_ID }}" # TODO:
       - name: foo
         run: |
           ls -al
           echo docs
           ls docs
-          echo detaApp
-          ls detaApp
+          echo frontend
+          ls frontend
           echo cli
           space -h
 
@@ -186,14 +195,14 @@ jobs:
   #       with:
   #         node-version: ${{ matrix.node-version }}
   #         cache: "npm"
-  #         cache-dependency-path: "detaApp/package-lock.json"
+  #         cache-dependency-path: "frontend/package-lock.json"
   #     - name: Install other dependencies
   #       run: |
   #         curl -fsSL https://get.deta.dev/space-cli.sh | sh
   #     - uses: actions/upload-artifact@master
   #       with:
   #         name: frontend-setup
-  #         path: detaApp
+  #         path: frontend
   # Test-frontend:
   #   runs-on: ubuntu-latest
   #   needs: Setup-frontend
@@ -201,7 +210,7 @@ jobs:
   #     - uses: actions/download-artifact@master
   #       with:
   #         name: frontend-setup
-  #         path: detaApp
+  #         path: frontend
   #     - name: foo
   #       run: |
   #         ls -al
@@ -234,7 +243,7 @@ jobs:
   #         npm run build
   #     - name: Build frontend
   #       run: |
-  #         cd detaApp
+  #         cd frontend
   #         npm run build
   # Deploy:
   #   runs-on: ubuntu-latest
