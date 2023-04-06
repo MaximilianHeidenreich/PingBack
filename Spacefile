@@ -8,32 +8,20 @@ micros:
     path: docs
     public_routes:
       - "/*"
-    engine: static
-    serve: detaOut
-    #engine: next
-    #engine: static
-    #serve: detaOut
-    #include:
-    #  - detaOut
-    #- .next
-    #  - package.json
-    #- package-lock.json
-    #commands:
-    #- npm init --yes
-    #- npm i next
-    #run: next start
-    #- npm install --omit=dev
-    #run: next start
+    engine: nodejs16
+    include:
+      - bundled
+      - server.js
+      - package.json
+    run: node server.js
   - name: frontend
     primary: true
-    src: ./detaApp
+    src: ./frontend
     public_routes:
-    - "/api/v*/events"
+      - "/api/v*/events"
     include:
-    - bundled
-    #- node_modules
-    - package.json
-    #- package-lock.json
+      - bundled
+      - package.json
     engine: nodejs16
     #commands:
     #- export
