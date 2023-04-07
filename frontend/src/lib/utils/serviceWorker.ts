@@ -1,14 +1,70 @@
+import { dev } from "$app/environment";
+import type { IEvent } from "$lib/types/IEvent";
+import { VERSION } from "./version";
+
 export type TServiceWorkerMessageType =
     "_INIT" |
     "_INIT_SUCCESS" |
+    "NEW_EVENTS" |
     "receivePushNotification";
 export interface IServiceWorkerMessage<T> {
     type: TServiceWorkerMessageType;
     payload: T;
 }
 
-let sw_registration: ServiceWorkerRegistration;
+// background webnotify
+export let sw_registration: ServiceWorkerRegistration;
 export async function sw_register() {
+    if (!("serviceWorker" in navigator)) return;
+    if (sw_registration) return;
+    console.info(`[ServiceWorker] Registering worker ...`);
+
+    try {
+        sw_registration = await navigator.serviceWorker.register("/service-worker.js", {
+            scope: "/",
+            updateViaCache: "none",
+            type: dev ? "module" : "classic"
+        });
+    } catch (e) {
+        console.error("[ServiceWorker] Could not register worker: ", e);
+        throw e; // TODO: Better errs
+    } // TODO: https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/skipWaiting
+    navigator.serviceWorker.onmessage = onMessage;//.addEventListener("message", onMessage);
+}
+
+export async function client_sendMessageToWorker<T>(type: TServiceWorkerMessageType, payload: T) {
+    if (!sw_registration) {
+        console.warn("Tried to send message to service worker before registrated!");
+        return;
+    }
+    if (!sw_registration.active) {
+        console.warn("Tried to send message to registered service worker before active!");
+        return;
+    }
+    sw_registration.active.postMessage({ type, payload } satisfies IServiceWorkerMessage<T>);
+}
+
+export function sw_init() { // TODO run in sw_register
+    console.info("[ServiceWorker] Initializing service worker...");
+    client_sendMessageToWorker("_INIT", {
+        version: VERSION,
+        origin: window.location.origin
+    });
+}
+
+function onMessage(event: MessageEvent<IServiceWorkerMessage<any>>) {
+    const t = event.data.type;
+    const p = event.data.payload;
+    console.debug(`[Window <- ServiceWorker] Received message ${t}`, p);
+    if (t === "_INIT_SUCCESS") console.info("[ServiceWorker] Initialized!");
+    else if (t === "NEW_EVENTS") onNewEvents(p);
+}
+
+function onNewEvents(payload: { events: IEvent[] }) {
+    console.log("new events", payload.events);
+}
+
+/*export async function sw_registerrr() {
     if ("serviceWorker" in navigator) {
 
         //await Notification.requestPermission();
@@ -34,7 +90,6 @@ export async function sw_register() {
             console.info("ERR: Could not register service worker!");
             console.error(e);
         }
-        // TODO: Add catch
 
 
         /*Notification.requestPermission((result) => {
@@ -45,25 +100,11 @@ export async function sw_register() {
                 vibrate: [200, 100, 200, 100, 200, 100, 200],
                 tag: "vibration-sample",
             });
-            });*/
+            });
     }
-}
+}*/
 
-
-export const sw_messageChannel = new MessageChannel();
-
-sw_messageChannel.port1.onmessage = function(event) {
-    const message = event.data as IServiceWorkerMessage<unknown>;
-    console.debug("Received message from service worker:", message);
-
-    if (message.type === "_INIT_SUCCESS") {
-        console.info("Service worker messaging initialized successfully");
-    }
-    else if (message.type === "receivePushNotification") {
-        _onReceivePushNotification(message.payload);
-    }
-};
-async function _onReceivePushNotification(payload: any) {
+/*async function _onReceivePushNotification(payload: any) {
     console.log("Handling push notification:", payload);
     console.log("sw_registration", sw_registration);
 
@@ -97,17 +138,4 @@ async function _onReceivePushNotification(payload: any) {
     catch (e) {
         console.error(e);
     }*/
-}
-
-function _sendMessage(message: IServiceWorkerMessage<unknown>) {
-    if (!navigator.serviceWorker.controller) {
-        alert("Fatal: No service worker controller!") // TODO: Better error handling
-        return;
-    }
-    navigator.serviceWorker.controller.postMessage(message, [sw_messageChannel.port2]);
-}
-
-export function sw_init() {
-    console.info("Trying to initialize service worker messaging...");
-    _sendMessage({ type: "_INIT", payload: null });
-}
+/*}*/
