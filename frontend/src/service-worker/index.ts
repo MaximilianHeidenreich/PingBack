@@ -6,7 +6,7 @@
 import { NotFound } from "$lib/errors/core";
 import type { IEvent } from "$lib/types/IEvent";
 import { TIME_FRAME_OFFSET_UNIT, type ITimeFrame } from "$lib/types/ITimeFrame";
-import type { IServiceWorkerMessage } from "$lib/utils/serviceWorker";
+import type { IServiceWorkerMessage, TServiceWorkerMessageType } from "$lib/utils/serviceWorker";
 import dayjs from "dayjs";
 import { sw_FetchAllEventsInFrame } from "./events";
 import { sw_handleNewEvents } from "./notifications";
@@ -25,55 +25,54 @@ import { sw_GetTimeFrame } from "./timeFrame";
 }))
 precacheAndRoute(precache_list);*/
 
-export interface IWorkerInitialization { // TODO: Rename to worker context
+export interface IWorkerContext {
     VERSION: { major: number, minor: number, patch: number } | null;
     ORIGIN: string | null;
 }
-const WORKER_INITIALIZATION: IWorkerInitialization = {
+const CONTEXT: IWorkerContext = {
     VERSION: null,
-    ORIGIN: null
+    ORIGIN: null,
 };
+const hasContext = () => CONTEXT.VERSION && CONTEXT.ORIGIN;
 
-// MESSAGING API
-let messagingPort: MessagePort;
-export function _sendMessage(message: IServiceWorkerMessage<unknown>) {
-    if (messagingPort) messagingPort.postMessage(message);
-}
-function _messageHandler(event) {
-    console.log("msg trig", event)
-    _handleMessage(event, event.data);
-}
-function _handleMessage(event: MessageEvent<any>, message: IServiceWorkerMessage<unknown>) {
-    console.debug(`[Window -> ServiceWorker] Received message ${message.type}`, message.payload);
-    if (message.type === "_INIT") {
-        _onInit(event, message);
+// MESSAGING
+let CLIENT: any | null = null;
+export function sw_sendMessageToClient<T>(type: TServiceWorkerMessageType, payload: T) {
+    console.warn(CLIENT);
+
+    if (!CLIENT) {
+        console.warn("[ServiceWorker] Tried to send message to client before reference set!");
+        return;
     }
-}
-function _onInit(event: MessageEvent<any>, message: IServiceWorkerMessage<{
-    appVersion: { major: number, minor: number, patch: number },
-    appOrigin: string,
-    msgPort: MessagePort
-}>) {
-    //console.log(event)
-    //messagingPort = event.ports[0];
-    messagingPort = message.payload.msgPort;
-    
-    WORKER_INITIALIZATION.VERSION = message.payload.appVersion;
-    WORKER_INITIALIZATION.ORIGIN = message.payload.appOrigin
-    console.debug(`[ServiceWorker] Initializing with:`, WORKER_INITIALIZATION);
-
-    setup_newEventFetcher();
-
-    _sendMessage({ type: "_INIT_SUCCESS", payload: null });
+    CLIENT.postMessage({ type, payload } satisfies IServiceWorkerMessage<T>);
 }
 
+function onMessage(event: MessageEvent<IServiceWorkerMessage<any>>) {
+    if (!CLIENT) CLIENT = event.source;
+    const t = event.data.type;
+    const p = event.data.payload;
+    console.debug(`[Window -> ServiceWorker] Received message ${t}`, p);
+    if (t === "_INIT") onInit(p);
+}
+
+function onInit(payload: {
+    version: { major: number, minor: number, patch: number },
+    origin: string,
+}) {
+    //if (wid !== payload.id) return;
+    CONTEXT.VERSION = payload.version;
+    CONTEXT.ORIGIN = payload.origin;
+    console.debug(`[ServiceWorker] Initializing with context:`, CONTEXT);
+
+    //setup_newEventFetcher();
+
+    sw_sendMessageToClient("_INIT_SUCCESS", null);
+}
 
 // EVENT LISTENERS
-function _swInstall(event) {}
-function _swActivate(event) {}
-self.addEventListener("install" , _swInstall);
-self.addEventListener("activate", _swActivate);
-self.addEventListener("message", _messageHandler);
+self.addEventListener("install" , e => {});
+self.addEventListener("activate", e => {});
+self.onmessage = onMessage;
 
 /*self.addEventListener("push", function(e) {
     const event = e as PushEvent;
@@ -87,18 +86,18 @@ self.addEventListener("message", _messageHandler);
 // ================ Current event fetcher
 let pastNewEventKeys: string[] = [];
 async function onFetchNewEvents() {
-    if (!WORKER_INITIALIZATION.VERSION || !WORKER_INITIALIZATION.ORIGIN) return; // TODO: Thow?
-    
+    if (!hasContext()) return; // TODO: Throw?
+
     const currFrameEnd = dayjs().endOf(TIME_FRAME_OFFSET_UNIT).valueOf();
     let frame: ITimeFrame | null;
     try {
-        frame = await sw_GetTimeFrame(WORKER_INITIALIZATION, currFrameEnd);
+        frame = await sw_GetTimeFrame(CONTEXT, currFrameEnd);
         if (!frame) return;
     } catch (e) {
         if (e instanceof NotFound) return;
         console.error(e);
     }
-    const eventFetchRes = await sw_FetchAllEventsInFrame(WORKER_INITIALIZATION, currFrameEnd, {});
+    const eventFetchRes = await sw_FetchAllEventsInFrame(CONTEXT, currFrameEnd, {});
 
      // Sort events & handle new
     eventFetchRes.items.sort((a, b) => b.createdAt - a.createdAt);
@@ -114,6 +113,5 @@ async function onFetchNewEvents() {
     sw_handleNewEvents(newEvents);
 }
 function setup_newEventFetcher() {
-    console.error("!!!! SETTING INTERVAL")
     setInterval(onFetchNewEvents, 3000);
 }

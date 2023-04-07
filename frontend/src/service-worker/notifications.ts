@@ -1,6 +1,6 @@
 import type { IEvent } from "$lib/types/IEvent";
-import { _sendMessage } from ".";
+import { sw_sendMessageToClient } from ".";
 
 export async function sw_handleNewEvents(events: IEvent[]) {
-    _sendMessage({ type: "NEW_EVENTS", payload: events });
+    sw_sendMessageToClient("NEW_EVENTS", { events })
 }

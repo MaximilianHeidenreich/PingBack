@@ -1,13 +1,13 @@
 import { NotFound } from "$lib/errors/core";
 import type { ITimeFrame } from "$lib/types/ITimeFrame";
-import type { IWorkerInitialization } from ".";
+import type { IWorkerContext } from ".";
 
 export async function sw_GetTimeFrame(
-    ctx: IWorkerInitialization,
+    ctx: IWorkerContext,
     frameEnd: number
 ): Promise<ITimeFrame |  null> { // TODO: Can return null?
     console.debug(`[SW TimeFrame] Getting frame ${frameEnd}`);
-    
+
     const url = new URL(`/api/v${ctx.VERSION!.major}/timeframes/${frameEnd}`, ctx.ORIGIN!);
     const res = await fetch(url, {
         method: "GET",

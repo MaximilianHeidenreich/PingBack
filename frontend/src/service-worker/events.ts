@@ -1,10 +1,10 @@
 import type { IEvent } from "$lib/types/IEvent";
 import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
 import dayjs from "dayjs";
-import type { IWorkerInitialization } from ".";
+import type { IWorkerContext } from ".";
 
 export async function sw_FetchEventsRaw(
-  ctx: IWorkerInitialization,
+  ctx: IWorkerContext,
   query:
     | (Partial<IEvent> & { [key: string]: unknown })
     | (Partial<IEvent> & { [key: string]: unknown })[],
@@ -28,7 +28,7 @@ export async function sw_FetchEventsRaw(
 }
 
 export async function sw_FetchAllEvents(
-  ctx: IWorkerInitialization,
+  ctx: IWorkerContext,
   query:
     | (Partial<IEvent> & { [key: string]: unknown })
     | (Partial<IEvent> & { [key: string]: unknown })[]
@@ -64,7 +64,7 @@ export async function sw_FetchAllEvents(
  * @returns [events fetch result, more events available in some previous frame]
  */
 export async function sw_FetchAllEventsInFrame( // TODO: Refactor
-  ctx: IWorkerInitialization,
+  ctx: IWorkerContext,
   frameEnd: number,
   query:
     | (Partial<IEvent> & { [key: string]: unknown })
