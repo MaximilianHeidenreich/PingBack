@@ -1,8 +1,8 @@
 <script lang="ts">
 // PROPS
     export let size: number = 24, 
-        strokeWidth: number = 1, 
-        style: "light" | "dark" = "dark",
+        strokeWidth: number = 24 / size, 
+        style: "light" | "dark" | "currentColor" = "dark",
         fill: string | undefined = undefined;
 </script>
 
@@ -13,8 +13,8 @@
 
 
 <style lang="postcss">
-    .icon {
-
+    .icon.currentColor {
+        color: inherit;
     }
     .icon.dark {
         color: black;
