@@ -15,6 +15,7 @@
     import IconSignalFull from "../icons/IconSignalFull.svelte";
     import IconHelpQuestionSquare from "../icons/IconHelpQuestionSquare.svelte";
     import ThemeToggle from "../buttons/ThemeToggle.svelte";
+    import { goto } from "$app/navigation";
 
     // HANDLERS
     function onHandleMenuLinkClick() {
@@ -104,7 +105,7 @@
                 <hr class="my-3 w-full">
                 <ul class="w-full flex justify-between gap-3">
                     <li>
-                        <IconButton type="link" href="/docs" target="_blank">
+                        <IconButton on:click={() => goto("/docs")}><!-- type="link" href="/docs" target="_blank"> -->
                             <IconHelpQuestionSquare size={TKN_ICON.SIZE.SM} />
                         </IconButton>
                         </li>
