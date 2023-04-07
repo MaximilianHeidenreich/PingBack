@@ -46,3 +46,4 @@ export async function showNativeNotification(noti: ICreateNotification) {
     //if (!noti.icon) noti.icon = "/v1_pingback-logo_ios@1024.png";
     new Notification(noti.title, { ...noti });
 }
+

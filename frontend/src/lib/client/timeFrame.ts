@@ -45,7 +45,7 @@ export async function client_GetTimeFrame(
     fetcher: TFetcher,
     frameEnd: number,
     useCache: boolean = true
-): Promise<ITimeFrame | ICachedTimeFrame | null> {
+): Promise<ITimeFrame | ICachedTimeFrame | null> { // TODO: Can return null?
     console.debug(`[TimeFrame] Getting frame ${frameEnd} | cache: ${useCache}`);
     if (useCache) {
         const cached = await cache_GetFrame(frameEnd);
