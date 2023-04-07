@@ -27,6 +27,14 @@ function onUpdate() {
     _updateForNewEvents();
 }
 
+const liveSubs_newEvents: ((events: IEvent[]) => void)[] = [];
+export const subscribeLive_newEvents = (c: (events: IEvent[]) => void) => !liveSubs_newEvents.includes(c) ? liveSubs_newEvents.push(c) : null;
+export const unsubscribeLive_newEvents = (c: (events: IEvent[]) => void) => liveSubs_newEvents.includes(c) ? liveSubs_newEvents.slice(liveSubs_newEvents.indexOf(c), 1) : null;
+function pushLive_newEvents (newEvents: IEvent[]) {
+    for (let consumer of liveSubs_newEvents) {
+        consumer(newEvents);
+    }
+}
 
 async function _updateForNewEvents() {
     const currFrameEnd = dayjs().endOf(TIME_FRAME_OFFSET_UNIT).valueOf();
@@ -59,6 +67,8 @@ async function _updateForNewEvents() {
 
 
 async function handleNewEvents(events: IEvent[]) {
+    pushLive_newEvents(events);
+
     events.forEach(event => {
         //if (!event.notify) return;
         toast(event.title, toastOptions({ // TODO: Custom renderer -> On click open

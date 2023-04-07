@@ -3,7 +3,6 @@
     import { client_GetTimeFrame } from "$lib/client/timeFrame";
     import { clientFetchAllEventsInFrame } from "$lib/helpers/api/eventClient";
     import { clientGetSysDoc } from "$lib/helpers/api/systemClient";
-    import { handleNewEventsNotify } from "$lib/helpers/notifications/notifications";
     import type { IEvent } from "$lib/types/IEvent";
     import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
     import dayjs, { type ManipulateType } from "dayjs";
@@ -11,6 +10,7 @@
     import { writable } from "svelte/store";
     import EventList from "./EventList.svelte";
     import InfiniteEventListTrigger from "./InfiniteEventListTrigger.svelte";
+    import { subscribeLive_newEvents, unsubscribeLive_newEvents } from "$lib/client/liveData";
 
     // TYPES
     type IDisplayTimeFrame = {
@@ -21,7 +21,7 @@
     // PROPS
     export let startTimestamp: number = -1, // TODO: Remove?
         query: Record<string, any> | Record<string, any>[] = {},
-        autoFetchFuture: boolean = true,
+        autoFetchFuture: boolean = false,
         autoFetchFutureInterval = 1000 * 2,
         useCache = false;// TOOD: Disabled, err after delete Object.keys(query).length === 0 ? true : false; // TODO!: Fix cached query
 
@@ -135,17 +135,45 @@
                     frameEnd: currentFrameEnd,
                     events: eventFetchRes.items,
                 };
+                pendingFrame.events.sort((a, b) => b.createdAt - a.createdAt);
                 frames = [pendingFrame, ...frames];
                 return frames;
             }
             else {
                 const oldEvents = frames[i].events;
-                frames[i].events = eventFetchRes.items;
+                frames[i].events = eventFetchRes.items; // TODO: remove whole block
                 if (oldEvents.length !== frames[i].events.length) { // TODO: needs to handle multipel db request with limit better
                     const newEvents = eventFetchRes.items.filter((e) => oldEvents.findIndex(oe => oe.key === e.key) < 0);
-                    handleNewEventsNotify(newEvents);
+                    //handleNewEventsNotify(newEvents);
                     // TODO: IMPL
                 }
+                frames[i].events.sort((a, b) => b.createdAt - a.createdAt);
+                return frames;
+            }
+        })
+    }
+
+    async function onLiveNewEvents(events: IEvent[]) {
+        console.warn("live new")
+        const currentFrameEnd = dayjs().endOf(TIME_FRAME_OFFSET_UNIT).valueOf();
+        timeFrames.update(frames => {
+            const i = $timeFrames.findIndex(f => f.frameEnd === currentFrameEnd);
+            if (i < 0) {
+                const pendingFrame = {
+                    frameEnd: currentFrameEnd,
+                    events,
+                };
+                pendingFrame.events.sort((a, b) => b.createdAt - a.createdAt);
+                frames = [pendingFrame, ...frames];
+                return frames;
+            }
+            else {
+                for (const event of events) {
+                    if (!frames[i].events.find(e => e.key === event.key)) {
+                        frames[i].events.push(event);
+                    }
+                }
+                frames[i].events.sort((a, b) => b.createdAt - a.createdAt);
                 return frames;
             }
         })
@@ -155,11 +183,13 @@
         lastPastFrameEnd = dayjs(await getSystemLatestEventTimestamp()).endOf(TIME_FRAME_OFFSET_UNIT);
         await loadPast();
         loadCurrent();
-        if (autoFetchFuture)
-            autoFetchFutureTimer = setInterval(onTriggerAutoLoadFuture, autoFetchFutureInterval);
+        subscribeLive_newEvents(onLiveNewEvents);
+        //if (autoFetchFuture)
+        //    autoFetchFutureTimer = setInterval(onTriggerAutoLoadFuture, autoFetchFutureInterval);
     });
     onDestroy(() => {
-        clearInterval(autoFetchFutureTimer);
+        unsubscribeLive_newEvents(onLiveNewEvents);
+        //clearInterval(autoFetchFutureTimer);
     });
 
 </script>
