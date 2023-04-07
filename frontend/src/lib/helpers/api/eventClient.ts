@@ -121,7 +121,7 @@ export async function clientFetchAllEvents(
  * @param limit
  * @returns [events fetch result, more events available in some previous frame]
  */
-export async function clientFetchAllEventsInFrame(
+export async function clientFetchAllEventsInFrame( // TODO: Refactor
   fetcher: TFetcher,
   frameEnd: number,
   query:
@@ -132,7 +132,7 @@ export async function clientFetchAllEventsInFrame(
   // TODO: remove [] OR -> Cannot query -> if necessary query after fetch
   frameEnd = dayjs(frameEnd).endOf(TIME_FRAME_OFFSET_UNIT).valueOf(); // Make sure we use the end of hour as frame end
   console.debug(
-    `Requested event frame for ${frameEnd} (${dayjs(
+    `[Events] Requested event for frame ${frameEnd} (${dayjs(
       frameEnd
     ).format()}) (useCache: ${useCache})`
   );
@@ -147,7 +147,7 @@ export async function clientFetchAllEventsInFrame(
       }*/
 
   console.debug(
-    `Cache miss! Fetching event frame for ${frameEnd} (${dayjs(frameEnd).format()})...`
+    `Cache miss! Fetching events for frame ${frameEnd} (${dayjs(frameEnd).format()})...`
   );
 
   const res = await clientFetchAllEvents(fetcher, {
