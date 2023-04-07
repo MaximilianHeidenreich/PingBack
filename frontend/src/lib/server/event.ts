@@ -1,7 +1,7 @@
 import { DetaBaseError, InvalidZod, NotFound } from "$lib/errors/core";
 import { getTimeFrameEnd } from "$lib/shared/timeFrame";
-import { SEventIcon, SEventKey, SEventName, SEventTitle, type IEvent } from "$lib/types/IEvent";
-import { SProjectKey } from "$lib/types/IProject";
+import { ZEventIcon, ZEventKey, ZEventName, ZEventTitle, type IEvent } from "$lib/types/IEvent";
+import { ZProjectKey } from "$lib/types/IProject";
 import { TIME_FRAME_OFFSET_UNIT, type ITimeFrame } from "$lib/types/ITimeFrame";
 import { VERSION } from "$lib/utils/version";
 import dayjs from "dayjs";
@@ -20,21 +20,21 @@ export interface ICreateEvent extends Partial<IEvent> {
     description: string | object;
 }
 export const SCreateEvent = z.object({
-    key: SEventKey.optional().default(() => crypto.randomUUID()),
+    key: ZEventKey.optional().default(() => crypto.randomUUID()),
     v: z.number().optional().default(VERSION.major),
     createdAt: z
         .number()
         .optional()
         .default(() => dayjs().valueOf()),
 
-    project: SProjectKey,
+    project: ZProjectKey,
     channel: z.string(),
-    name: SEventName,
+    name: ZEventName,
     notify: z.boolean().optional().default(true),
-    icon: SEventIcon.optional().default("🔔"), // TODO: Default icon? or allow null icon
+    icon: ZEventIcon.optional().default("🔔"), // TODO: Default icon? or allow null icon
     parser: z.enum(["text", "markdown", "json", "log"]).default("text"), //z.string().optional().default("text"),// .infer<typeof TEvent>(),
 
-    title: SEventTitle,
+    title: ZEventTitle,
     description: z.string().optional().default(""),
     tags: z.record(z.string(), z.unknown()).optional().default({})
 });

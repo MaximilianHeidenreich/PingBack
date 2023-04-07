@@ -1,12 +1,12 @@
 import { db_apiKeys, db_projects } from "$lib/server/deta";
 import { buildResponse, respondBadRequest, respondInternalError, respondNotFound } from "$lib/server/responseHelper";
 import { ZApiKeyDisplayName, type IApiKey } from "$lib/types/IApiKey";
-import { SProjectDisplayName } from "$lib/types/IProject";
+import { ZProjectDisplayName } from "$lib/types/IProject";
 import { z } from "zod";
 import type { RequestHandler } from "./$types";
 
 const ZPostBody = z.object({
-    project: SProjectDisplayName,
+    project: ZProjectDisplayName,
     displayName: ZApiKeyDisplayName
 });
 

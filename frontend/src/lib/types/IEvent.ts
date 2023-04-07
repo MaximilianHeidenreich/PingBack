@@ -30,14 +30,14 @@ export interface IEvent {
 }
 
 // SCHEMAS
-export const SEventKey = z.string()
+export const ZEventKey = z.string()
     .uuid();
-export const SEventName = z.string()
+export const ZEventName = z.string()
     .min(1)
     .max(50)
     .regex(/[a-zA-Z0-9._-]+/)
     .transform((s) => s.toLowerCase());
-export const SEventIcon = z.string().emoji();
-export const SEventTitle = z.string()
+export const ZEventIcon = z.string().emoji();
+export const ZEventTitle = z.string()
     .min(1)
     .max(50);
