@@ -1,9 +1,13 @@
 <script lang="ts">
-    import Sun1 from "iconsax-svelte/Sun1.svelte";
-    import Moon from "iconsax-svelte/Moon.svelte";
     import IconButton from "./IconButton.svelte";
     import { s_darkMode } from "$lib/stores/s_darkMode";
     import { get } from "svelte/store";
+    import IconWeatherMoon from "../icons/IconWeatherMoon.svelte";
+    import IconWeatherSun from "../icons/IconWeatherSun.svelte";
+    import { TKN_ICON } from "$lib/utils/tokens";
+
+    // PROPS
+    export let iconSize = TKN_ICON.SIZE.SM;
 
     // HANDLERS
     function onToggle() {
@@ -17,10 +21,11 @@
 
 
 <IconButton
+    disabled
     on:click={onToggle}>
     {#if $s_darkMode}
-    <Sun1 size={20}/>
+    <IconWeatherSun size={iconSize} style="currentColor"/>
     {:else}
-    <Moon size={20}/>
+    <IconWeatherMoon size={iconSize} style="currentColor"/>
     {/if}
 </IconButton>
