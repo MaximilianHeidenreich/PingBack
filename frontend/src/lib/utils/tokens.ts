@@ -2,6 +2,7 @@ import { quintOut } from "svelte/easing";
 
 export const TKN_ICON = Object.freeze({
     SIZE: {
+        XS: 16,
         SM: 20,
         BASE: 24,
         LG: 30
