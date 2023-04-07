@@ -25,7 +25,7 @@ const config = {
         serviceWorker: {
             register: false
         },
-        csrf: {
+        csrf: { // FIX: Dev only?
             checkOrigin: false,
         }
     },
