@@ -2,7 +2,6 @@
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
     import { s_eventListStyle } from "$cmp/core/eventList/s_eventListStyle";
     import { TKN_ICON, TKN_TRANSITION } from "$lib/utils/tokens";
-    import Menu from "iconsax-svelte/Menu.svelte";
     import { get } from "svelte/store";
     import { fly } from "svelte/transition";
     import "../scaffold.postcss";
@@ -12,6 +11,7 @@
     import { s_headerTitle } from "./s_headerTitle";
     import IconDatabaseSearch from "$cmp/core/icons/IconDatabaseSearch.svelte";
     import IconAlignLayers1 from "$cmp/core/icons/IconAlignLayers1.svelte";
+    import IconMenu1 from "$cmp/core/icons/IconMenu1.svelte";
 
     // STATE
     let filterOpen = false;
@@ -31,7 +31,7 @@
     <header
         class="app-area flex items-center justify-between !py-3 !px-4">
         <div class="flex-1 flex items-center gap-3 overflow-hidden">
-            <IconButton on:click={onToggleSidebar}><Menu /></IconButton>
+            <IconButton on:click={onToggleSidebar}><IconMenu1 size={TKN_ICON.SIZE.SM} /></IconButton>
             <span class="text-lg font-medium truncate">{$s_headerTitle}</span>
         </div>
         <ul class="flex items-center gap-3">

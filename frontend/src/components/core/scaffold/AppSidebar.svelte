@@ -9,11 +9,12 @@
     import IconButton from "../buttons/IconButton.svelte";
     import { isMobile } from "$lib/utils/width";
     import IconCog from "../icons/IconCog.svelte";
-    import IconBookOpen from "../icons/IconBookOpen.svelte";
     import IconArchive from "../icons/IconArchive.svelte";
-    import IconSignalSquare from "../icons/IconSignalSquare.svelte";
-    import IconGraphBarIncreaseSquare from "../icons/IconGraphBarIncreaseSquare.svelte";
-    import IconRssSquare from "../icons/IconRssSquare.svelte";
+    import IconSignalGraph from "../icons/IconSignalGraph.svelte";
+    import IconMailInbox from "../icons/IconMailInbox.svelte";
+    import IconSignalFull from "../icons/IconSignalFull.svelte";
+    import IconHelpQuestionSquare from "../icons/IconHelpQuestionSquare.svelte";
+    import ThemeToggle from "../buttons/ThemeToggle.svelte";
 
     // HANDLERS
     function onHandleMenuLinkClick() {
@@ -41,7 +42,7 @@
                             href="/app/feed"
                             active={$page.url.pathname.startsWith("/app/feed")}
                             on:click={onHandleMenuLinkClick}>
-                            <IconRssSquare size={TKN_ICON.SIZE.BASE} />
+                            <IconMailInbox size={TKN_ICON.SIZE.BASE} />
                             <span>Feed</span>
                         </MenuLink>
                     </li>
@@ -51,7 +52,7 @@
                             href="/app/metrics"
                             active={$page.url.pathname.startsWith("/app/feed")}
                             on:click={onHandleMenuLinkClick}>
-                            <IconGraphBarIncreaseSquare size={TKN_ICON.SIZE.BASE} />
+                            <IconSignalFull size={TKN_ICON.SIZE.BASE} />
                             <span>Metrics</span>
                         </MenuLink>
                     </li>
@@ -61,7 +62,7 @@
                             href="/app/monitor"
                             active={$page.url.pathname.startsWith("/app/monitor")}
                             on:click={onHandleMenuLinkClick}>
-                            <IconSignalSquare size={TKN_ICON.SIZE.BASE} />
+                            <IconSignalGraph size={TKN_ICON.SIZE.BASE} />
                             <span>Monitor</span>
                         </MenuLink>
                     </li>
@@ -104,11 +105,11 @@
                 <ul class="w-full flex justify-between gap-3">
                     <li>
                         <IconButton type="link" href="/docs" target="_blank">
-                            <IconBookOpen size={TKN_ICON.SIZE.SM} />
+                            <IconHelpQuestionSquare size={TKN_ICON.SIZE.SM} />
                         </IconButton>
                         </li>
                     <li>
-                        <!--<ThemeToggle/>--> <!-- TODO: Re-Enable when good -->
+                        <ThemeToggle /> <!-- TODO: Re-Enable when good -->
                     </li>
                 </ul>
             </section>

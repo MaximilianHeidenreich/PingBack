@@ -62,7 +62,7 @@
             </li>
             <li>
                 <ul class="flex items-center gap-3">
-                    <li class="mb-0.5 font-medium"><span>Push Notifications: </span></li>
+                    <li class="mb-0.5 font-medium"><span>Push Notifications (Soon): </span></li>
                     <li><Toggle toggled={false} switchColor="#eee" toggledColor="#24a148" untoggledColor="#fa4d56" hideLabel disabled/></li>
                 </ul>
                 <p class="leading-tight"><small>

@@ -6,7 +6,6 @@
     import AppContentSectionHeader from "$cmp/core/scaffold/AppContentSectionHeader.svelte";
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
     import { TKN_ICON } from "$lib/utils/tokens";
-    import { IconArrowsVertical, IconTrash } from "@tabler/icons-svelte";
     import type { PageData } from "./$types";
     import { browser } from "$app/environment";
     import { clientDeleteEvent } from "$lib/helpers/api/eventClient";
@@ -15,6 +14,8 @@
     import { s_timeFormat } from "$lib/stores/s_timeFormat";
     import { relativeTime } from "svelte-relative-time";
     import { fetchSysContentHash } from "$lib/stores/s_sysContentHash";
+    import IconDeleteBin2 from "$cmp/core/icons/IconDeleteBin2.svelte";
+    import IconArrowsVertical from "$cmp/core/icons/IconArrowsVertical.svelte";
 
     // PROPS
     export let data: PageData;
@@ -103,9 +104,8 @@
                             <IconButton
                                 on:click={onDeleteEvent}
                                 loading={loadingDeleteEvent}
-                                ><IconTrash
-                                    size={TKN_ICON.SIZE.BASE}
-                                    stroke={TKN_ICON.STROKE.BASE} /></IconButton>
+                                ><IconDeleteBin2
+                                    size={TKN_ICON.SIZE.SM} /></IconButton>
                         </li>
                     </ul>
                 </footer>
@@ -138,8 +138,7 @@
                     Tags <span class="font-mono text-base">({Object.keys(event.tags).length})</span>
                 </span>
                 <IconArrowsVertical
-                    size={TKN_ICON.SIZE.SM}
-                    stroke={TKN_ICON.STROKE.BASE} />
+                    size={TKN_ICON.SIZE.SM} />
             </summary>
             <div class="mt-2">
                 <pre>{JSON.stringify(event.tags, null, 2)}</pre> <!-- TODO: impl pretty json view -->

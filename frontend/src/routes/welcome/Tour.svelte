@@ -1,9 +1,10 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import Button from "$cmp/core/buttons/Button.svelte";
+    import IconArrowsButtonRight from "$cmp/core/icons/IconArrowsButtonRight.svelte";
+    import IconArrowsButtonLeft from "$cmp/core/icons/IconArrowsButtonLeft.svelte";
     import { client_UpdateSysDoc } from "$lib/client/sysdoc";
-    import { TKN_TRANSITION } from "$lib/utils/tokens";
-    import { IconCheck, IconChevronLeft, IconChevronRight } from "@tabler/icons-svelte";
+    import { TKN_ICON, TKN_TRANSITION } from "$lib/utils/tokens";
     import { fly } from "svelte/transition";
 
     // PROPS
@@ -54,7 +55,7 @@
     <footer>
         {#if currentStep > 0}
         <Button type="ghost" style="muted" clazz="flex justify-center !pl-4 items-center gap-2"
-            on:click={onPrevious}><IconChevronLeft size={20}/> <span class="mb-0.5">Go Back</span></Button>
+            on:click={onPrevious}><IconArrowsButtonLeft size={TKN_ICON.SIZE.XS} style="dark"/> <span class="mb-0.5">Go Back</span></Button>
         {:else}
         <span></span> <!-- spacer placeholder.. we just pretend flexbox css does not exist -->
         {/if}
@@ -63,7 +64,7 @@
             {#if currentStep === steps.length - 1}
                 <span class="mb-0.5">Finish</span> <span>🎉</span>
             {:else}
-                <span class="mb-0.5">Continue</span> <IconChevronRight size={20}/>
+                <span class="mb-0.5">Continue</span> <IconArrowsButtonRight size={TKN_ICON.SIZE.XS} style="light"/>
             {/if}
         </Button>
     </footer>
