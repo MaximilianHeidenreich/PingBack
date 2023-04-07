@@ -3,22 +3,28 @@
     import Button from "$cmp/core/buttons/Button.svelte";
     import AppContent from "$cmp/core/scaffold/AppContent.svelte";
     import AppContentSection from "$cmp/core/scaffold/AppContentSection.svelte";
-    import AppContentSectionHeader from "$cmp/core/scaffold/AppContentSectionHeader.svelte";
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
     import Spinner from "$cmp/core/utils/Spinner.svelte";
     import { cache_Clear, cache_GetCache } from "$lib/client/cache";
     import { s_sysContentHash } from "$lib/stores/s_sysContentHash";
-    import { sw_register } from "$lib/utils/serviceWorker";
+    import Toggle from "svelte-toggle";
     import { onMount } from "svelte";
+    import { s_webNotificationsEnabled } from "$lib/stores/s_webNotificationsEnabled";
+    import { get, writable } from "svelte/store";
+    import { supports_Notification } from "$lib/client/supports";
+    import { requestNotificationPermission } from "$lib/client/notifications";
     import { s_timeFormat } from "$lib/stores/s_timeFormat";
 
     // STATE
     let dbInfo: PouchDB.Core.DatabaseInfo | null | undefined;
+    let isWebNotificationsEnabled = writable<boolean>(get(s_webNotificationsEnabled));
 
     // HANDLERS
-    function onEnablePushNotifications() {
-        sw_register();
-    }
+    isWebNotificationsEnabled.subscribe((state) => {
+            s_webNotificationsEnabled.set(state);
+        if (supports_Notification() && Notification.permission !== "granted" && state) requestNotificationPermission();
+    });
+    
     function onClearCache() {
         cache_Clear();
     }
@@ -26,6 +32,7 @@
     // HOOKS
     onMount(async () => {
         if (!browser) return;
+
         try {
             dbInfo = await cache_GetCache().info();
             console.log(dbInfo);
@@ -39,9 +46,32 @@
 </script>
 
 <AppContent>
-    <!--<AppContentSection>
+    <AppContentSection>
         <span class="text-lg font-medium">Notifications</span>
         <hr class="mt-2 mb-4">
+        
+        <ul class="flex flex-col gap-6">
+            <li>
+                <ul class="flex items-center gap-3">
+                    <li class="mb-0.5 font-medium"><span>Web Notifications: </span></li>
+                    <li><Toggle bind:toggled={$isWebNotificationsEnabled} switchColor="#eee" toggledColor="#24a148" untoggledColor="#fa4d56" hideLabel/></li>
+                </ul>
+                <p><small>
+                    Web Notifications only work while the web app is open.
+                </small></p>
+            </li>
+            <li>
+                <ul class="flex items-center gap-3">
+                    <li class="mb-0.5 font-medium"><span>Push Notifications: </span></li>
+                    <li><Toggle toggled={false} switchColor="#eee" toggledColor="#24a148" untoggledColor="#fa4d56" hideLabel disabled/></li>
+                </ul>
+                <p class="leading-tight"><small>
+                    Push Notifications work only if the app is installed as a PWA and Web Notifications are also enabled. 
+                    If enabled, you will receive notifications even if the app is closed.
+                </small></p>
+            </li>
+        </ul>
+    </AppContentSection>
     <AppContentSection>
         <span class="text-lg font-medium">Display</span>
         <hr class="mt-2 mb-4">
@@ -60,6 +90,7 @@
             </li>
         </ul>
     </AppContentSection>
+    <!--
     <AppContentSection>
         <AppContentSectionHeader>
             <svelte:fragment slot="title">Display</svelte:fragment>
