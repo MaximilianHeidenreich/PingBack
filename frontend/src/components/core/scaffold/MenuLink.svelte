@@ -14,10 +14,10 @@
         @apply transition-colors duration-200 ease-in-out;
     }
     a:not(.disabled).active {
-        @apply bg-neutral-100;
+        @apply bg-neutral-100 text-blub-600;
     }
     a:not(.disabled, .active):hover {
-        @apply border-neutral-200; /*bg-neutral-100;*/
+        @apply border-neutral-200 bg-neutral-50; /*bg-neutral-100;*/
     }
     a:not(.disabled):active {
         @apply bg-neutral-200;

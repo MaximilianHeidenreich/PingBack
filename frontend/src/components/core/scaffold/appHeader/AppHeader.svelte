@@ -35,7 +35,7 @@
             <span class="text-lg font-medium truncate">{$s_headerTitle}</span>
         </div>
         <ul class="flex items-center gap-3">
-            <li><IconButton on:click={() => filterOpen = !filterOpen}><IconDatabaseSearch size={TKN_ICON.SIZE.BASE} /></IconButton></li>
+            <li><IconButton clazz="{ filterOpen ? '!text-blub-500' : '!text-black'}" on:click={() => filterOpen = !filterOpen}><IconDatabaseSearch size={TKN_ICON.SIZE.BASE} style="currentColor" /></IconButton></li>
             <li><IconButton on:click={onToggleListStyle}><IconAlignLayers1 size={TKN_ICON.SIZE.BASE} /></IconButton></li>
         </ul>
     </header>

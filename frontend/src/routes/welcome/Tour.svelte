@@ -54,7 +54,7 @@
     </div>-->
     <footer>
         {#if currentStep > 0}
-        <Button type="ghost" style="muted" clazz="flex justify-center !pl-4 items-center gap-2"
+        <Button type="normal" style="muted" clazz="flex justify-center !pl-4 items-center gap-2"
             on:click={onPrevious}><IconArrowsButtonLeft size={TKN_ICON.SIZE.XS} style="dark"/> <span class="mb-0.5">Go Back</span></Button>
         {:else}
         <span></span> <!-- spacer placeholder.. we just pretend flexbox css does not exist -->

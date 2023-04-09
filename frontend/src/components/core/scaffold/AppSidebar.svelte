@@ -34,7 +34,7 @@
         <div class="nav-sidebar app-area">
             <section class="pt-4">
                 <header>
-                    <span class="text-xl font-semibold"><span class="text-pink-500">Ping</span>Back</span>
+                    <span class="text-xl font-bold"><span class="text-blub-500">Ping</span>Back</span>
                 </header>
                 <hr class="my-3 !mt-5 w-full">
                 <ul class="m-links">
@@ -43,7 +43,7 @@
                             href="/app/feed"
                             active={$page.url.pathname.startsWith("/app/feed")}
                             on:click={onHandleMenuLinkClick}>
-                            <IconMailInbox size={TKN_ICON.SIZE.BASE} />
+                            <IconMailInbox size={TKN_ICON.SIZE.BASE} style="currentColor" />
                             <span>Feed</span>
                         </MenuLink>
                     </li>
@@ -53,7 +53,7 @@
                             href="/app/metrics"
                             active={$page.url.pathname.startsWith("/app/feed")}
                             on:click={onHandleMenuLinkClick}>
-                            <IconSignalFull size={TKN_ICON.SIZE.BASE} />
+                            <IconSignalFull size={TKN_ICON.SIZE.BASE} style="currentColor" />
                             <span>Metrics</span>
                         </MenuLink>
                     </li>
@@ -63,7 +63,7 @@
                             href="/app/monitor"
                             active={$page.url.pathname.startsWith("/app/monitor")}
                             on:click={onHandleMenuLinkClick}>
-                            <IconSignalGraph size={TKN_ICON.SIZE.BASE} />
+                            <IconSignalGraph size={TKN_ICON.SIZE.BASE} style="currentColor" />
                             <span>Monitor</span>
                         </MenuLink>
                     </li>
@@ -75,7 +75,7 @@
                             href="/app/projects"
                             active={$page.url.pathname.startsWith("/app/projects")}
                             on:click={onHandleMenuLinkClick}>
-                            <IconArchive sie={TKN_ICON.SIZE.BASE} />
+                            <IconArchive sie={TKN_ICON.SIZE.BASE} style="currentColor" />
                             <span>Projects</span>
                         </MenuLink>
                     </li>
@@ -89,7 +89,7 @@
                             href="/app/settings"
                             active={$page.url.pathname.startsWith("/app/settings")}
                             on:click={onHandleMenuLinkClick}>
-                            <IconCog size={TKN_ICON.SIZE.BASE} />
+                            <IconCog size={TKN_ICON.SIZE.BASE} style="currentColor" />
                             <span>Settings</span>
                         </MenuLink>
                     </li>
