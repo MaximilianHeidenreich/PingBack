@@ -1,4 +1,4 @@
-import { DetaBaseError, InvalidZod, NotFound } from "$lib/errors/core";
+import { DetaBaseError, Invalid, InvalidSystemState, InvalidZod, NotFound } from "$lib/errors/core";
 import { getTimeFrameEnd } from "$lib/shared/timeFrame";
 import { ZEventIcon, ZEventKey, ZEventName, ZEventTitle, type IEvent } from "$lib/types/IEvent";
 import { ZProjectKey } from "$lib/types/IProject";
@@ -7,6 +7,7 @@ import { VERSION } from "$lib/utils/version";
 import dayjs from "dayjs";
 import { z } from "zod";
 import { db_events, db_projects, db_system, DB_SYS_KEY, db_timeFrames } from "./deta";
+import { respondInternalError } from "./responseHelper";
 
 /**
  * Type for creating a new event.
@@ -52,22 +53,20 @@ export async function server_createEvent(event: ICreateEvent): Promise<IEvent> {
     const parsedEvent = parseRes.data;
 
     // Fetch deps
-    const p_sysdoc = db_system.get(DB_SYS_KEY);
-    const p_frame = db_timeFrames.get(
-        dayjs(parsedEvent.createdAt).endOf(TIME_FRAME_OFFSET_UNIT).valueOf().toString()
-    );
-    const p_project = db_projects.get(event.project);
-
     let sysdoc, frame, project;
     try {
-        [sysdoc, frame, project] = await Promise.all([p_sysdoc, p_frame, p_project]);
+        [sysdoc, frame, project] = await Promise.all([
+            db_system.get(DB_SYS_KEY),
+            db_timeFrames.get(dayjs(parsedEvent.createdAt).endOf(TIME_FRAME_OFFSET_UNIT).valueOf().toString()),
+            db_projects.get(parsedEvent.project)
+        ]);
     } catch (e) {
         console.error("err: createEvent get [sydoc, frame, proejct]");
         throw e;
     } // TODO: HANDLE
-    if (!sysdoc) throw "nosysdoc server_createEvent"; // TODO: HANDLE
-    if (!project) throw "noproject server_createEvent"; // TODO: HANDLE
-    if (!project.channels.find((c) => c.id === event.channel)) throw "nochannel server_createEvent"; // TODO: HANDLE
+    if (!sysdoc) throw new InvalidSystemState("Sysdoc missing!");
+    if (!project) throw new Invalid(`Invalid project ${parsedEvent.project}`);
+    if (!project.channels.find((c) => c.id === parsedEvent.channel)) throw new Invalid(`Invalid channel ${parsedEvent.channel}`);
 
     // Add / update time frame
     if (!frame) {
@@ -101,9 +100,9 @@ export async function server_createEvent(event: ICreateEvent): Promise<IEvent> {
         } catch (e) {
             // NOTE: We don't throw because:
             // 1. Multipel requests, one thinks there is no frame yet, but another created it
-            // -> We still want to insert the event
-            //throw e; // TODO!: HANDLE
-            console.error(e);
+            // -> We still want to insert the event and let it get ingested later
+            console.warn("Exception during new time frame insert / lastestFrame update:", e);
+            //throw new DetaBaseError("Could not perform db fetch of frame.", e);
         }
     } else {
         frame.eventCount += 1;
@@ -134,8 +133,8 @@ export async function server_createEvent(event: ICreateEvent): Promise<IEvent> {
             frame ? db_timeFrames.update(frame, frame.key) : Promise.resolve()
         ]);
     } catch (e) {
-        console.error("err, insert newEvent & await sys updates");
-        throw e; // TODO: HANDLE
+        console.error("err, insert newEvent & await sys updates", e);
+        throw new DetaBaseError("Could not perform db updates.", e);
     }
 
     return newEvent;
