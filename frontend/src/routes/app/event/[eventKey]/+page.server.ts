@@ -8,7 +8,7 @@ export const load = (async ({ params }) => {
     //depends("app:projectID");
     const event = await db_events.get(eventKey);
 
-    // TODO: Compole description & emoji color?
+    // TODO: Compole description?
 
     return {
         eventKey,

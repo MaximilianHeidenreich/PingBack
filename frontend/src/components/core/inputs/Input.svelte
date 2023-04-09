@@ -20,9 +20,9 @@
 
 <style lang="postcss">
     input {
-        @apply mt-1 block w-full rounded-xl border-2 border-gray-300 shadow-sm;
+        @apply h-auto block w-full rounded-xl border-2 border-gray-300 shadow-sm;
     }
     input:focus {
-        @apply border-pink-500 ring ring-neutral-400 ring-opacity-0;
+        @apply border-blub-500 ring ring-neutral-400 ring-opacity-0;
     }
 </style>

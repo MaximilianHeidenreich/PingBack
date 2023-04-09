@@ -36,7 +36,7 @@
 <Modal bind:dialog>
     <svelte:fragment slot="title">Delete Channel</svelte:fragment>
     <svelte:fragment slot="subtitle">
-        Are you sure you want to delete <strong class="font-mono text-pink-500">#{channelID}</strong
+        Are you sure you want to delete <strong class="font-mono text-blub-500">#{channelID}</strong
         >?
     </svelte:fragment>
     <!--<svelte:fragment slot="body">

@@ -62,8 +62,8 @@
     {:else}
     <AppContentSection>
         <form on:submit|preventDefault>
-            <fieldset class="flex items-center gap-8">
-                <Button clazz="w-full shrink-0 grow flex-1 flex justify-center items-center gap-8"
+            <fieldset class="flex items-stretch gap-6">
+                <Button clazz="w-full shrink-0 grow flex-1 flex justify-center items-center gap-4"
                     on:click={onNewProject}>
                     <!--<IconPlus size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.BASE}/>-->
                     <span>New Project</span>
@@ -71,7 +71,7 @@
                 <Input placeholder="Search projects" bind:value={filterValue}/>
             </fieldset>
         </form>
-        <hr class="mt-4 mb-8">
+        <hr class="mt-6 mb-6">
 
         {#if !filteredProjects}
         no projects with filter
@@ -144,7 +144,7 @@
                     {#if data.apiKeys.filter(e => e.project === project.key).length <= 0}
                         <li class="py-3"><span class="text-gray-500">No keys yet.</span></li>
                     {:else}
-                        {#each data.apiKeys as apiKey}
+                        {#each data.apiKeys.filter(e => e.project === project.key) as apiKey}
                             <li class="flex items-center justify-between border-b-2 border-neutral-100 py-3 shrink">
                                 <div class="flex flex-col gap-1 shrink grow overflow-hidden">
                                     <span class="font-mono text-sm">{apiKey.displayName}</span>

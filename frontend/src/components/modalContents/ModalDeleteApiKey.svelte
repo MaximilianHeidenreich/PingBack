@@ -38,7 +38,7 @@
 <Modal bind:dialog>
     <svelte:fragment slot="title">Delete Api Key</svelte:fragment>
     <svelte:fragment slot="subtitle">
-        Are you sure you want to delete <strong class="text-pink-500">{keyName}</strong>? This
+        Are you sure you want to delete <strong class="text-blub-500">{keyName}</strong>? This
         action cannot be reversed and access for all applications using this key will be revoked.
     </svelte:fragment>
     <svelte:fragment slot="footer">

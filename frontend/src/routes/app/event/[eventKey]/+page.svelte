@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { generatePalette } from "emoji-palette";
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
     import AppContent from "$cmp/core/scaffold/AppContent.svelte";
     import AppContentSection from "$cmp/core/scaffold/AppContentSection.svelte";
@@ -7,7 +6,6 @@
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
     import { TKN_ICON } from "$lib/utils/tokens";
     import type { PageData } from "./$types";
-    import { browser } from "$app/environment";
     import { clientDeleteEvent } from "$lib/helpers/api/eventClient";
     import toast from "svelte-french-toast";
     import toastOptions from "$lib/utils/toast";
@@ -16,6 +14,7 @@
     import { fetchSysContentHash } from "$lib/stores/s_sysContentHash";
     import IconDeleteBin2 from "$cmp/core/icons/IconDeleteBin2.svelte";
     import IconArrowsVertical from "$cmp/core/icons/IconArrowsVertical.svelte";
+    import { client_GetEventIconColor } from "$lib/client/event";
 
     // PROPS
     export let data: PageData;
@@ -26,13 +25,6 @@
     let loadingDeleteEvent = false;
 
     s_headerTitle.set(`Event – ${event?.key.split("-")[0]}`);
-
-    // FN
-    function getIconColor(): string {
-        if (!browser) return "#ffffff";
-        const iconPalette = generatePalette(event?.icon || "⚙️");
-        return iconPalette[0];
-    }
 
     // HANDLERS
     async function onDeleteEvent() {
@@ -66,7 +58,7 @@
             <div class="icon">
                 <div
                     class="mt-1 p-5 flex aspect-square items-center justify-center rounded-3xl bg-transparent transition-all duration-300"
-                    style="background: {getIconColor()}55;">
+                    style="background: {client_GetEventIconColor(event.icon || '')};">
                     <span class="icon text-4xl">{event.icon}</span>
                 </div>
             </div>
