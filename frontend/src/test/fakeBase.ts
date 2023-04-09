@@ -1,6 +1,6 @@
 import crypto from "crypto";
-import { PartialBy } from "../src/lib/types/utilTypes";
-import { IDBRecord } from "../src/lib/types/IDBRecord";
+import type { PartialBy } from "$lib/types/utilTypes";
+import type { IDBRecord } from "$lib/types/IDBRecord";
 
 /**
  * A fake Deta Base implementation mirroring the SDK useful for testing.

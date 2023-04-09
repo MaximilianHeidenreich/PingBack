@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { FakeBase } from "./fakeBase";
-import { IDBRecord } from "../src/lib/types/IDBRecord";
+import type { IDBRecord } from "$lib/types/IDBRecord";
 
 describe("fakeBase", () => {
     interface TestSchema {
