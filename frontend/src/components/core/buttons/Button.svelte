@@ -63,7 +63,7 @@
     /* STYLES */
     /* S-NORMAL */
     button.s-normal {
-        @apply bg-[#2F2B43];
+        @apply bg-[#2F2B43] bg-[#082e47] bg-[#343c96] bg-[#3d2ed9] bg-blub-500 border-2 border-blue-800;
     }
     button.s-normal.disabled {
        @apply !bg-gray-600 !text-gray-500;
