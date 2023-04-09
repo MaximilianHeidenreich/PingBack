@@ -1,4 +1,5 @@
-import { DetaBaseError, Invalid, InvalidZod, NotFound } from "$lib/errors/core";
+import { DetaBaseError, Invalid, InvalidSystemState, InvalidZod, NotFound } from "$lib/errors/core";
+import { validateApiKey } from "$lib/server/apiKey";
 import { db_events } from "$lib/server/deta";
 import { server_createEvent } from "$lib/server/event";
 import { buildResponse, respondBadRequest, respondInternalError, respondNotFound } from "$lib/server/responseHelper";
@@ -39,8 +40,11 @@ export const POST = (async ({ request }) => {
     const reqBody = await request.json();
 
     // TODO: Validate API KEY
-    // Todo impl.
-    
+    const validationRes = await validateApiKey(request, reqBody.project || "");
+    if (!validationRes.valid) {
+        return validationRes.response;
+    }
+
     let newEvent;
     try {
         newEvent = await server_createEvent(reqBody);
@@ -49,6 +53,7 @@ export const POST = (async ({ request }) => {
         if (e instanceof NotFound) return respondNotFound(e.message);
         else if (e instanceof InvalidZod) return respondBadRequest(e.zodError);
         else if (e instanceof Invalid) return respondBadRequest(e.message);
+        else if (e instanceof InvalidSystemState) return respondInternalError(e.message);
         else if (e instanceof DetaBaseError) return respondInternalError(e.message);
 
         console.error(e);
