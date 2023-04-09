@@ -1,12 +1,9 @@
+import type { PushSubscription } from "web-push";
+
 /**
  * A push subscription from a client app.
  */
 export interface IPushSubscription {
-    key: string; // Unique id
-    endpoint: string;
-    expirationTime: number;
-    options: {
-        userVisibleOnly?: boolean;
-        applicationServerKey?: string;
-    };
+    key: string;    // Client associated with this subscription
+    subscription: PushSubscription;
 }

@@ -2,6 +2,7 @@ import { DetaBaseError, Invalid, InvalidSystemState, InvalidZod, NotFound } from
 import { validateApiKey } from "$lib/server/apiKey";
 import { db_events } from "$lib/server/deta";
 import { server_createEvent } from "$lib/server/event";
+import { sendPushNotificationToAllClients } from "$lib/server/pushNotifications";
 import { buildResponse, respondBadRequest, respondInternalError, respondNotFound } from "$lib/server/responseHelper";
 import type { RequestHandler } from "./$types";
 
@@ -59,6 +60,13 @@ export const POST = (async ({ request }) => {
         console.error(e);
         return respondInternalError("Internal error");
     }
+
+    sendPushNotificationToAllClients({
+        title: `${newEvent.icon} ${newEvent.title}`,
+        body: newEvent.parser === "text" ? newEvent.description as string : "(Tap to view description).",
+        timestamp: newEvent.createdAt,
+        //icon: "https://icons-for-free.com/download-icon-coloured+128px+Media+Coloured+128px+whatsapp-1320568367672628520_256.png"
+    });
 
     return buildResponse().status(200).statusText("OK").json(newEvent).build();
 }) satisfies RequestHandler;

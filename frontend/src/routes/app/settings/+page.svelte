@@ -12,17 +12,28 @@
     import { s_webNotificationsEnabled } from "$lib/stores/s_webNotificationsEnabled";
     import { get, writable } from "svelte/store";
     import { supports_Notification } from "$lib/client/supports";
-    import { requestNotificationPermission } from "$lib/client/notifications";
+    import { requestNotificationPermission, subscribeToPushNotifications } from "$lib/client/notifications";
     import { s_timeFormat } from "$lib/stores/s_timeFormat";
+    import { s_pushNotificationsEnabled } from "$lib/stores/s_pushNotificationsEnabled";
+    import { s_clientId } from "$lib/stores/s_clientId";
 
     // STATE
     let dbInfo: PouchDB.Core.DatabaseInfo | null | undefined;
     let isWebNotificationsEnabled = writable<boolean>(get(s_webNotificationsEnabled));
+    let isPushNotificationsEnabled = writable<boolean>(get(s_pushNotificationsEnabled));
+    let p = false;
+    $: {
+        console.log(p)
+    }
 
     // HANDLERS
     isWebNotificationsEnabled.subscribe((state) => {
-            s_webNotificationsEnabled.set(state);
+        s_webNotificationsEnabled.set(state);
         if (supports_Notification() && Notification.permission !== "granted" && state) requestNotificationPermission();
+    });
+    isPushNotificationsEnabled.subscribe((state) => {
+        s_pushNotificationsEnabled.set(state);
+        if (state) subscribeToPushNotifications(); // TODO: 1. if subscription saved -> dont requerst again
     });
     
     function onClearCache() {
@@ -62,8 +73,8 @@
             </li>
             <li>
                 <ul class="flex items-center gap-3">
-                    <li class="mb-0.5 font-medium"><span>Push Notifications (Soon): </span></li>
-                    <li><Toggle toggled={false} switchColor="#eee" toggledColor="#24a148" untoggledColor="#fa4d56" hideLabel disabled/></li>
+                    <li class="mb-0.5 font-medium"><span>Push Notifications: </span></li>
+                    <li><Toggle bind:toggled={$isPushNotificationsEnabled} switchColor="#eee" toggledColor="#24a148" untoggledColor="#fa4d56" hideLabel /></li>
                 </ul>
                 <p class="leading-tight"><small>
                     Push Notifications work only if the app is installed as a PWA and Web Notifications are also enabled. 
@@ -114,5 +125,12 @@
         {/if}
         <br>
         <Button on:click={onClearCache} disabled={!dbInfo}>Clear Cache</Button>
+    </AppContentSection>
+    <AppContentSection>
+        <span class="text-lg font-medium">Info</span>
+        <hr class="mt-2 mb-4">
+        <p>
+            Client ID: <span class="font-mono">{$s_clientId}</span>
+        </p>
     </AppContentSection>
 </AppContent>

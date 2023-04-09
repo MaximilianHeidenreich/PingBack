@@ -24,7 +24,7 @@ let knownNewEventKeys: string[] = [];
 function onUpdate() {
     console.debug("[LiveUpdate] Triggered update.");
 
-    _updateForNewEvents();
+    //_updateForNewEvents();
 }
 
 const liveSubs_newEvents: ((events: IEvent[]) => void)[] = [];

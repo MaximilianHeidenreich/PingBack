@@ -1,5 +1,9 @@
+import { clientGetSysDoc } from "$lib/helpers/api/systemClient";
+import { s_clientId } from "$lib/stores/s_clientId";
 import { s_webNotificationsEnabled } from "$lib/stores/s_webNotificationsEnabled";
+import { sw_registration } from "$lib/utils/serviceWorker";
 import toastOptions from "$lib/utils/toast";
+import { VERSION } from "$lib/utils/version";
 import toast from "svelte-french-toast";
 import { get } from "svelte/store";
 
@@ -13,12 +17,60 @@ export function registerPushManager() {
       applicationServerKey:*/
 }
 
-export async function requestNotificationPermission() {
+export async function requestNotificationPermission(): Promise<boolean> {
+    if (Notification.permission === "granted") return true;
     const permission = await Notification.requestPermission();
     if (permission === "granted") {
         toast.success("Notifications are enabled!", toastOptions());
     }
     s_webNotificationsEnabled.set(permission === "granted" ? true : false);
+    return permission === "granted";
+}
+
+export function subscribeToPushNotifications() {
+    toast.promise(new Promise<void>(async (res, rej) => {
+        if (!(await requestNotificationPermission())) {
+            console.error("You need to allow notifications for push notifications!");
+            return rej();
+        }
+        if (!sw_registration) {
+            console.error("Service worker not running! Contact developer!");
+            return rej();
+        }
+
+        // Get sysdoc for vapid key
+        const sysdoc = await clientGetSysDoc(fetch);
+
+        const subscription = await sw_registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: sysdoc.publicVapidKey
+        });
+        console.warn("sub", subscription)
+
+        const url = new URL(`/api/v${VERSION.major}/notifications/subscribe`, window.location.origin);
+        const subRes = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                clientId: get(s_clientId),
+                subscription
+            })
+        });
+        if (!subRes.ok) {
+            //if (subRes.status === 404) throw new NotFound(subRes.statusText);
+            console.error(subRes);
+            return rej();
+        }
+        
+        return res();
+    }), {
+        loading: "Enabling push notifications...",
+        success: "Enabled push notifications!",
+        error: "Could not enable push notifications!",
+    }, toastOptions());
 }
 
 export interface ICreateNotification {

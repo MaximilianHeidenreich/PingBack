@@ -6,7 +6,7 @@ export type TServiceWorkerMessageType =
     "_INIT" |
     "_INIT_SUCCESS" |
     "NEW_EVENTS" |
-    "receivePushNotification";
+    "RECV_PUSH_NOTIFICATION";
 export interface IServiceWorkerMessage<T> {
     type: TServiceWorkerMessageType;
     payload: T;
@@ -58,10 +58,14 @@ function onMessage(event: MessageEvent<IServiceWorkerMessage<any>>) {
     console.debug(`[Window <- ServiceWorker] Received message ${t}`, p);
     if (t === "_INIT_SUCCESS") console.info("[ServiceWorker] Initialized!");
     else if (t === "NEW_EVENTS") onNewEvents(p);
+    else if (t === "RECV_PUSH_NOTIFICATION") onPushNotification(p);
 }
 
 function onNewEvents(payload: { events: IEvent[] }) {
-    console.log("new events", payload.events);
+    console.log("new events", payload.events); // TODO: Trash
+}
+function onPushNotification(payload: { pushData: PushMessageData }) {
+    console.warn("push", payload.pushData);
 }
 
 /*export async function sw_registerrr() {

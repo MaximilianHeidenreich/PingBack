@@ -38,8 +38,6 @@ const hasContext = () => CONTEXT.VERSION && CONTEXT.ORIGIN;
 // MESSAGING
 let CLIENT: any | null = null;
 export function sw_sendMessageToClient<T>(type: TServiceWorkerMessageType, payload: T) {
-    console.warn(CLIENT);
-
     if (!CLIENT) {
         console.warn("[ServiceWorker] Tried to send message to client before reference set!");
         return;
@@ -73,6 +71,7 @@ function onInit(payload: {
 self.addEventListener("install" , e => {});
 self.addEventListener("activate", e => {});
 self.onmessage = onMessage;
+self.addEventListener("push", onPush);
 
 /*self.addEventListener("push", function(e) {
     const event = e as PushEvent;
@@ -83,35 +82,19 @@ self.onmessage = onMessage;
 });*/
 
 
-// ================ Current event fetcher
-let pastNewEventKeys: string[] = [];
-async function onFetchNewEvents() {
-    if (!hasContext()) return; // TODO: Throw?
-
-    const currFrameEnd = dayjs().endOf(TIME_FRAME_OFFSET_UNIT).valueOf();
-    let frame: ITimeFrame | null;
-    try {
-        frame = await sw_GetTimeFrame(CONTEXT, currFrameEnd);
-        if (!frame) return;
-    } catch (e) {
-        if (e instanceof NotFound) return;
-        console.error(e);
-    }
-    const eventFetchRes = await sw_FetchAllEventsInFrame(CONTEXT, currFrameEnd, {});
-
-     // Sort events & handle new
-    eventFetchRes.items.sort((a, b) => b.createdAt - a.createdAt);
-
-    // Find new events
-    const newEvents: IEvent[] = [];
-    for (const event of eventFetchRes.items) {
-        if (!pastNewEventKeys.includes(event.key)) {
-            newEvents.push(event);
-            pastNewEventKeys.push(event.key);
+// ================ PUSH
+function onPush(event: Event) { // TODO: remoce
+    const data = (event as PushEvent).data?.json();
+    if (!data) console.error("[ServiceWorker] Invalid push data in event: ", event);
+    /*sw_sendMessageToClient("RECV_PUSH_NOTIFICATION", {
+        pushData: data
+    });*/
+    self.registration.showNotification(
+        data.title,
+        {
+            timestamp: data.timestamp || Date.now(),
+            icon: data.icon,
+            body: data.body,
         }
-    }
-    sw_handleNewEvents(newEvents);
-}
-function setup_newEventFetcher() {
-    setInterval(onFetchNewEvents, 3000);
+    );
 }

@@ -6,6 +6,7 @@ import type { ITimeFrame } from "$lib/types/ITimeFrame";
 import type { IProject } from "$lib/types/IProject";
 import type { ISystemDoc } from "$lib/types/ISystemDoc";
 import { Deta } from "deta";
+import type { IPushSubscription } from "$lib/types/IPushSubscription";
 
 export const deta = Deta(env.DETA_PROJECT_KEY);
 
@@ -119,6 +120,7 @@ export const db_apiKeys = wrap_db<IApiKey>("apiKeys");
 export const db_events = wrap_db<IEvent>("events");
 export const db_timeFrames = wrap_db<ITimeFrame>("timeFrames");
 export const db_projects = wrap_db<IProject>("projects");
+export const db_pushSubscriptions = wrap_db<IPushSubscription>("pushSubscriptions");
 
 export const DB_SYS_KEY = "dont_touch_this";
 export const db_system = wrap_db<ISystemDoc>("system"); // System data -> configuration, migrations, etc.
