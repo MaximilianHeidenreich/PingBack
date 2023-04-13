@@ -118,4 +118,52 @@ export async function client_QueryEventsInFrameAll(
     query: (Partial<IEvent> & { [key: string]: unknown }) | (Partial<IEvent> & { [key: string]: unknown })[],
     useCache: boolean = true
 ): Promise<{ cached: boolean, items: IEvent[], count: number }> {
+    console.debug(`[Events] Requested events for frame ${frameEnd} (${dayjs(frameEnd).format()}) (useCache: ${useCache})`);
+    frameEnd = dayjs(frameEnd).endOf(TIME_FRAME_OFFSET_UNIT).valueOf();
+
+    if (useCache) {
+        // NOTE: A non-empty cached value indicates the cached frame contains ALL events from itself.
+        // We can safely query / return this data.
+        const cached = await cache_GetFrame(frameEnd);
+        let events: IEvent[];
+        if (cached && cached.events !== null) {
+            console.debug(`[Events] Cache HIT for frame ${frameEnd} (${dayjs(frameEnd).format()})`);
+            events = Object.keys(cached.events).map(k => cached.events![k]).flat();
+            if (Object.keys(query).length !== 0) {
+                // TODO: APPLY PERFORM QUERY
+            }
+            return { cached: true, items: events, count: events.length } // Cached
+        }
+    }
+
+    if (useCache) console.debug(`[Events] Cache MISS for frame ${frameEnd} (${dayjs(frameEnd).format()})`);
+
+    let res;
+    try {
+        res = await client_QueryEventsAll({ // FIX: Type check if arrray add multiple
+            ...query,
+            "createdAt?r": [
+                dayjs(frameEnd).startOf(TIME_FRAME_OFFSET_UNIT).valueOf(),
+                dayjs(frameEnd).endOf(TIME_FRAME_OFFSET_UNIT).valueOf()
+            ]
+        });
+    } catch (e) { throw e }
+
+    // NOTE: We only set the cache if it does not exist & no query is given.
+    // This ensures that we don't miss events which are not included by the query.
+    if (useCache && Object.keys(query).length === 0) {
+        cache_SetFrame(frameEnd, { events: res.items }, false); // PERF: no await.?
+        //const cached = await cache_GetFrame(frameEnd);
+        /*if (cached) {
+            if (!cached.events) cached.events = res.items
+        }*/
+
+        /*if (Object.keys(query).length !== 0) {
+            await cache_SetFrame(frameEnd, {
+                events: res.items
+            }); // FIX: Do we need to await?
+        }*/
+    }
+
+    return { cached: false, ...res };
 }
