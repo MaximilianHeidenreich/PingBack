@@ -34,7 +34,7 @@ export default {
         link: "https://github.com/MaximilianHeidenreich/PingBack",
     },
     docsRepositoryBase: "https://github.com/MaximilianHeidenreich/PingBack/blob/main/docs/pages",
-    primaryHue: 334,
+    primaryHue: 275,
     navigation: {
         prev: true,
         next: true
