@@ -1,4 +1,3 @@
-import { clientGetSysDoc } from "$lib/helpers/api/systemClient";
 import { s_clientId } from "$lib/stores/s_clientId";
 import { s_webNotificationsEnabled } from "$lib/stores/s_webNotificationsEnabled";
 import { sw_registration } from "$lib/utils/serviceWorker";
@@ -6,6 +5,7 @@ import toastOptions from "$lib/utils/toast";
 import { VERSION } from "$lib/utils/version";
 import toast from "svelte-french-toast";
 import { get } from "svelte/store";
+import { client_GetSysDoc } from "./sysdoc";
 
 export function registerPushManager() {
     /*navigator.serviceWorker
@@ -39,7 +39,7 @@ export function subscribeToPushNotifications() {
         }
 
         // Get sysdoc for vapid key
-        const sysdoc = await clientGetSysDoc(fetch);
+        const sysdoc = await client_GetSysDoc();
 
         const subscription = await sw_registration.pushManager.subscribe({
             userVisibleOnly: true,
@@ -64,7 +64,7 @@ export function subscribeToPushNotifications() {
             console.error(subRes);
             return rej();
         }
-        
+
         return res();
     }), {
         loading: "Enabling push notifications...",

@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import toast from "svelte-french-toast";
 import { showNativeNotification } from "./notifications";
 import { client_GetTimeFrame } from "./timeFrame";
+import { browser } from "$app/environment";
 
 let liveTriggerTimer: NodeJS.Timer | null = null;
 export function client_EnableLiveData(updateInterval: number = 3000) {
@@ -22,6 +23,7 @@ let liveUpdateEnabledTimestamp: number = 0;
 let knownNewEventKeys: string[] = [];
 
 function onUpdate() {
+    if (!browser) return;
     console.debug("[LiveUpdate] Triggered update.");
 
     //_updateForNewEvents();
@@ -40,7 +42,7 @@ async function _updateForNewEvents() {
     const currFrameEnd = dayjs().endOf(TIME_FRAME_OFFSET_UNIT).valueOf();
     let frame: ITimeFrame | null;
     try {
-        frame = await client_GetTimeFrame(fetch, currFrameEnd, false);
+        frame = (await client_GetTimeFrame(currFrameEnd, false))?.frame || null;
         if (!frame) return;
     } catch (e) {
         if (e instanceof NotFound) return; // Dis ok

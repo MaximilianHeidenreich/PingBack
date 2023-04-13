@@ -1,8 +1,6 @@
 <script lang="ts">
     import { cache_SetFrame, type ICachedTimeFrame } from "$lib/client/cache";
     import { client_GetTimeFrame } from "$lib/client/timeFrame";
-    import { clientFetchAllEventsInFrame } from "$lib/helpers/api/eventClient";
-    import { clientGetSysDoc } from "$lib/helpers/api/systemClient";
     import type { IEvent } from "$lib/types/IEvent";
     import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
     import dayjs, { type ManipulateType } from "dayjs";
@@ -11,6 +9,8 @@
     import EventList from "./EventList.svelte";
     import InfiniteEventListTrigger from "./InfiniteEventListTrigger.svelte";
     import { subscribeLive_newEvents, unsubscribeLive_newEvents } from "$lib/client/liveData";
+    import { client_GetSysDoc } from "$lib/client/sysdoc";
+    import { client_QueryEventsInFrameAll } from "$lib/client/event";
 
     // TYPES
     type IDisplayTimeFrame = {
@@ -38,7 +38,7 @@
 
     // FN
     async function getSystemLatestEventTimestamp() {
-        const sysdoc = await clientGetSysDoc(fetch);
+        const sysdoc = await client_GetSysDoc();
         if (!sysdoc) {
             // TODO: FATAL
             alert("FATAL error, no system document!");
@@ -68,10 +68,44 @@
         if (loading || endOfData) return;
         loading = true;
 
+        const frameRes = await client_GetTimeFrame(lastPastFrameEnd.valueOf(), useCache); // TODO: Handle error
+        if (!frameRes?.frame) {
+            alert(`no frame for: ${lastPastFrameEnd.format()}`);
+            return;
+        }
+        if (frameRes.frame.previousFrame === -1) endOfData = true;
+
+        // Fetch events in frame
+        let eventFetchRes = await client_QueryEventsInFrameAll(lastPastFrameEnd.valueOf(), query, useCache);
+
+        // Sort events & update frames
+        processingProgress = [0, eventFetchRes.items.length];
+        processing = true;
+        eventFetchRes.items.sort((a, b) => {
+            processingProgress = [processingProgress[0] + 1, processingProgress[1]];
+            return b.createdAt - a.createdAt;
+        });
+        processing = false;
+
+        timeFrames.update((frames) => {
+            const pendingFrame = {
+                frameEnd: lastPastFrameEnd.valueOf(),
+                events: eventFetchRes.items
+            };
+            frames.push(pendingFrame);
+            return frames;
+        });
+
+        lastPastFrameEnd = dayjs(frameRes.frame.previousFrame);
+        loading = false;
+
+
+
+        /*
         //const p_frame = clientFetchEventFrame(fetch, lastPastFrameEnd.valueOf(), query);
         //const [frame] = await Promise.allSettled([p_frame]);
         //if (!moreFrames) endOfData = true;
-        const frameFetchRes = await client_GetTimeFrame(fetch, lastPastFrameEnd.valueOf(), useCache); // TODO: Handle error
+        const frameFetchRes = await client_GetTimeFrame(lastPastFrameEnd.valueOf(), useCache); // TODO: Handle error
         if (!frameFetchRes) {
             alert(`no frame for: ${lastPastFrameEnd.format()}`);
             return;
@@ -115,25 +149,24 @@
         });
 
         lastPastFrameEnd = dayjs(frameFetchRes!.previousFrame);
-        loading = false;
+        loading = false;*/
     }
 
     async function loadCurrent() {
         const currentFrameEnd = dayjs().endOf(TIME_FRAME_OFFSET_UNIT).valueOf();
-        const frame = await client_GetTimeFrame(fetch, currentFrameEnd, false);
-        if (!frame) return;
+        const frameRes = await client_GetTimeFrame(currentFrameEnd, false); // TODO: Handle error
+        if (!frameRes) return;  // NOTE: We dont error because there is just no events in current time frame yet
 
-        // Fetch events in frame
-        const eventFetchRes = await clientFetchAllEventsInFrame(fetch, currentFrameEnd, query);
+        const eventsRes = await client_QueryEventsInFrameAll(currentFrameEnd, query, false);
 
         // Sort events & update frames
-        eventFetchRes.items.sort((a, b) => b.createdAt - a.createdAt);
+        eventsRes.items.sort((a, b) => b.createdAt - a.createdAt);
         timeFrames.update(frames => {
             const i = $timeFrames.findIndex(f => f.frameEnd === currentFrameEnd);
             if (i < 0) {
                 const pendingFrame = {
                     frameEnd: currentFrameEnd,
-                    events: eventFetchRes.items,
+                    events: eventsRes.items,
                 };
                 pendingFrame.events.sort((a, b) => b.createdAt - a.createdAt);
                 frames = [pendingFrame, ...frames];
@@ -141,9 +174,9 @@
             }
             else {
                 const oldEvents = frames[i].events;
-                frames[i].events = eventFetchRes.items; // TODO: remove whole block
+                frames[i].events = eventsRes.items; // TODO: remove whole block
                 if (oldEvents.length !== frames[i].events.length) { // TODO: needs to handle multipel db request with limit better
-                    const newEvents = eventFetchRes.items.filter((e) => oldEvents.findIndex(oe => oe.key === e.key) < 0);
+                    const newEvents = eventsRes.items.filter((e) => oldEvents.findIndex(oe => oe.key === e.key) < 0);
                     //handleNewEventsNotify(newEvents);
                     // TODO: IMPL
                 }

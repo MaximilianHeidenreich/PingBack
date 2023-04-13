@@ -3,6 +3,21 @@ import type { TFetcher } from "$lib/types/fetcher";
 import type { ISystemDoc } from "$lib/types/ISystemDoc";
 import { VERSION } from "$lib/utils/version";
 
+export async function client_GetSysDoc(): Promise<ISystemDoc> {
+    const url = new URL(`/api/v${VERSION.major}/sysdoc`, window.location.origin);
+    const res = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json"
+        }
+    });
+    if (!res.ok) {
+        if (res.status === 404) throw new NotFound(res.statusText);
+        throw new Error("Could not get sysdoc!");
+    }
+    return await res.json();
+}
+
 /**
   * Updates the system document with specified updates.
   *
@@ -31,5 +46,5 @@ export async function client_UpdateSysDoc(
     }
     const data = await res.json();
     return data;
-
 }
+
