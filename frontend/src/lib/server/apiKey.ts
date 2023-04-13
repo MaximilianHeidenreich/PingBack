@@ -1,4 +1,7 @@
-import type { IProject } from "$lib/types/IProject";
+import { Invalid, InvalidZod } from "$lib/errors/core";
+import { ZApiKeyDisplayName, type IApiKey } from "$lib/types/IApiKey";
+import { ZProjectKey, type IProject } from "$lib/types/IProject";
+import { z } from "zod";
 import { db_apiKeys, db_projects } from "./deta";
 import { respondUnauthenticated } from "./responseHelper";
 
@@ -22,4 +25,35 @@ export async function validateApiKey(request: Request, projectId: string): Promi
 
     if (!dbKey || !project) return { valid: false, response: respondUnauthenticated("Invalid API key!") };
     return { valid: true, project };
+}
+
+export interface ICreateApiKey {
+    key?: string;
+    displayName: string;
+    project: string;
+}
+
+export const ZCreateApiKey = z.object({
+    key: z.string().uuid().optional().default(() => crypto.randomUUID()),
+    createdAt: z.number().optional().default(Date.now),
+    displayName: ZApiKeyDisplayName,
+    project: ZProjectKey
+});
+
+// TODO: Docs
+export async function server_CreateApiKey(apiKey: ICreateApiKey): Promise<IApiKey> {
+    // Parse project args
+    const parseRes = ZCreateApiKey.safeParse(apiKey);
+    if (!parseRes.success) throw new InvalidZod("Invalid data", parseRes.error);
+    const parsedKey = parseRes.data;
+
+    // Try insert
+    let newApiKey;
+    try {
+        newApiKey = await db_apiKeys.insert(parsedKey, parsedKey.key);
+    } catch (e) {
+        throw new Invalid("API Key already exists!"); // FIX: Correct error & ret key
+    }
+
+    return newApiKey;
 }
