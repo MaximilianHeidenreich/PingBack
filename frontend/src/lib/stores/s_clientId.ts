@@ -1,4 +1,4 @@
-import { localStorable } from "./localStorable";
+import { storedWritable } from "./storedWritable";
 
-export const s_clientId = localStorable<string>(crypto.randomUUID(), "pb_clientId_DONT_CHANGE");
+export const s_clientId = storedWritable<string>("pb_clientId_DONT_CHANGE", crypto.randomUUID());
 

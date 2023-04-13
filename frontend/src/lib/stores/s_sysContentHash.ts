@@ -1,8 +1,8 @@
 import { clientGetSysDoc } from "$lib/helpers/api/systemClient";
 import { get } from "svelte/store";
-import { localStorable } from "./localStorable";
+import { storedWritable } from "./storedWritable";
 
-export const s_sysContentHash = localStorable<string>("initial", "pb_contentHash");
+export const s_sysContentHash = storedWritable<string>("pb_contentHash", "initial");
 
 // TODO: IMPL
 export async function fetchSysContentHash() {

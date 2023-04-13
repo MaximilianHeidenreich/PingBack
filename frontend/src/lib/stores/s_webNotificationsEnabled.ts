@@ -1,7 +1,7 @@
 import { browser } from "$app/environment";
-import { localStorable } from "./localStorable";
+import { storedWritable } from "./storedWritable";
 
-export const s_webNotificationsEnabled = localStorable<boolean>(false, "pb_webNotificationsEnabled");
+export const s_webNotificationsEnabled = storedWritable<boolean>("pb_webNotificationsEnabled", false);
 
 export function s_webNotificationsEnabled_getState() { // TODO: Better name for dis
     if (!browser || !("Notification" in window)) return false;

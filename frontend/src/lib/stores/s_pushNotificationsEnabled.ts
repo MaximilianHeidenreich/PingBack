@@ -1,4 +1,4 @@
-import { localStorable } from "./localStorable";
+import { storedWritable } from "./storedWritable";
 
-export const s_pushNotificationsEnabled = localStorable<boolean>(false, "pb_pushNotificationsEnabled");
+export const s_pushNotificationsEnabled = storedWritable<boolean>("pb_pushNotificationsEnabled", false);
 
