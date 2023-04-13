@@ -27,4 +27,5 @@ export const ZProjectKey = z.string()
 export const ZProjectDisplayName = z.string()
     .min(1)
     .max(50);
+export const ZProjectEventSpecifiers = z.record(z.string());
 
