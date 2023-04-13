@@ -93,8 +93,8 @@
                     <li class="mb-0.5 font-medium"><span>Timestamp Format: </span></li>
                     <li>
                         <ul class="flex items-center">
-                            <li><button on:click={() => s_timeFormat.set("relative")} class="bg-neutral-50 border rounded-l-xl px-4 py-1 {$s_timeFormat === 'relative' ? '!bg-[#2F2B43] text-white' : ''}">Relative</button></li>
-                            <li><button on:click={() => s_timeFormat.set("absolute")} class="bg-neutral-50 border border-l-0 rounded-r-xl px-4 py-1 {$s_timeFormat === 'absolute' ? '!bg-[#2F2B43] text-white' : ''}">Absolute</button></li>
+                            <li><button on:click={() => s_timeFormat.set("relative")} class="bg-neutral-50 border rounded-l-xl px-4 py-1 {$s_timeFormat === 'relative' ? '!bg-blub-500 text-white' : ''}">Relative</button></li>
+                            <li><button on:click={() => s_timeFormat.set("absolute")} class="bg-neutral-50 border border-l-0 rounded-r-xl px-4 py-1 {$s_timeFormat === 'absolute' ? '!bg-blub-500 text-white' : ''}">Absolute</button></li>
                         </ul>
                     </li>
                 </ul>
