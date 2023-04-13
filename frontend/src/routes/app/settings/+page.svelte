@@ -101,16 +101,6 @@
             </li>
         </ul>
     </AppContentSection>
-    <!--
-    <AppContentSection>
-        <AppContentSectionHeader>
-            <svelte:fragment slot="title">Display</svelte:fragment>
-        </AppContentSectionHeader>
-        <fieldset>
-            <span class="font-medium mb-1">Timestamp Format</span>
-            todo
-        </fieldset>
-    </AppContentSection>-->
     <AppContentSection>
         <span class="text-lg font-medium">Cache</span>
         <hr class="mt-2 mb-4">
@@ -130,7 +120,7 @@
         <span class="text-lg font-medium">Info</span>
         <hr class="mt-2 mb-4">
         <p>
-            Client ID: <span class="font-mono">{$s_clientId}</span>
+            Client ID: <span class="font-mono">{#if browser}{$s_clientId}{/if}</span>
         </p>
     </AppContentSection>
 </AppContent>
