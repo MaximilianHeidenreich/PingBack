@@ -3,7 +3,6 @@ import { db_projects } from "$lib/server/deta";
 import { server_CreateProject } from "$lib/server/project";
 import { buildResponse, respondBadRequest, respondInternalError } from "$lib/server/responseHelper";
 import type { IProject } from "$lib/types/IProject";
-import { sanitizeProjectIdInternal } from "$lib/utils/sanitizers";
 import type { RequestHandler } from "./$types";
 
 export const GET = (async ({ url }) => {

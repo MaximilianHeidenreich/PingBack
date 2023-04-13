@@ -18,7 +18,7 @@ export const GET = (async ({ url }) => {
             query = JSON.parse(Buffer.from(queryRaw, "base64").toString());
         } catch (err) {
             console.error(err);
-            return respondBadRequest("Invalid query!");
+            return respondBadRequest(`Invalid query: ${queryRaw}`);
         }
     }
 
