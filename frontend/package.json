@@ -19,7 +19,7 @@
         "@svelte-plugins/tooltips": "^0.1.6",
         "@sveltejs/adapter-auto": "^2.0.0",
         "@sveltejs/adapter-node": "^1.2.0",
-        "@sveltejs/kit": "^1.5.0",
+        "@sveltejs/kit": "^1.15.2",
         "@sveltejs/vite-plugin-svelte": "^2.0.3",
         "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/line-clamp": "^0.4.2",
