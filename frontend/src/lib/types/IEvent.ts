@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { get as getEmoji } from "node-emoji";
+import nodeEmoji from "node-emoji";
 
 /**
  * Parser to use when displaying event description.
@@ -43,7 +43,7 @@ export const ZEventName = z.string()
 export const ZEventIcon = z.preprocess(s => {
     s = String(s);
     if ((s as string).includes(":")) {
-        s = getEmoji(s as string);
+        s = nodeEmoji.get(s as string);
     }
     return s;
 }, z.string().emoji());
@@ -53,4 +53,4 @@ export const ZEventIcon = z.preprocess(s => {
 //     .emoji();
 export const ZEventTitle = z.string()
     .min(1)
-    .max(50);
+    .max(25);
