@@ -27,6 +27,7 @@
         currentStep = currentStep + 1; // Fix end -> callback onLast
     }
     async function onFinish() {
+        isNextBtnLoading = true;
         try {
             await client_UpdateSysDoc(fetch, { finishedWelcomeTour: true }); // TODO: handle errors
         } catch(e) {
@@ -69,7 +70,8 @@
         <span></span> <!-- spacer placeholder.. we just pretend flexbox css does not exist -->
         {/if}
         <Button
-            on:click={onNext}>
+            on:click={onNext}
+            loading={isNextBtnLoading}>
             {#if currentStep === steps.length - 1}
                 <span class="mb-0.5">Finish</span> <span>🎉</span>
             {:else}
