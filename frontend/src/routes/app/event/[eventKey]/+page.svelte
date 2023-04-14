@@ -53,7 +53,7 @@
         <p class="mx-auto max-w-[50ch] text-center">Event not found!</p>
     </AppContentSection>
 {:else}
-    <AppContentSection>
+    <AppContentSection clazz="!-mb-6">
         <header class="overview mb-2 flex w-full gap-8">
             <div class="icon">
                 <div
@@ -105,7 +105,8 @@
         </header>
         <!--<hr class="mt-4" />-->
     </AppContentSection>
-    <AppContentSection clazz="!mt-4">
+    {#if event.description}
+    <AppContentSection>
         <AppContentSectionHeader>
             <svelte:fragment slot="title">Description</svelte:fragment>
         </AppContentSectionHeader>
@@ -119,6 +120,7 @@
             {@html event.description}
         {/if}
     </AppContentSection>
+    {/if}
     {#if Object.keys(event.tags).length > 0}
     <AppContentSection>
         <AppContentSectionHeader>

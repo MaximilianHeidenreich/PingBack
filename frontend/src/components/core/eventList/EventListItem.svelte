@@ -13,7 +13,9 @@
         odd: boolean = true;
 
     // STATE
-    $: truncatedDescription = event.parser === "text" ? `${(event.description as string).substring(0, isMobile() ? 83 : 200)}...` : "No preview available.";
+    $: truncatedDescription = event.parser === "text" ? 
+        !event.description ? null : 
+        `${(event.description as string).substring(0, isMobile() ? 83 : 200)}...` : "No preview available.";
 
 </script>
 
@@ -50,9 +52,11 @@
         <div class="meta">
             <span class="title">{event.title}</span>
             <div class="description-preview">
+            {#if truncatedDescription}
                 <p class="">
                     {truncatedDescription}
                 </p>
+            {/if}
             </div>
             <ul class="details">
                 <li><span class="font-mono">{event.project}</span></li>

@@ -36,7 +36,7 @@ export const SCreateEvent = z.object({
     parser: z.enum(["text", "markdown", "json", "log"]).default("text"), //z.string().optional().default("text"),// .infer<typeof TEvent>(),
 
     title: ZEventTitle,
-    description: z.string().optional().default(""),
+    description: z.string().optional(),
     tags: z.record(z.string(), z.unknown()).optional().default({})
 });
 
