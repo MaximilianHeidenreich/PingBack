@@ -12,6 +12,7 @@
 
     // STATE
     let currentStep = 0;
+    let isNextBtnLoading = false;
 
     // HANDLERS
     function onPrevious() {
@@ -38,6 +39,14 @@
 
 </script>
 
+<div class="tmp-mobile-info flex flex-col justify-center items-center">
+    <p class="text-xl font-semibold text-center">Looks like you are on mobile.</p>
+    <br>
+    <p class="leading-relaxed">
+        Currently, the welcome tour is not available on mobile.
+        Please visit PingBack from a larger screen first!
+    </p>
+</div>
 <div class="tour">
     <svelte:component this={steps[currentStep]} />
     <!--<div class="w-full h-full flex justify-center items-center"
@@ -71,11 +80,19 @@
 </div>
 
 <style lang="postcss">
+    .tmp-mobile-info { display: none; } /* TODO: Fix by making tour responsive! */
     .tour {
         @apply w-full flex flex-col justify-between items-stretch;
     }
     footer {
         @apply flex justify-between items-center mt-6;
+    }
+
+    @media screen and (max-width: 789px) {
+        .tmp-mobile-info { display: flex; } /* TODO: Fix by making tour responsive! */
+        .tour {
+            display: none;
+        }
     }
 </style>
 
