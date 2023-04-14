@@ -1,4 +1,5 @@
 import { s_clientId } from "$lib/stores/s_clientId";
+import { s_pushNotificationsEnabled } from "$lib/stores/s_pushNotificationsEnabled";
 import { s_webNotificationsEnabled } from "$lib/stores/s_webNotificationsEnabled";
 import { sw_registration } from "$lib/utils/serviceWorker";
 import toastOptions from "$lib/utils/toast";
@@ -88,12 +89,11 @@ export interface ICreateNotification {
     // silent
 }
 export async function showNativeNotification(noti: ICreateNotification) {
-    if (!("Notification" in window)) return;
+    if (!("Notification" in window) || !get(s_webNotificationsEnabled) || get(s_pushNotificationsEnabled)) return;
     if (Notification.permission === "default") {
         console.warn("[Notifications] Trying to push notification without knowing permission!");
         return;
     }
-    console.warn("weben", get(s_webNotificationsEnabled));
     if (Notification.permission === "denied" || !get(s_webNotificationsEnabled)) return;
     //if (!noti.icon) noti.icon = "/v1_pingback-logo_ios@1024.png";
     new Notification(noti.title, { ...noti });
