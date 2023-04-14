@@ -20,21 +20,17 @@
     // STATE
     let dbInfo: PouchDB.Core.DatabaseInfo | null | undefined;
     let isWebNotificationsEnabled = writable<boolean>(get(s_webNotificationsEnabled));
-    let isPushNotificationsEnabled = writable<boolean>(get(s_pushNotificationsEnabled));
-    let p = false;
-    $: {
-        console.log(p)
-    }
-
+    // let isPushNotificationsEnabled = writable<boolean>(get(s_pushNotificationsEnabled));
+    
     // HANDLERS
     isWebNotificationsEnabled.subscribe((state) => {
         s_webNotificationsEnabled.set(state);
         if (supports_Notification() && Notification.permission !== "granted" && state) requestNotificationPermission();
     });
-    isPushNotificationsEnabled.subscribe((state) => {
-        s_pushNotificationsEnabled.set(state);
-        if (state) subscribeToPushNotifications(); // TODO: 1. if subscription saved -> dont requerst again
-    });
+    // isPushNotificationsEnabled.subscribe((state) => {
+    //     s_pushNotificationsEnabled.set(state);
+    //     if (state) subscribeToPushNotifications(); // TODO: 1. if subscription saved -> dont requerst again
+    // });
     
     function onClearCache() {
         cache_Clear();
@@ -68,17 +64,16 @@
                     <li><Toggle bind:toggled={$isWebNotificationsEnabled} switchColor="#eee" toggledColor="#24a148" untoggledColor="#fa4d56" hideLabel/></li>
                 </ul>
                 <p><small>
-                    Web Notifications only work while the web app is open.
+                    Web Notifications only work while the app is opened.
                 </small></p>
             </li>
             <li>
                 <ul class="flex items-center gap-3">
-                    <li class="mb-0.5 font-medium"><span>Push Notifications: </span></li>
-                    <li><Toggle bind:toggled={$isPushNotificationsEnabled} switchColor="#eee" toggledColor="#24a148" untoggledColor="#fa4d56" hideLabel /></li>
+                    <li class="mb-0.5 font-medium"><span>Push Notifications <small>(Coming next update)</small>: </span></li>
+                    <li><Toggle toggled={false} switchColor="#eee" toggledColor="#24a148" untoggledColor="#fa4d56" hideLabel disabled/></li>
                 </ul>
                 <p class="leading-tight"><small>
-                    Push Notifications work only if the app is installed as a PWA and Web Notifications are also enabled. 
-                    If enabled, you will receive notifications even if the app is closed.
+                    Push Notifications will also work if the app is closed.
                 </small></p>
             </li>
         </ul>
@@ -86,15 +81,14 @@
     <AppContentSection>
         <span class="text-lg font-medium">Display</span>
         <hr class="mt-2 mb-4">
-        
         <ul class="flex flex-col gap-6">
             <li>
                 <ul class="flex items-center gap-3">
                     <li class="mb-0.5 font-medium"><span>Timestamp Format: </span></li>
                     <li>
                         <ul class="flex items-center">
-                            <li><button on:click={() => s_timeFormat.set("relative")} class="bg-neutral-50 border rounded-l-xl px-4 py-1 {$s_timeFormat === 'relative' ? '!bg-blub-500 text-white' : ''}">Relative</button></li>
-                            <li><button on:click={() => s_timeFormat.set("absolute")} class="bg-neutral-50 border border-l-0 rounded-r-xl px-4 py-1 {$s_timeFormat === 'absolute' ? '!bg-blub-500 text-white' : ''}">Absolute</button></li>
+                            <li><button on:click={() => s_timeFormat.set("relative")} class="bg-neutral-50 border rounded-l-xl px-4 py-2 {$s_timeFormat === 'relative' ? '!bg-blub-500 text-white' : ''}">Relative</button></li>
+                            <li><button on:click={() => s_timeFormat.set("absolute")} class="bg-neutral-50 border border-l-0 rounded-r-xl px-4 py-2 {$s_timeFormat === 'absolute' ? '!bg-blub-500 text-white' : ''}">Absolute</button></li>
                         </ul>
                     </li>
                 </ul>
@@ -109,8 +103,8 @@
         {:else if dbInfo === null}
         <span>Error: Could not get cache db info...</span>
         {:else}
-        <span>Size: <span class="font-mono"> {dbInfo.doc_count} timeframes</span></span><br>
-        <span>Content hash: <span class="font-mono">{$s_sysContentHash}</span></span>
+        <span><b>Size:</b> <span class="font-mono"> {dbInfo.doc_count} timeframes</span></span><br>
+        <span><b>Content hash:</b> <span class="font-mono">{$s_sysContentHash}</span></span>
         <br>
         {/if}
         <br>
@@ -120,7 +114,7 @@
         <span class="text-lg font-medium">Info</span>
         <hr class="mt-2 mb-4">
         <p>
-            Client ID: <span class="font-mono">{#if browser}{$s_clientId}{/if}</span>
+            <b>Client ID:</b> <span class="font-mono">{#if browser}{$s_clientId}{/if}</span>
         </p>
     </AppContentSection>
 </AppContent>
