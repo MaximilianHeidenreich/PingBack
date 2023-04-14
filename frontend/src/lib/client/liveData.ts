@@ -1,5 +1,4 @@
 import { NotFound } from "$lib/errors/core";
-import { clientFetchAllEventsInFrame } from "$lib/helpers/api/eventClient";
 import type { IEvent } from "$lib/types/IEvent";
 import { TIME_FRAME_OFFSET_UNIT, type ITimeFrame } from "$lib/types/ITimeFrame";
 import toastOptions from "$lib/utils/toast";
@@ -8,6 +7,7 @@ import toast from "svelte-french-toast";
 import { showNativeNotification } from "./notifications";
 import { client_GetTimeFrame } from "./timeFrame";
 import { browser } from "$app/environment";
+import { client_QueryEventsInFrameAll } from "./event";
 
 let liveTriggerTimer: NodeJS.Timer | null = null;
 export function client_EnableLiveData(updateInterval: number = 3000) {
@@ -26,7 +26,7 @@ function onUpdate() {
     if (!browser) return;
     console.debug("[LiveUpdate] Triggered update.");
 
-    //_updateForNewEvents();
+    _updateForNewEvents();
 }
 
 const liveSubs_newEvents: ((events: IEvent[]) => void)[] = [];
@@ -42,29 +42,28 @@ async function _updateForNewEvents() {
     const currFrameEnd = dayjs().endOf(TIME_FRAME_OFFSET_UNIT).valueOf();
     let frame: ITimeFrame | null;
     try {
-        frame = (await client_GetTimeFrame(currFrameEnd, false))?.frame || null;
+        const res = await client_GetTimeFrame(currFrameEnd, false);
+        frame = res?.frame || null;
+       // frame = (await client_GetTimeFrame(currFrameEnd, false))?.frame || null;
         if (!frame) return;
     } catch (e) {
         if (e instanceof NotFound) return; // Dis ok
-        console.error(e);
+        console.error("issue", e);
     }
-    const eventFetchRes = await clientFetchAllEventsInFrame(
-        fetch,
-        currFrameEnd,
-        { "createdAt?gt": liveUpdateEnabledTimestamp },
-        false
-    );
-    eventFetchRes.items.sort((a, b) => b.createdAt - a.createdAt);
+    const eventsRes = await client_QueryEventsInFrameAll(currFrameEnd, {
+        "createdAt?gt": liveUpdateEnabledTimestamp
+    }, false);
+    eventsRes.items.sort((a, b) => b.createdAt - a.createdAt);
 
     // Find new events
     const newEvents: IEvent[] = [];
-    for (const event of eventFetchRes.items) {
+    for (const event of eventsRes.items) {
         if (!knownNewEventKeys.includes(event.key)) {
             newEvents.push(event);
             knownNewEventKeys.push(event.key);
         }
     }
-    handleNewEvents(newEvents);
+    if (newEvents.length !== 0) handleNewEvents(newEvents);
 }
 
 
