@@ -10,16 +10,15 @@
     import { get } from "svelte/store";
 
     onMount(async () => {
-        //sw_register();
-        fetchSysContentHash();
-        // Initiallize browser
+        // Initiallize in browser
         if (!browser) return;
-        //if (!get(s_clientId)) s_clientId.set(crypto.randomUUID());
+
+        fetchSysContentHash();
         s_webNotificationsEnabled.set(s_webNotificationsEnabled_getState());
 
         // Setup service worker
-        await sw_register();
-        setTimeout(() => sw_init(), 2000);
+        // await sw_register();
+        // setTimeout(() => sw_init(), 2000);
     });
 </script>
 
