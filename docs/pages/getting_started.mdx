@@ -13,13 +13,9 @@ import { Tab, Tabs } from "nextra-theme-docs"
 ## Submitting your first event
 
 The simplest way to submit your first event is by using the code snippets below. Alternativle, you can use one of the
-provided [Client SDKs](/docs/clientlibraries).
+provided [Client SDKs](/clientlibraries).
 
-- `<APP_URL>` is the URL at which your PingBack instance is hosted (e.g. `https://pingback-1-d2924350.deta.app`).
-If you set up a custom domain for your PingBack instance, you can use that instead.
-- `<API_KEY>` is an API key for the project which you can copy from the "projects" tab.
-
-<Tabs items={["cURL", "Java-/TypeScript & NodeJS", "Python", "Deno", "Go", "Rust"]}>
+<Tabs items={["cURL", "Java-/TypeScript & NodeJS/Deno", "Python"]}>
     <Tab>
         ```shell copy
         curl --location --request POST "<APP_URL>/api/v1/events" \
@@ -31,12 +27,12 @@ If you set up a custom domain for your PingBack instance, you can use that inste
                 "name": "test",
                 "title": "Hello from cURL",
                 "description": "Place for more information abount the event.",
-                "icon": "🚀"
+                "icon": ":rocket:"
             }'
         ```
     </Tab>
     <Tab>
-        > In a NodeJS environment you might have to # TODO: Client SDK / version info for native fetch  
+        > In NodeJS environments older than v18 you have to use a polyfill for `fetch` (e.g. [node-fetch](https://www.npmjs.com/package/node-fetch)).
 
         ```javascript copy
         fetch("<APP_URL>/api/v1/events", {
@@ -51,7 +47,7 @@ If you set up a custom domain for your PingBack instance, you can use that inste
                 name: "test",
                 title: "Hello from Java-/TypeScript",
                 description: "Place for more information abount the event.",
-                icon: "🚀",
+                icon: ":rocket:",
             })
         });
         ```
@@ -71,45 +67,42 @@ If you set up a custom domain for your PingBack instance, you can use that inste
                 "name": "test",
                 "title": "Hello from Python",
                 "description": "Place for more information abount the event.",
-                "icon": "🚀",
+                "icon": ":rocket:",
 
             },
         )
         ```
     </Tab>
-    <Tab>
-        ```typescript copy
-        fetch("<APP_URL>/api/v1/events", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Api-Key": "<API_KEY>",
-            },
-            body: JSON.stringify({
-                project: "default",
-                channel: "default",
-                name: "test",
-                title: "Hello from Java-/TypeScript",
-                description: "Place for more information abount the event.",
-                icon: "🚀",
-            })
-        });
-        ```
-    </Tab>
 </Tabs>
 
-todo: snippet
+- `<APP_URL>` is the URL at which your PingBack instance is hosted (e.g. `https://pingback-1-d2924350.deta.app`).
+If you set up a custom domain for your PingBack instance, you can use that instead.
+- `<API_KEY>` is an API key for the project which you can copy from the "projects" tab.
+- `name` is a short (max. 50 chars) key which identifies the "type" of the event.
+You can use this to further subdivide events (e.g. "payments", "payments.success" and "payments.failed").
+Later on you can use this to filter events.
+- `title` is a short string (max. 25 chars) outlining what the event represents.
+- `description` is an optional addition containing additional information about the event.
+- `icon` is an optional unicode emoji or emoji-code (see. [Emoji Cheatsheet](http://www.emoji-cheat-sheet.com/)).
+
 
 ## Advanced events
 
-After
+In addition to the basic event properties, you can also utilize some additional ones as well as add any JSON data to your events.
+All properties are described below.
+
+- `tags` is an optional JSON object you can use to store additional data about the event.
+Tags can also be filtered as described in [Filtering events](/guide/filter).
+- `parser` is an optional string (one of: `text`, `markdown`) which tells PingBack how to parse the `description` property.
+Defaults to `text` if not set.
+- `notify` is an optional boolean which tells PingBack whether to notify clients upon event submission.
 
 ## Setting up your next project
 
 To learn how to unlock PingBacks full potential, consider visiting the following articles in order:
-1. [Creating a Project](/docs/guide/core_concepts#projects)
-2. [Creating a Channel](/docs/guide/core_concepts#channels)
-3. [Creating an API Key](/docs/guide/core_concepts#api-key)
-4. [Filtering events](/docs/guide/filter)
+1. [Creating a Project](/guide/core_concepts#projects)
+2. [Creating a Channel](/guide/core_concepts#channels)
+3. [Creating an API Key](/guide/core_concepts#api-key)
+4. [Filtering events](/guide/filter)
 5. Coming soon: Metrics
 6. Coming soon: Monitor
