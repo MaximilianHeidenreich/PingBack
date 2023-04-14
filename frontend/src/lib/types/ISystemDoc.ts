@@ -1,5 +1,5 @@
 import { VERSION } from "$lib/utils/version";
-import { generateVAPIDKeys } from "web-push";
+import webPush from "web-push";
 
 /**
  * DB Doc which holds global system configuration & stats.
@@ -19,9 +19,8 @@ export interface ISystemDoc {
     totalEvents: number;
 }
 export const DEFAULT_SYSTEM_DOC = (): ISystemDoc => {
-    const vapidKeys = generateVAPIDKeys();
-    vapidKeys.publicKey
-    
+    const vapidKeys = webPush.generateVAPIDKeys();
+
     return {
         createdAt: Date.now(),
         updatedAt: Date.now(),
