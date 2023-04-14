@@ -6,7 +6,6 @@
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
     import { TKN_ICON } from "$lib/utils/tokens";
     import type { PageData } from "./$types";
-    import { clientDeleteEvent } from "$lib/helpers/api/eventClient";
     import toast from "svelte-french-toast";
     import toastOptions from "$lib/utils/toast";
     import { s_timeFormat } from "$lib/stores/s_timeFormat";
@@ -14,7 +13,8 @@
     import { fetchSysContentHash } from "$lib/stores/s_sysContentHash";
     import IconDeleteBin2 from "$cmp/core/icons/IconDeleteBin2.svelte";
     import IconArrowsVertical from "$cmp/core/icons/IconArrowsVertical.svelte";
-    import { client_GetEventIconColor } from "$lib/client/event";
+    import { client_DeleteEvent, client_GetEventIconColor } from "$lib/client/event";
+    import { NotFound } from "$lib/errors/core";
 
     // PROPS
     export let data: PageData;
@@ -31,15 +31,15 @@
         if (!event) return;
         loadingDeleteEvent = true;
         try {
-            await clientDeleteEvent(fetch, event.key);
+            await client_DeleteEvent(event.key);
         }
         catch (e) {
+            if (e instanceof NotFound) toast.error("Event not found!", toastOptions());
+            else toast.error("Could not delete event!", toastOptions());
             console.error(e);
-            toast.error("Could not delete event!", toastOptions());
             loadingDeleteEvent = false;
             return;
         }
-        //goto("/app/feed");
         toast.success("Event deleted!", toastOptions());
         await fetchSysContentHash();
         loadingDeleteEvent = false;

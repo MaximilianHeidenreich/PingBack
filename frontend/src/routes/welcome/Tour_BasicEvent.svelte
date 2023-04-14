@@ -7,11 +7,11 @@
     import TourStep from "./TourStep.svelte";
     import { scale } from "svelte/transition";
     import { getContext, onDestroy, onMount } from "svelte";
-    import { clientFetchAllEventsInFrame } from "$lib/helpers/api/eventClient";
     import dayjs from "dayjs";
     import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
     import { s_eventListStyle } from "$cmp/core/eventList/s_eventListStyle";
     import type { IApiKey } from "$lib/types/IApiKey";
+    import { client_QueryEventsInFrameAll } from "$lib/client/event";
 
     // STATE
     let displayEvent: IEvent | undefined;
@@ -31,14 +31,16 @@ curl --location --request POST "${window.location.origin}/api/v1/events" \\
     "icon": "🚀"
 }'
     `; // TODO: Insert default api key
-    
+
     // HANDLERS
     async function onRefresh() {
         console.debug("[Tour] Refreshing live event display ...");
 
         let eventsRes;
         try {
-            eventsRes = await clientFetchAllEventsInFrame(fetch, dayjs().endOf(TIME_FRAME_OFFSET_UNIT).valueOf(), { "createdAt?gte": dayjs().subtract(4, "s").valueOf() }, false);
+            eventsRes = await client_QueryEventsInFrameAll(dayjs().endOf(TIME_FRAME_OFFSET_UNIT).valueOf(), {
+                "createdAt?gte": dayjs().subtract(4, "s").valueOf()
+            }, false);
         } catch (e) {
             console.error(e);
             return;
@@ -66,7 +68,7 @@ curl --location --request POST "${window.location.origin}/api/v1/events" \\
                 Your first <span class="text-pink-500">event</span>.
             </svelte:fragment>
             <svelte:fragment slot="description">
-                To submit and event, you simply need to call a single HTTP endpoint. Alternatively, you can use 
+                To submit and event, you simply need to call a single HTTP endpoint. Alternatively, you can use
                 one of the provided client SDK's for your programming language to get started. Each submission needs to be authenticated with an <b>API key</b>.
                 We've generated a default one for you to use in the following snippets but you can create / delete them inside the "projects" page.
                 Copy the code snippet below into your terminal / IDE, run it and see you event pop up.
