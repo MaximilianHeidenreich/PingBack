@@ -65,7 +65,7 @@ export async function client_GetTimeFrame(
     });
     if (!res.ok) {
         if (res.status === 404) return null;
-        else throw res; // TODO: Err handling like rust
+        throw res;
     }
     const data = await res.json();
 
