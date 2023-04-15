@@ -121,7 +121,7 @@ export async function client_QueryEventsInFrameAll(
     console.debug(`[Events] Requested events for frame ${frameEnd} (${dayjs(frameEnd).format()}) (useCache: ${useCache})`);
     frameEnd = dayjs(frameEnd).endOf(TIME_FRAME_OFFSET_UNIT).valueOf();
 
-    if (useCache) {
+    if (useCache && Object.keys(query).length === 0 ) { // TODO !: Remove query disable
         // NOTE: A non-empty cached value indicates the cached frame contains ALL events from itself.
         // We can safely query / return this data.
         const cached = await cache_GetFrame(frameEnd);
