@@ -1,14 +1,14 @@
 {
     "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+    "id": "pingback",
     "name": "PingBack",
     "short_name": "PingBack",
     "description": "Event monitoring made simple.",
     "icons": [
         {
-            "src": "v1_pingback-logo_ios@1024.png",
-            "sizes": "1024x1024",
-            "type": "image/png",
-            "purpose": "any"
+            "src": "/apple-touch-icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
         },
         {
             "src": "/android-chrome-192x192.png",
