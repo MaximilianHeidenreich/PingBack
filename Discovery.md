@@ -1,45 +1,39 @@
 ---
 title: "PingBack"
-tagline: "Realtime event monitoring made simple."
-theme_color: "#ea4a8f"
+tagline: "Aggregate, Filter and Monitor events in realtime."
+theme_color: "#3d2ed9"
 git: "https://github.com/MaximilianHeidenreich/PingBack"
 homepage: "https://github.com/MaximilianHeidenreich/PingBack"
 ---
 
-# 🚧 Under construction
+# ⚡️ TL;DR
 
-I released the current version so that testing and feedback is possible. Please not that PingBack is not finished yet.
-Many things are still missing / might break, but the essentials are already implemented.
+Many times, be it a software project a website or a Saas product of yours, there is a need to track events
+like installations, page visits, user signups, payments etc.
 
-## TL;DR
+PingBack is a relatively unbiased yet powerful application which enables you to:
+1. **Aggregate** events from any source that can send a basic HTTP POST request.
+2. **Filter** all previous events and create data visualizations so that you can focus on the most important KPI's.
+3. **Monitor** single specific events, event frequency and create alerts to notify you / other systems through Push Notifications or Webhooks.
 
-PingBack tries to be a relatively unbiased yet powerful application for you to
-aggregate, filter and monitor events from any source.
+## ✨ Notable Features
+- Aggregate events from any HTTP enabled source.
+- Live updates & notifications.
+- PWA support.
+- Organize events by projects, channels and custom identifiers.
+- Filter events.
 
-### Aggregate
-Events can be collected by using one of our [Client Libraries](https://maximilianheidenreich.gitbook.io/pingback/client-libraries) for your favorite language, or by simply sending an HTTP request to a specific endpoint. You can find more information on that inside the [Quick Start](https://maximilianheidenreich.gitbook.io/pingback/quick-start).
-Additionally, PingBack offers different options for storing and exporting events. By default, there is no limit on the amount or max. time of events stored, but you can enable cleanup options to limit the time certain events are stored. Events can also be exported to standard formats like JSON and CSV.
+## 🚧 Roadmap
 
-### Filter
-Storing events provides no additional value if you can't filter them. PingBack offers different options to search for specific events and filter them by multiple parameters.
-todo
+> I released the current version so that testing and feedback is possible. Please not that PingBack is not fully finished yet.
+Things are still missing / might break, but the essentials are already implemented.
 
-### Monitor
-Something will break, eventually and even if it doesn't, it is useful to be notified when things happen. PingBack offers multiple ways [... webhooks, push notification].
-Furthermore, it provides you with options to stay on top of your most important KPI's with features such as Metrics and Charts
+- Push notifications
+- Live Metrics
+- Monitoring
+- Import / Export data
 
-## Features
-For a full, detailed feature list, visit the [Documentation](todo)
-
-## Roadmap
-For a full, detailed roadmap, visit the [Documentation](todo)
-
-## Changelog
-### v1.1.0
-- todo write
-- Initial public release
-### v1.0.0
-- Test version
+[View Changelog](https://github.com/MaximilianHeidenreich/PingBack/blob/main/Changelog.md)
 
 **Additional information:**
 I had the Idea for this service on my todo list for a long time but never came around to implement it.
