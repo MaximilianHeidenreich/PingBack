@@ -31,3 +31,14 @@ export class DetaBaseError extends Error {
         this.err = err;
     }
 }
+
+/**
+ * Used to indicate that the system cannot process some action due to
+ * the expected state not being given. E.g. missing sysdoc / time frame links.
+ */
+export class InvalidSystemState extends Error {
+    constructor(message: string) {
+        super(`FATAL SYSTEM ERROR: ${message}`);
+        Object.setPrototypeOf(this, InvalidSystemState.prototype)
+    }
+}

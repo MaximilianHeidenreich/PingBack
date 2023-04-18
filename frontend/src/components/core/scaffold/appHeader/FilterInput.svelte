@@ -1,7 +1,6 @@
 <script lang="ts">
-    import IconButton from "$cmp/core/buttons/IconButton.svelte";
+    import IconDelete1 from "$cmp/core/icons/IconDelete1.svelte";
     import { TKN_ICON } from "$lib/utils/tokens";
-    import { IconX } from "@tabler/icons-svelte";
     import { createEventDispatcher, onMount } from "svelte";
 
 
@@ -126,8 +125,8 @@
             {:else if filter.type === "eventName"}
             <span class="text-xs font-bold text-neutral-500">Event</span>
             {/if}
-            <span class="mb-0.5 text-xs font-medium">{filter.value}</span>
-            <span class="cursor-pointer" on:click={() => onDeleteSingleFilter(i)}><IconX size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.SM}/></span>
+            <span class="text-xs font-medium">{filter.value}</span>
+            <span class="cursor-pointer" on:click={() => onDeleteSingleFilter(i)}><IconDelete1 size={12} /></span>
         </div>
     {/each}
     <form on:submit|preventDefault={onSubmit} class="flex-1">

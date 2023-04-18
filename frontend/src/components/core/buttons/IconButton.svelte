@@ -1,6 +1,7 @@
 <script lang="ts">
     import Spinner from "../utils/Spinner.svelte";
-    import Button from "./OldButton.svelte"; // TODO: Fix move to new
+    //import Button from "./OldButton.svelte"; // TODO: Fix move to new
+    import Button from "./Button.svelte"; // TODO: Fix move to new
 
     // PROPS
     export let type: "button" | "link" = "button",
@@ -14,12 +15,10 @@
 </script>
 
 <Button
-    {type}
-    style="secondary"
-    {target}
-    {href}
+    type="ghost"
+    style="muted"
     {disabled}
-    clazz="!p-2 {clazz} !rounded-xl relative"
+    btnClazz="!p-2 {clazz} relative"
     on:click
     {...$$restProps}>
     {#if loading}
@@ -28,3 +27,20 @@
     <slot />
     {/if}
 </Button>
+<!---->
+<!-- <Button -->
+<!--     {type} -->
+<!--     style="secondary" -->
+<!--     {target} -->
+<!--     {href} -->
+<!--     {disabled} -->
+<!--     clazz="!p-2 {clazz} !rounded-xl relative" -->
+<!--     on:click -->
+<!--     {...$$restProps}> -->
+<!--     {#if loading} -->
+<!--     <span class="flex justify-center items-center"><Spinner color="dark"/></span> -->
+<!--     {:else} -->
+<!--     <slot /> -->
+<!--     {/if} -->
+<!-- </Button> -->
+

@@ -1,20 +1,20 @@
 <script lang="ts">
-    import { generatePalette } from "emoji-palette";
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
     import AppContent from "$cmp/core/scaffold/AppContent.svelte";
     import AppContentSection from "$cmp/core/scaffold/AppContentSection.svelte";
     import AppContentSectionHeader from "$cmp/core/scaffold/AppContentSectionHeader.svelte";
     import { s_headerTitle } from "$cmp/core/scaffold/appHeader/s_headerTitle";
     import { TKN_ICON } from "$lib/utils/tokens";
-    import { IconArrowsVertical, IconTrash } from "@tabler/icons-svelte";
     import type { PageData } from "./$types";
-    import { browser } from "$app/environment";
-    import { clientDeleteEvent } from "$lib/helpers/api/eventClient";
     import toast from "svelte-french-toast";
     import toastOptions from "$lib/utils/toast";
     import { s_timeFormat } from "$lib/stores/s_timeFormat";
     import { relativeTime } from "svelte-relative-time";
     import { fetchSysContentHash } from "$lib/stores/s_sysContentHash";
+    import IconDeleteBin2 from "$cmp/core/icons/IconDeleteBin2.svelte";
+    import IconArrowsVertical from "$cmp/core/icons/IconArrowsVertical.svelte";
+    import { client_DeleteEvent, client_GetEventIconColor } from "$lib/client/event";
+    import { NotFound } from "$lib/errors/core";
 
     // PROPS
     export let data: PageData;
@@ -26,27 +26,20 @@
 
     s_headerTitle.set(`Event – ${event?.key.split("-")[0]}`);
 
-    // FN
-    function getIconColor(): string {
-        if (!browser) return "#ffffff";
-        const iconPalette = generatePalette(event?.icon || "⚙️");
-        return iconPalette[0];
-    }
-
     // HANDLERS
     async function onDeleteEvent() {
         if (!event) return;
         loadingDeleteEvent = true;
         try {
-            await clientDeleteEvent(fetch, event.key);
+            await client_DeleteEvent(event.key);
         }
         catch (e) {
+            if (e instanceof NotFound) toast.error("Event not found!", toastOptions());
+            else toast.error("Could not delete event!", toastOptions());
             console.error(e);
-            toast.error("Could not delete event!", toastOptions());
             loadingDeleteEvent = false;
             return;
         }
-        //goto("/app/feed");
         toast.success("Event deleted!", toastOptions());
         await fetchSysContentHash();
         loadingDeleteEvent = false;
@@ -60,12 +53,12 @@
         <p class="mx-auto max-w-[50ch] text-center">Event not found!</p>
     </AppContentSection>
 {:else}
-    <AppContentSection>
+    <AppContentSection clazz="!-mb-6">
         <header class="overview mb-2 flex w-full gap-8">
             <div class="icon">
                 <div
                     class="mt-1 p-5 flex aspect-square items-center justify-center rounded-3xl bg-transparent transition-all duration-300"
-                    style="background: {getIconColor()}55;">
+                    style="background: {client_GetEventIconColor(event.icon || '')};">
                     <span class="icon text-4xl">{event.icon}</span>
                 </div>
             </div>
@@ -103,9 +96,8 @@
                             <IconButton
                                 on:click={onDeleteEvent}
                                 loading={loadingDeleteEvent}
-                                ><IconTrash
-                                    size={TKN_ICON.SIZE.BASE}
-                                    stroke={TKN_ICON.STROKE.BASE} /></IconButton>
+                                ><IconDeleteBin2
+                                    size={TKN_ICON.SIZE.SM} /></IconButton>
                         </li>
                     </ul>
                 </footer>
@@ -113,7 +105,8 @@
         </header>
         <!--<hr class="mt-4" />-->
     </AppContentSection>
-    <AppContentSection clazz="!mt-4">
+    {#if event.description}
+    <AppContentSection>
         <AppContentSectionHeader>
             <svelte:fragment slot="title">Description</svelte:fragment>
         </AppContentSectionHeader>
@@ -127,6 +120,7 @@
             {@html event.description}
         {/if}
     </AppContentSection>
+    {/if}
     {#if Object.keys(event.tags).length > 0}
     <AppContentSection>
         <AppContentSectionHeader>
@@ -138,8 +132,7 @@
                     Tags <span class="font-mono text-base">({Object.keys(event.tags).length})</span>
                 </span>
                 <IconArrowsVertical
-                    size={TKN_ICON.SIZE.SM}
-                    stroke={TKN_ICON.STROKE.BASE} />
+                    size={TKN_ICON.SIZE.SM} />
             </summary>
             <div class="mt-2">
                 <pre>{JSON.stringify(event.tags, null, 2)}</pre> <!-- TODO: impl pretty json view -->

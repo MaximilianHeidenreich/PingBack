@@ -6,8 +6,9 @@
     import TourStep from "./TourStep.svelte";
     import WelcomeList from "./WelcomeList.svelte";
     import IconButton from "$cmp/core/buttons/IconButton.svelte";
-    import Layer from "iconsax-svelte/Layer.svelte";
     import { s_eventListStyle } from "$cmp/core/eventList/s_eventListStyle";
+    import IconAlignLayers1 from "$cmp/core/icons/IconAlignLayers1.svelte";
+    import { TKN_ICON } from "$lib/utils/tokens";
 
     // STATE
     let currExampleEventIndex = 0;
@@ -85,7 +86,7 @@
     </svelte:fragment>
 
     <div class="list-wrapper">
-        <IconButton on:click={onToggleListStyle} clazz="!absolute top-3 right-3"><Layer /></IconButton>
+        <IconButton on:click={onToggleListStyle} clazz="!absolute top-3 right-3"><IconAlignLayers1 size={TKN_ICON.SIZE.SM} /></IconButton>
         {#if $s_eventListStyle === "compact"}
             <div class="max-w-2xl min-w-[65%] bg-white border-2 rounded-2xl h-fit overflow-hidden">
                 <ShowcaseEventList {events} />

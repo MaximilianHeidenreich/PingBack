@@ -6,21 +6,17 @@
     import { browser } from "$app/environment";
     import { generatePalette } from "emoji-palette";
     import { isMobile } from "$lib/utils/width";
+    import { client_GetEventIconColor } from "$lib/client/event";
 
     // PROPS
     export let event: IEvent,
         odd: boolean = true;
 
     // STATE
-    $: truncatedDescription = event.parser === "text" ? `${(event.description as string).substring(0, isMobile() ? 83 : 200)}...` : "No preview available.";
-    
+    $: truncatedDescription = event.parser === "text" ? 
+        !event.description ? null : 
+        `${(event.description as string).substring(0, isMobile() ? 83 : 200)}...` : "No preview available.";
 
-    // FN
-    function getIconColor(): string {
-        if (!browser) return "#aaaaaa";
-        const iconPalette = generatePalette(event?.icon || "⚙️");
-        return iconPalette[0];
-    }
 </script>
 
 <li class="item {$s_eventListStyle} {event.parser === "log" ? `log-${event.tags["_level"]}` : ''}" class:odd>
@@ -50,15 +46,17 @@
     </a>
     {:else}
     <a href="/app/event/{event.key}">
-        <div class="icon-wrapper" style="background: {getIconColor()}55;">
+        <div class="icon-wrapper" style="background: {client_GetEventIconColor(event.icon || '')};">
             <span class="icon">{event.icon}</span>
         </div>
         <div class="meta">
             <span class="title">{event.title}</span>
             <div class="description-preview">
+            {#if truncatedDescription}
                 <p class="">
                     {truncatedDescription}
                 </p>
+            {/if}
             </div>
             <ul class="details">
                 <li><span class="font-mono">{event.project}</span></li>

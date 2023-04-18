@@ -1,3 +1,3 @@
-import { localStorable } from "$lib/stores/localStorable";
+import { storedWritable } from "$lib/stores/storedWritable";
 
-export const s_eventListStyle = localStorable<"compact" | "card">("compact", "eventListStyle");
+export const s_eventListStyle = storedWritable<"compact" | "card">("pb_eventListStyle", "compact");

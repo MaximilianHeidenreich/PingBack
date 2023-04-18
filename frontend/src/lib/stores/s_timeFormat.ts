@@ -1,3 +1,3 @@
-import { localStorable } from "./localStorable";
+import { storedWritable } from "./storedWritable";
 
-export const s_timeFormat = localStorable<"absolute" | "relative">("relative", "pb_timeFormat");
+export const s_timeFormat = storedWritable<"absolute" | "relative">("pb_timeFormat", "relative");

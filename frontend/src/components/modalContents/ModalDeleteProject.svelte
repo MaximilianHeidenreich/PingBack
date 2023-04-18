@@ -37,7 +37,7 @@
 <Modal bind:dialog>
     <svelte:fragment slot="title">Delete Project</svelte:fragment>
     <svelte:fragment slot="subtitle">
-        Are you sure you want to delete the project <strong class="text-pink-500"
+        Are you sure you want to delete the project <strong class="text-blub-500"
             >{project.displayName}</strong
         >?
     </svelte:fragment>

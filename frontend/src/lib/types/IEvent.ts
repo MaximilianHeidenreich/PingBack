@@ -1,4 +1,5 @@
 import { z } from "zod";
+import nodeEmoji from "node-emoji";
 
 /**
  * Parser to use when displaying event description.
@@ -30,14 +31,26 @@ export interface IEvent {
 }
 
 // SCHEMAS
-export const SEventKey = z.string()
+export const ZEventKey = z.string()
     .uuid();
-export const SEventName = z.string()
+export const ZEventName = z.string()
     .min(1)
     .max(50)
     .regex(/[a-zA-Z0-9._-]+/)
     .transform((s) => s.toLowerCase());
-export const SEventIcon = z.string().emoji();
-export const SEventTitle = z.string()
+
+// TODO!: Add http://www.emoji-cheat-sheet.com/ to docs
+export const ZEventIcon = z.preprocess(s => {
+    s = String(s);
+    if ((s as string).includes(":")) {
+        s = nodeEmoji.get(s as string);
+    }
+    return s;
+}, z.string().emoji());
+
+// export const ZEventIcon = z.string()
+//     .tr
+//     .emoji();
+export const ZEventTitle = z.string()
     .min(1)
-    .max(50);
+    .max(25);

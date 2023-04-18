@@ -1,6 +1,8 @@
-import { DetaBaseError, Invalid, InvalidZod, NotFound } from "$lib/errors/core";
+import { DetaBaseError, Invalid, InvalidSystemState, InvalidZod, NotFound } from "$lib/errors/core";
+import { validateApiKey } from "$lib/server/apiKey";
 import { db_events } from "$lib/server/deta";
 import { server_createEvent } from "$lib/server/event";
+import { sendPushNotificationToAllClients } from "$lib/server/pushNotifications";
 import { buildResponse, respondBadRequest, respondInternalError, respondNotFound } from "$lib/server/responseHelper";
 import type { RequestHandler } from "./$types";
 
@@ -16,7 +18,7 @@ export const GET = (async ({ url }) => {
             query = JSON.parse(Buffer.from(queryRaw, "base64").toString());
         } catch (err) {
             console.error(err);
-            return respondBadRequest("Invalid query!");
+            return respondBadRequest(`Invalid query: ${queryRaw}`);
         }
     }
 
@@ -39,8 +41,11 @@ export const POST = (async ({ request }) => {
     const reqBody = await request.json();
 
     // TODO: Validate API KEY
-    // Todo impl.
-    
+    const validationRes = await validateApiKey(request, reqBody.project || "");
+    if (!validationRes.valid) {
+        return validationRes.response;
+    }
+
     let newEvent;
     try {
         newEvent = await server_createEvent(reqBody);
@@ -49,11 +54,19 @@ export const POST = (async ({ request }) => {
         if (e instanceof NotFound) return respondNotFound(e.message);
         else if (e instanceof InvalidZod) return respondBadRequest(e.zodError);
         else if (e instanceof Invalid) return respondBadRequest(e.message);
+        else if (e instanceof InvalidSystemState) return respondInternalError(e.message);
         else if (e instanceof DetaBaseError) return respondInternalError(e.message);
 
         console.error(e);
         return respondInternalError("Internal error");
     }
+
+    sendPushNotificationToAllClients({
+        title: `${newEvent.icon} ${newEvent.title}`,
+        body: newEvent.parser === "text" ? newEvent.description as string : "(Tap to view description).",
+        timestamp: newEvent.createdAt,
+        //icon: "https://icons-for-free.com/download-icon-coloured+128px+Media+Coloured+128px+whatsapp-1320568367672628520_256.png"
+    });
 
     return buildResponse().status(200).statusText("OK").json(newEvent).build();
 }) satisfies RequestHandler;

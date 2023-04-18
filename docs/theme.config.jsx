@@ -26,7 +26,7 @@ export default {
                 </defs>
             </svg>
             <span style={{ marginLeft: '.4em', fontWeight: 800 }}>
-            <span style={{ color: "#ea4a8f" }}>Ping</span>Back
+            <span style={{ color: "#3d2ed9" }}>Ping</span>Back
             </span>
         </>
     ),
@@ -34,7 +34,7 @@ export default {
         link: "https://github.com/MaximilianHeidenreich/PingBack",
     },
     docsRepositoryBase: "https://github.com/MaximilianHeidenreich/PingBack/blob/main/docs/pages",
-    primaryHue: 334,
+    primaryHue: 245,
     navigation: {
         prev: true,
         next: true

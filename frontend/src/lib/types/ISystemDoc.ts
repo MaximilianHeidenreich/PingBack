@@ -1,4 +1,5 @@
 import { VERSION } from "$lib/utils/version";
+import webPush from "web-push";
 
 /**
  * DB Doc which holds global system configuration & stats.
@@ -11,11 +12,15 @@ export interface ISystemDoc {
     latestEventTimestamp: number;
     finishedWelcomeTour: boolean;
     latestAppVersion: string; // Store latest version at root layout run of app. -> Handle updates.
+    publicVapidKey: string; // Key generated on first run, used for push notifications.
+    privateVapidKey: string; // Key generated on first run, used for push notifications.
 
     // STATS
     totalEvents: number;
 }
 export const DEFAULT_SYSTEM_DOC = (): ISystemDoc => {
+    const vapidKeys = webPush.generateVAPIDKeys();
+
     return {
         createdAt: Date.now(),
         updatedAt: Date.now(),
@@ -23,6 +28,8 @@ export const DEFAULT_SYSTEM_DOC = (): ISystemDoc => {
         latestEventTimestamp: -1,
         finishedWelcomeTour: false,
         latestAppVersion: VERSION.semver!.version,
+        publicVapidKey: vapidKeys.publicKey,
+        privateVapidKey: vapidKeys.privateKey,
         totalEvents: 0
     };
 };

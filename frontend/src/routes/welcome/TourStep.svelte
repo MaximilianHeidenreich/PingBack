@@ -1,7 +1,4 @@
 <script lang="ts">
-    import Button from "$cmp/core/buttons/Button.svelte";
-    import { TKN_TRANSITION } from "$lib/utils/tokens";
-    import { IconChevronLeft, IconChevronRight } from "@tabler/icons-svelte";
     import { createEventDispatcher } from "svelte";
 
     import { fly } from "svelte/transition";
@@ -14,7 +11,7 @@
 </script>
 
 <slot name="header" />
-<!-- 
+<!--
 transition:fly={{
         duration: TKN_TRANSITION.DURATION,
         easing: TKN_TRANSITION.EASING,

@@ -1,28 +1,108 @@
 import Image from "next/image"
 import { Callout } from "nextra-theme-docs"
+import { Tab, Tabs } from "nextra-theme-docs"
 
 # ⚡️ Getting Started
 > The following steps will get you up and running in a few minutes.
 
-## Submitting your first event
-
-The simplest way to submit your first event is by running the cURL command below in your terminal.
 <Callout>
-Note: This will only work if you haven't deleted the default project, channel and API key we set up after installation.
+    Note: The following examples assume that you have not deleted the `default` project & channel. If you have,
+    just change the `project` and `channel` properties to match your own.
 </Callout>
 
-todo: snippet
+## Submitting your first event
+
+The simplest way to submit your first event is by using the code snippets below. Alternativle, you can use one of the
+provided [Client SDKs](/clientlibraries).
+
+<Tabs items={["cURL", "Java-/TypeScript & NodeJS/Deno", "Python"]}>
+    <Tab>
+        ```shell copy
+        curl --location --request POST "<APP_URL>/api/v1/events" \
+            --header "X-API-Key: <API_KEY>" \
+            --header "Content-Type: application/json" \
+            --data-raw '{
+                "project": "default",
+                "channel": "default",
+                "name": "test",
+                "title": "Hello from cURL",
+                "description": "Place for more information abount the event.",
+                "icon": ":rocket:"
+            }'
+        ```
+    </Tab>
+    <Tab>
+        > In NodeJS environments older than v18 you have to use a polyfill for `fetch` (e.g. [node-fetch](https://www.npmjs.com/package/node-fetch)).
+
+        ```javascript copy
+        fetch("<APP_URL>/api/v1/events", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Api-Key": "<API_KEY>",
+            },
+            body: JSON.stringify({
+                project: "default",
+                channel: "default",
+                name: "test",
+                title: "Hello from Java-/TypeScript",
+                description: "Place for more information abount the event.",
+                icon: ":rocket:",
+            })
+        });
+        ```
+    </Tab>
+    <Tab>
+        ```python copy
+        import requests
+
+        requests.post("<APP_URL>/api/v1/events",
+            headers = {
+                "Content-Type": "application/json",
+                "X-Api-Key": "<API_KEY>",
+            },
+            json = {
+                "project": "default",
+                "channel": "default",
+                "name": "test",
+                "title": "Hello from Python",
+                "description": "Place for more information abount the event.",
+                "icon": ":rocket:",
+
+            },
+        )
+        ```
+    </Tab>
+</Tabs>
+
+- `<APP_URL>` is the URL at which your PingBack instance is hosted (e.g. `https://pingback-1-d2924350.deta.app`).
+If you set up a custom domain for your PingBack instance, you can use that instead.
+- `<API_KEY>` is an API key for the project which you can copy from the "projects" tab.
+- `name` is a short (max. 50 chars) key which identifies the "type" of the event.
+You can use this to further subdivide events (e.g. "payments", "payments.success" and "payments.failed").
+Later on you can use this to filter events.
+- `title` is a short string (max. 25 chars) outlining what the event represents.
+- `description` is an optional addition containing additional information about the event.
+- `icon` is an optional unicode emoji or emoji-code (see. [Emoji Cheatsheet](http://www.emoji-cheat-sheet.com/)).
+
 
 ## Advanced events
 
-After 
+In addition to the basic event properties, you can also utilize some additional ones as well as add any JSON data to your events.
+All properties are described below.
+
+- `tags` is an optional JSON object you can use to store additional data about the event.
+Tags can also be filtered as described in [Filtering events](/guide/filter).
+- `parser` is an optional string (one of: `text`, `markdown`) which tells PingBack how to parse the `description` property.
+Defaults to `text` if not set.
+- `notify` is an optional boolean which tells PingBack whether to notify clients upon event submission.
 
 ## Setting up your next project
 
 To learn how to unlock PingBacks full potential, consider visiting the following articles in order:
-1. [Creating a Project](/docs/guide/core_concepts#projects)
-2. [Creating a Channel](/docs/guide/core_concepts#channels)
-3. [Creating an API Key](/docs/guide/core_concepts#api-key)
-4. [Filtering events](/docs/guide/filter)
+1. [Creating a Project](/guide/core_concepts#projects)
+2. [Creating a Channel](/guide/core_concepts#channels)
+3. [Creating an API Key](/guide/core_concepts#api-key)
+4. [Filtering events](/guide/filter)
 5. Coming soon: Metrics
 6. Coming soon: Monitor

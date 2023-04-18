@@ -1,7 +1,7 @@
 # Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
 v: 0
 app_name: "PingBack"
-icon: "./assets/logo/v1_pingback-logo_deta@512.png"
+icon: "./assets/logo/v2_pingback-logo_deta@1024.png"
 micros:
   - name: docs
     src: ./docs
@@ -9,6 +9,8 @@ micros:
     public_routes:
       - "/*"
     engine: nodejs16
+    commands:
+    - export
     include:
       - bundled
       - server.js

@@ -1,0 +1,49 @@
+name: DetaApp (DEV) — CI
+on:
+  pull_request:
+    branches:
+      - dev
+    paths:
+      - "frontend/**"
+  push:
+    branches:
+      - dev
+    paths:
+      - "frontend/**"
+jobs:
+  Check-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: "frontend/package-lock.json"
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm i
+      - name: Run check
+        working-directory: frontend
+        run: |
+          npm run check
+  Test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: "frontend/package-lock.json"
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm i
+      - name: Run tests
+        working-directory: frontend
+        run: |
+          npm run test

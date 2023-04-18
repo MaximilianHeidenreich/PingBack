@@ -16,9 +16,12 @@
     import type { IProject } from "$lib/types/IProject";
     import { copyToClipboard } from "$lib/utils/clipboard";
     import { TKN_ICON } from "$lib/utils/tokens";
-    import { IconCopy, IconHash, IconKey, IconPlus, IconTrash } from "@tabler/icons-svelte";
-    import AddCircle from "iconsax-svelte/AddCircle.svelte";
     import type { PageServerData } from "./$types";
+    import IconAddSquare from "$cmp/core/icons/IconAddSquare.svelte";
+    import IconClipboard from "$cmp/core/icons/IconClipboard.svelte";
+    import IconDeleteBin2 from "$cmp/core/icons/IconDeleteBin2.svelte";
+    import IconSignHash from "$cmp/core/icons/IconSignHash.svelte";
+    import IconLoginKey from "$cmp/core/icons/IconLoginKey.svelte";
 
     s_headerTitle.set("Projects");
 
@@ -59,29 +62,29 @@
     {:else}
     <AppContentSection>
         <form on:submit|preventDefault>
-            <fieldset class="flex items-center gap-8">
-                <Button clazz="w-full shrink-0 grow flex-1 flex justify-center items-center gap-8"
+            <fieldset class="flex items-stretch gap-6">
+                <Button clazz="w-full shrink-0 grow flex-1 flex justify-center items-center gap-4"
                     on:click={onNewProject}>
-                    <IconPlus size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.BASE}/>
+                    <!--<IconPlus size={TKN_ICON.SIZE.SM} stroke={TKN_ICON.STROKE.BASE}/>-->
                     <span>New Project</span>
                 </Button>
                 <Input placeholder="Search projects" bind:value={filterValue}/>
             </fieldset>
         </form>
-        <hr class="mt-4 mb-8">
+        <hr class="mt-6 mb-6">
 
         {#if !filteredProjects}
         no projects with filter
         {:else}
         {#each filteredProjects as project}
-        <details class="project-item" open> <!-- TODO: Fix icon -->
+        <details class="project-item"> <!-- TODO: Fix icon -->
             <summary class="text-xl font-medium"><span class="icon"></span>{project.displayName}</summary>
             <div class="content flex flex-col items-stretch gap-6">
                 <div class="flex-1">
                     <div class="flex items-center gap-2">
                         <span class="uppercase text-sm font-medium text-neutral-500">Channels</span>
                         <IconButton on:click={() => onNewChannel(project)}>
-                            <AddCircle size={TKN_ICON.SIZE.SM}/>
+                            <IconAddSquare size={TKN_ICON.SIZE.SM}/>
                         </IconButton>
                     </div>
                     <ul>
@@ -90,11 +93,10 @@
                     {:else}
                         {#each project.channels as channel}
                             <li class="flex items-center justify-between border-b-2 border-neutral-100 py-1 shrink">
-                                <ul class="flex-1 flex items-center shrink grow overflow-hidden">
+                                <ul class="flex-1 flex items-center gap-2 shrink grow overflow-hidden">
                                     <li class="shrink-0">
-                                        <IconHash
-                                            size={18}
-                                            stroke={2} />
+                                        <IconSignHash
+                                            size={TKN_ICON.SIZE.XS} />
                                     </li>
                                     <li class="truncate"><span class="font-mono">{channel.id}</span></li>
                                 </ul>
@@ -117,15 +119,13 @@
                                             on:click={() => {
                                                 copyToClipboard(channel.id);
                                             }}
-                                            ><IconCopy
-                                                size={TKN_ICON.SIZE.BASE}
-                                                stroke={TKN_ICON.STROKE.BASE} /></IconButton>
+                                            ><IconClipboard
+                                                size={TKN_ICON.SIZE.SM} /></IconButton>
                                     </li>
                                     <li>
                                         <IconButton on:click={() => onDeleteChannel(project, channel.id)}
-                                            ><IconTrash
-                                                size={TKN_ICON.SIZE.BASE}
-                                                stroke={TKN_ICON.STROKE.BASE} /></IconButton>
+                                            ><IconDeleteBin2
+                                                size={TKN_ICON.SIZE.SM} /></IconButton>
                                     </li>
                                 </ul>
                             </li>
@@ -137,24 +137,23 @@
                     <div class="flex items-center gap-2">
                         <span class="uppercase text-sm font-medium text-neutral-500">API Keys</span>
                         <IconButton on:click={() => onNewApiKey(project.key)}>
-                            <AddCircle size={TKN_ICON.SIZE.SM}/>
+                            <IconAddSquare size={TKN_ICON.SIZE.SM}/>
                         </IconButton>
                     </div>
                     <ul>
                     {#if data.apiKeys.filter(e => e.project === project.key).length <= 0}
                         <li class="py-3"><span class="text-gray-500">No keys yet.</span></li>
                     {:else}
-                        {#each data.apiKeys as apiKey}
+                        {#each data.apiKeys.filter(e => e.project === project.key) as apiKey}
                             <li class="flex items-center justify-between border-b-2 border-neutral-100 py-3 shrink">
                                 <div class="flex flex-col gap-1 shrink grow overflow-hidden">
                                     <span class="font-mono text-sm">{apiKey.displayName}</span>
                                     <ul class="flex-1 flex items-center gap-2">
-                                        <li class="mt-0.5 shrink-0">
-                                            <IconKey
-                                                size={18}
-                                                stroke={2} />
+                                        <li class="shrink-0">
+                                            <IconLoginKey
+                                                size={TKN_ICON.SIZE.XS} />
                                         </li>
-                                        <li class="truncate"><span class="font-mono">{apiKey.key}</span></li>
+                                        <li class="truncate"><span class="font-mono">{apiKey.key}</span></li> <!-- TODO: Hide by default -->
                                     </ul>
                                 </div>
                                 <ul class="flex">
@@ -163,18 +162,16 @@
                                             on:click={() => {
                                                 copyToClipboard(apiKey.key);
                                             }}
-                                            ><IconCopy
-                                                size={TKN_ICON.SIZE.BASE}
-                                                stroke={TKN_ICON.STROKE.BASE} /></IconButton>
+                                            ><IconClipboard
+                                                size={TKN_ICON.SIZE.SM}/></IconButton>
                                     </li>
                                     <li>
                                         <IconButton
                                             on:click={() => {
                                                 onDeleteApiKey(apiKey.key, apiKey.displayName);
                                             }}
-                                            ><IconTrash
-                                                size={TKN_ICON.SIZE.BASE}
-                                                stroke={TKN_ICON.STROKE.BASE} /></IconButton>
+                                            ><IconDeleteBin2
+                                                size={TKN_ICON.SIZE.SM}/></IconButton>
                                     </li>
                                 </ul>
                             </li>

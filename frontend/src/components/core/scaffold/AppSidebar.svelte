@@ -6,15 +6,16 @@
     import { fade, fly } from "svelte/transition";
     import { s_appSidebarCollapsed } from "./s_appSidebarCollapsed";
     import MenuLink from "./MenuLink.svelte";
-    import Notification from "iconsax-svelte/Notification.svelte";
-    import Chart1 from "iconsax-svelte/Chart1.svelte";
-    import Setting2 from "iconsax-svelte/Setting2.svelte";
     import IconButton from "../buttons/IconButton.svelte";
-    import Book1 from "iconsax-svelte/Book1.svelte";
-    import Archive2 from "iconsax-svelte/Archive2.svelte";
-    import DirectInbox from "iconsax-svelte/DirectInbox.svelte";
-    import ThemeToggle from "../buttons/ThemeToggle.svelte";
     import { isMobile } from "$lib/utils/width";
+    import IconCog from "../icons/IconCog.svelte";
+    import IconArchive from "../icons/IconArchive.svelte";
+    import IconSignalGraph from "../icons/IconSignalGraph.svelte";
+    import IconMailInbox from "../icons/IconMailInbox.svelte";
+    import IconSignalFull from "../icons/IconSignalFull.svelte";
+    import IconHelpQuestionSquare from "../icons/IconHelpQuestionSquare.svelte";
+    import ThemeToggle from "../buttons/ThemeToggle.svelte";
+    import { goto } from "$app/navigation";
 
     // HANDLERS
     function onHandleMenuLinkClick() {
@@ -33,7 +34,7 @@
         <div class="nav-sidebar app-area">
             <section class="pt-4">
                 <header>
-                    <span class="text-xl font-semibold"><span class="text-pink-500">Ping</span>Back</span>
+                    <span class="text-xl font-bold"><span class="text-blub-500">Ping</span>Back</span>
                 </header>
                 <hr class="my-3 !mt-5 w-full">
                 <ul class="m-links">
@@ -42,7 +43,7 @@
                             href="/app/feed"
                             active={$page.url.pathname.startsWith("/app/feed")}
                             on:click={onHandleMenuLinkClick}>
-                            <DirectInbox />
+                            <IconMailInbox size={TKN_ICON.SIZE.BASE} style="currentColor" />
                             <span>Feed</span>
                         </MenuLink>
                     </li>
@@ -52,7 +53,7 @@
                             href="/app/metrics"
                             active={$page.url.pathname.startsWith("/app/feed")}
                             on:click={onHandleMenuLinkClick}>
-                            <Chart1 />
+                            <IconSignalFull size={TKN_ICON.SIZE.BASE} style="currentColor" />
                             <span>Metrics</span>
                         </MenuLink>
                     </li>
@@ -62,7 +63,7 @@
                             href="/app/monitor"
                             active={$page.url.pathname.startsWith("/app/monitor")}
                             on:click={onHandleMenuLinkClick}>
-                            <Notification />
+                            <IconSignalGraph size={TKN_ICON.SIZE.BASE} style="currentColor" />
                             <span>Monitor</span>
                         </MenuLink>
                     </li>
@@ -74,7 +75,7 @@
                             href="/app/projects"
                             active={$page.url.pathname.startsWith("/app/projects")}
                             on:click={onHandleMenuLinkClick}>
-                            <Archive2 />
+                            <IconArchive sie={TKN_ICON.SIZE.BASE} style="currentColor" />
                             <span>Projects</span>
                         </MenuLink>
                     </li>
@@ -88,7 +89,7 @@
                             href="/app/settings"
                             active={$page.url.pathname.startsWith("/app/settings")}
                             on:click={onHandleMenuLinkClick}>
-                            <Setting2 />
+                            <IconCog size={TKN_ICON.SIZE.BASE} style="currentColor" />
                             <span>Settings</span>
                         </MenuLink>
                     </li>
@@ -104,12 +105,12 @@
                 <hr class="my-3 w-full">
                 <ul class="w-full flex justify-between gap-3">
                     <li>
-                        <IconButton type="link" href="/docs" target="_blank">
-                            <Book1 />
+                        <IconButton on:click={() => goto("/docs")}><!-- type="link" href="/docs" target="_blank"> -->
+                            <IconHelpQuestionSquare size={TKN_ICON.SIZE.SM} />
                         </IconButton>
                         </li>
                     <li>
-                        <!--<ThemeToggle/>--> <!-- TODO: Re-Enable when good -->
+                        <ThemeToggle /> <!-- TODO: Re-Enable when good -->
                     </li>
                 </ul>
             </section>

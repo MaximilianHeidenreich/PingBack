@@ -5,8 +5,8 @@
     import { quintOut } from "svelte/easing";
     import { scale } from "svelte/transition";
     import IconButton from "../buttons/IconButton.svelte";
-    import CloseSquare from "iconsax-svelte/CloseSquare.svelte";
     import { popModal } from "./modalStore";
+    import IconDelete1 from "../icons/IconDelete1.svelte";
 
     // PROPS
     export let dialog: HTMLDialogElement;
@@ -34,7 +34,7 @@
                 on:click={() => {
                     dialog.close();
                 }}>
-                <CloseSquare  />
+                <IconDelete1 size={TKN_ICON.SIZE.SM} />
             </IconButton>
         </div>
         <p class="mt-2 max-w-[45ch] text-base font-normal text-neutral-500">

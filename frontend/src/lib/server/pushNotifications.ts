@@ -1,22 +1,73 @@
+import { Invalid, NotFound } from "$lib/errors/core";
 import webpush from "web-push";
+import { db_pushSubscriptions, db_system, DB_SYS_KEY } from "./deta";
 
-// TODO: gemerate on first start and save db
-const VAPID_PUB_KEY = "BP4IatrOkh87p3CjGWmxcYSVAGYiKkt7M0An1p43Sdfak_t6k9jl4RyILdGW0_3tNZOu8BwYAxvxSAHqx84TVUc";
-const VAPID_PRIV_KEY = "EWg1z4PbJOlKouqciamZsiYcx_FSzkjGZ5hz-9VIGCU";
-
-webpush.setVapidDetails("mailto:test@test.com", VAPID_PUB_KEY, VAPID_PRIV_KEY);
-
-export interface IPushNotificationPayload {
+export interface IPushNotificationPayload { // TODO move to types dir
     title: string;
     body: string;
+    //icon: string url
+    //image: string url
+    // badge: string url
+    timestamp: number;
+    // https://web.dev/push-notifications-display-a-notification/
 }
 
-export async function sendPushNotification(subscription: webpush.PushSubscription, payload: IPushNotificationPayload) {
+ // TOOD: Look into web-push options
+
+export async function savePushSubscription(clientId: string, subscription: webpush.PushSubscription) {
+    try {
+        await db_pushSubscriptions.insert({
+            key: clientId,
+            subscription
+        }, clientId);
+    } catch (e) {
+        throw new Invalid("Client already subscribed!");
+    }
+}
+
+export async function sendPushNotificationToClient(clientId: string) {}
+export async function sendPushNotificationToSubscription(subscription: webpush.PushSubscription, payload: IPushNotificationPayload) {
+    const [sysdoc] = await Promise.all([
+        db_system.get(DB_SYS_KEY),
+    ]);
+    if (!sysdoc) throw new NotFound("Sysdoc not found!");
+
+    webpush.setVapidDetails(
+        "mailto:test@test.com",
+        sysdoc.publicVapidKey,
+        sysdoc.privateVapidKey
+    );
     const encodedPayload = JSON.stringify(payload);
     try {
         await webpush.sendNotification(subscription, encodedPayload);
     }
     catch (e) {
         console.error(e);
+        throw new Error("Fucked up,"); // TODO: Better err
+    }
+}
+
+export async function sendPushNotificationToAllClients(payload: IPushNotificationPayload) {
+    const [sysdoc, pushSubscriptions] = await Promise.all([
+        db_system.get(DB_SYS_KEY),
+        db_pushSubscriptions.fetch({}, {})
+    ]);
+    if (!sysdoc) throw new NotFound("Sysdoc not found!");
+
+    webpush.setVapidDetails(
+        "mailto:test@test.com",
+        sysdoc.publicVapidKey,
+        sysdoc.privateVapidKey
+    ); // TODO: Move to one time setup, not on every single push
+
+    const encodedPayload = JSON.stringify(payload);
+    try {
+        for (const sub of pushSubscriptions.items) {
+            await webpush.sendNotification(sub.subscription, encodedPayload);
+        }
+    }
+    catch (e) {
+        console.error(e);
+        throw new Error("Fucked up,"); // TODO: Better err
     }
 }

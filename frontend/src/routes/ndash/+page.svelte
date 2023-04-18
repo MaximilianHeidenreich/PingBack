@@ -1,16 +1,5 @@
 <script lang="ts">
     import Button from "$cmp/core/buttons/Button.svelte";
-    import Menu from "iconsax-svelte/Menu.svelte";
-    import Layer from "iconsax-svelte/Layer.svelte";
-    import FilterSearch from "iconsax-svelte/FilterSearch.svelte";
-    import Maximize4 from "iconsax-svelte/Maximize4.svelte";
-    import Notification from "iconsax-svelte/Notification.svelte";
-    import Chart1 from "iconsax-svelte/Chart1.svelte";
-    import Setting2 from "iconsax-svelte/Setting2.svelte";
-    import Sun1 from "iconsax-svelte/Sun1.svelte";
-    import IconButton from "$cmp/core/buttons/IconButton.svelte";
-    import MenuLink from "$cmp/core/scaffold/MenuLink.svelte";
-    import { page } from "$app/stores";
     import AppSidebar from "$cmp/core/scaffold/AppSidebar.svelte";
     import AppHeader from "$cmp/core/scaffold/appHeader/AppHeader.svelte";
 </script>
