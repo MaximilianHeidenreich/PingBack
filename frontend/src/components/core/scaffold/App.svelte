@@ -7,6 +7,7 @@
     import AppHeader from "./appHeader/AppHeader.svelte";
     import AppSidebar from "./AppSidebar.svelte";
     import { s_appSidebarCollapsed } from "./s_appSidebarCollapsed";
+    import { s_appFullscreen } from "./s_appFullscreen";
 
     // STATE
     $: bgCol = $s_darkMode ? "#111" : "#fff";
@@ -18,7 +19,7 @@
 <ModalPortal />
 
 <div id="app-wrapper" style="background-color: {bgCol}; {dotsCss}">
-    <div class="app-scaffold">
+    <div class="app-scaffold {$s_appFullscreen ? 'fullscreen' : ''}">
         <AppSidebar />
         <AppHeader />
         <slot />
@@ -53,6 +54,10 @@
             @apply gap-8 px-8;
             @apply max-w-4xl mx-auto w-full h-5/6;
             @apply bg-none;
+        }
+        .app-scaffold.fullscreen {
+            @apply max-w-full h-full py-8;
+
         }
     }
 </style>

@@ -16,6 +16,10 @@
     import IconHelpQuestionSquare from "../icons/IconHelpQuestionSquare.svelte";
     import ThemeToggle from "../buttons/ThemeToggle.svelte";
     import { goto } from "$app/navigation";
+    import IconArrowsExpand1 from "../icons/IconArrowsExpand1.svelte";
+    import { s_appFullscreen } from "./s_appFullscreen";
+    import { get } from "svelte/store";
+    import FullscreenToggle from "../buttons/FullscreenToggle.svelte";
 
     // HANDLERS
     function onHandleMenuLinkClick() {
@@ -105,12 +109,15 @@
                 <hr class="my-3 w-full">
                 <ul class="w-full flex justify-between gap-3">
                     <li>
+                        <FullscreenToggle />
+                    </li>
+                    <li>
+                        <ThemeToggle /> <!-- TODO: Re-Enable when good -->
+                    </li>
+                    <li>
                         <IconButton on:click={() => goto("/docs")}><!-- type="link" href="/docs" target="_blank"> -->
                             <IconHelpQuestionSquare size={TKN_ICON.SIZE.SM} />
                         </IconButton>
-                        </li>
-                    <li>
-                        <ThemeToggle /> <!-- TODO: Re-Enable when good -->
                     </li>
                 </ul>
             </section>

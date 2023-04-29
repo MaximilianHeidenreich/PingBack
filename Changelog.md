@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0 - ?
+
+### Added
+- Interface maximize button
+
 ## 1.1.0 - 2023-04-07
 
 ### Changed
