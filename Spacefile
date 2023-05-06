@@ -16,6 +16,7 @@ micros:
       - server.js
       - package.json
     run: node server.js
+    dev: next dev
   - name: frontend
     primary: true
     src: ./frontend
@@ -33,3 +34,11 @@ micros:
     #- DETA_PROJECT_KEY=a0 NODE_OPTIONS=--max-old-space-size=4096 npm run build
     #- npm run build
     run: node bundled #build
+    dev: vite dev --port $PORT
+    actions:
+      - id: "cleanup_pushsubs"
+        name: "Clean Push Subscriptions"
+        description: "Cleans up push subscriptions from clients which havent been seen for a given amount of time."
+        trigger: "schedule"
+        default_interval: "0/1 * * * *"
+        #default_interval: "50 11 * * *"
