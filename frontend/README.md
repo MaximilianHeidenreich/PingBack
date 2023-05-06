@@ -1,14 +1,17 @@
 ## TODO
-
 ### Top launch prio
 - [ ] + Filter cached
 - [x] % Push notifications.. remove for first release
 - [x] fix tour / disable on mobile, show msg
 - [ ] Export feature -> usful for my analytics test
+- [ ] Fix zod validation error on event create --> better msg
 
 - [ ] Docs update
 - [ ] Clean App icon & graphcis
 - [ ] Launch web page (use pingback for analytics)
+
+### Normal Prio
+- [ ] Animated icon. New events stacking up.. fade out bottom ones.. / "Pinging" animation
 
 - move zod schemas to Z... prefix
 -   !: Sanitizes markdown parsers, otherwise people can inject code into your backend when u expose an endpoint.

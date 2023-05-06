@@ -3,6 +3,8 @@
 ## 1.2.0 - ?
 
 ### Added
+- Internal Project (Used to store PingBack instance events) (TODO!: Require migration)
+- Internal API key (TODO: Require migration!)
 - Interface maximize button
 
 ## 1.1.0 - 2023-04-07
