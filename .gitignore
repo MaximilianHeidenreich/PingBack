@@ -41,3 +41,6 @@ Temporary Items
 
 ### PAW Api client ###
 *.paw
+
+### NodeJS ###
+node_modules/
