@@ -22,6 +22,7 @@ micros:
     src: ./frontend
     public_routes:
       - "/api/v*/events"
+      - "/actions/live_feed"
     include:
       - bundled
       - package.json
@@ -35,6 +36,7 @@ micros:
     #- npm run build
     run: node bundled #build
     dev: vite dev --port $PORT
+    provide_actions: true
     actions:
       - id: "cleanup_pushsubs"
         name: "Clean Push Subscriptions"
