@@ -51,6 +51,7 @@ export const POST = (async ({ request }) => {
         newEvent = await server_createEvent(reqBody);
     }
     catch (e) {
+        console.error(e);
         if (e instanceof NotFound) return respondNotFound(e.message);
         else if (e instanceof InvalidZod) return respondBadRequest(e.zodError);
         else if (e instanceof Invalid) return respondBadRequest(e.message);
