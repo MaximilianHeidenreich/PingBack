@@ -4,7 +4,7 @@ app_name: "PingBack"
 icon: "./assets/logo/v2_pingback-logo_deta@1024.png"
 micros:
   - name: docs
-    src: ./docs
+    src: ./apps/docs
     path: docs
     public_routes:
       - "/*"
@@ -16,10 +16,10 @@ micros:
       - server.js
       - package.json
     run: node server.js
-    dev: next dev
-  - name: frontend
+    dev: yarn dev
+  - name: space-app
     primary: true
-    src: ./frontend
+    src: ./apps/space-app
     public_routes:
       - "/api/v*/events"
       - "/actions/live_feed"
@@ -36,11 +36,11 @@ micros:
     #- npm run build
     run: node bundled #build
     dev: vite dev --port $PORT
-    provide_actions: true
-    actions:
-      - id: "cleanup_pushsubs"
-        name: "Clean Push Subscriptions"
-        description: "Cleans up push subscriptions from clients which havent been seen for a given amount of time."
-        trigger: "schedule"
-        default_interval: "0/1 * * * *"
-        #default_interval: "50 11 * * *"
+    # provide_actions: true
+    # actions:
+    #   - id: "cleanup_pushsubs"
+    #     name: "Clean Push Subscriptions"
+    #     description: "Cleans up push subscriptions from clients which havent been seen for a given amount of time."
+    #     trigger: "schedule"
+    #     default_interval: "0/1 * * * *"
+    #     #default_interval: "50 11 * * *"

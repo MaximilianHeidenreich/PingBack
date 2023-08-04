@@ -37,10 +37,17 @@ Temporary Items
 # End of https://www.toptal.com/developers/gitignore/api/macos
 
 ### deta ###
-.space
+.space*
+
+## ENV ##
+.env
+!.env.example
 
 ### PAW Api client ###
 *.paw
 
 ### NodeJS ###
 node_modules/
+
+### Turbo ###
+.turbo

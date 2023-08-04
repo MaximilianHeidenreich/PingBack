@@ -1,0 +1,19 @@
+{
+    "name": "pingback-monorepo",
+    "private": true,
+    "version": "1.0.0",
+    "packageManager": "yarn@1.22.19",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "space dev",
+        "build": "turbo run build",
+        "build:types": "yarn workspace @pingback/types build"
+    },
+    "devDependencies": {
+        "prettier": "^2.7.1",
+        "turbo": "latest"
+    }
+}

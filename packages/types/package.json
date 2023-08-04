@@ -1,0 +1,12 @@
+{
+    "name": "@pingback/types",
+    "version": "1.1.0",
+    "private": true,
+    "scripts": {
+        "build": "tsc",
+        "build:types": "tsc --emitDeclarationOnly"
+    },
+    "devDependencies": {
+        "typescript": "^5.1.6"
+    }
+}

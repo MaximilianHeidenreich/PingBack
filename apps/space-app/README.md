@@ -1,3 +1,7 @@
+## Random
+- https://github.com/traceo-dev/traceo
+
+
 ## TODO
 ### Top launch prio
 - [ ] + Filter cached
@@ -66,3 +70,9 @@
 - Event page
     - Link
 
+
+## Cool little future integrations / thoughts
+- https://deta.space/discovery/@berrysauce/altar
+  - Project icons -> make them more distinglishable
+- Add a “recipes” section. Have preset recipes which can be “added” to simplify common setup.
+    - e.g. “Web statistics” recipe generates project for website, adds metrics dashboard to view statistics.
