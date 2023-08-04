@@ -35,7 +35,7 @@ micros:
     #- DETA_PROJECT_KEY=a0 NODE_OPTIONS=--max-old-space-size=4096 npm run build
     #- npm run build
     run: node bundled #build
-    dev: vite dev --port $PORT
+    dev: yarn dev
     # provide_actions: true
     # actions:
     #   - id: "cleanup_pushsubs"

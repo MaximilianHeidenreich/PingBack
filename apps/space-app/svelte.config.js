@@ -29,6 +29,10 @@ const config = {
             checkOrigin: false,
         }
     },
+    onwarn: (warning, handler) => {
+        if (warning.code.includes("a11y")) return;
+        handler(warning);
+    },
 };
 
 export default config;
