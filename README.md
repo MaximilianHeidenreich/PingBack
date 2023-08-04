@@ -74,7 +74,14 @@ Filter events.
 
 ## Usage
 
-todo: public docs before install?
+todo: public docs
+
+<!-- Repository Setup -->
+## Repository Setup
+
+> This section is relevant to setting up this repository and building it.
+
+todo
 
 <!-- CREDIT -->
 
