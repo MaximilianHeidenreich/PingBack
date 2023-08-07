@@ -10,7 +10,7 @@
 import { browser } from "$app/environment";
 import { mapEventProjectsIntoRecord } from "$lib/shared/event";
 import { s_sysContentHash } from "$lib/stores/s_sysContentHash";
-import type { IEvent } from "$lib/types/IEvent";
+import type { IEvent } from "@pingback/shared";
 import type { ITimeFrame } from "$lib/types/ITimeFrame";
 import { get } from "svelte/store";
 

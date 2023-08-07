@@ -1,6 +1,6 @@
 import { env } from "$env/dynamic/private";
 // import { DETA_PROJECT_KEY } from "$env/static/private";
-import type { IApiKey } from "$lib/types/IApiKey";
+import type { IApiKey } from "@pingback/shared";
 import type { IEvent } from "@pingback/shared";
 import type { ITimeFrame } from "$lib/types/ITimeFrame";
 import type { IProject } from "@pingback/shared";

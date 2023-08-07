@@ -10,7 +10,7 @@
     import dayjs from "dayjs";
     import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
     import { s_eventListStyle } from "$cmp/core/eventList/s_eventListStyle";
-    import type { IApiKey } from "$lib/types/IApiKey";
+    import type { IApiKey } from "@pingback/shared";
     import { client_QueryEventsInFrameAll } from "$lib/client/event";
 
     // STATE

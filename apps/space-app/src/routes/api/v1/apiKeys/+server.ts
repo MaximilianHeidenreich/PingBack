@@ -1,6 +1,6 @@
 import { db_apiKeys, db_projects } from "$lib/server/deta";
 import { buildResponse, respondBadRequest, respondInternalError, respondNotFound } from "$lib/server/responseHelper";
-import { ZApiKeyDisplayName, type IApiKey } from "$lib/types/IApiKey";
+import { ZApiKeyDisplayName, type IApiKey } from "@pingback/shared";
 import { ZProjectDisplayName } from "@pingback/shared";
 import { z } from "zod";
 import type { RequestHandler } from "./$types";

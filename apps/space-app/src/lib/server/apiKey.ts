@@ -1,5 +1,5 @@
 import { Invalid, InvalidZod } from "$lib/errors/core";
-import { ZApiKeyDisplayName, type IApiKey } from "$lib/types/IApiKey";
+import { ZApiKeyDisplayName, type IApiKey } from "@pingback/shared";
 import { ZProjectKey, type IProject } from "@pingback/shared";
 import { z } from "zod";
 import { db_apiKeys, db_projects } from "./deta";

@@ -1,6 +1,6 @@
 import { NotFound } from "$lib/errors/core";
 import type { TFetcher } from "$lib/types/fetcher";
-import type { IApiKey } from "$lib/types/IApiKey";
+import type { IApiKey } from "@pingback/shared";
 import { VERSION } from "$lib/utils/version";
 
 export interface ICreateApiKey {

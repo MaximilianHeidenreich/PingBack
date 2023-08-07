@@ -10,7 +10,7 @@
     import Tour_Monitoring from "./Tour_Monitoring.svelte";
     import Tour_End from "./Tour_End.svelte";
     import type { PageServerData } from "./$types";
-    import type { IApiKey } from "$lib/types/IApiKey";
+    import type { IApiKey } from "@pingback/shared";
     import { setContext } from "svelte";
 
     // PROPS

@@ -1,5 +1,5 @@
 import { db_apiKeys } from "$lib/server/deta";
-import type { IApiKey } from "$lib/types/IApiKey";
+import type { IApiKey } from "@pingback/shared";
 import type { PageServerLoad } from "./$types";
 
 export const load = (async ({  }) => {
@@ -27,7 +27,7 @@ export const load = (async ({  }) => {
             console.error(e);
         }
     }
-    
+
     return {
         defaultApiKey
     };
