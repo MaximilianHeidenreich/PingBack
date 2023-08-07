@@ -22,7 +22,10 @@ export const GET = (async ({ url }) => {
         }
     }
 
-    const queryOptions: { [key: string]: unknown } = {};
+
+    const queryOptions: { [key: string]: unknown } = {
+        desc: true
+    };
     if (limit) queryOptions["limit"] = Number(limit);
     if (last) queryOptions["last"] = last;
 

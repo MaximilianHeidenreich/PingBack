@@ -1,5 +1,6 @@
 <script lang="ts">
     import InfiniteEventList from "$cmp/core/eventList/InfiniteEventList.svelte";
+    import InfiniteEventListUlid from "$cmp/core/eventList/InfiniteEventListULID.svelte";
     import { s_eventListStyle } from "$cmp/core/eventList/s_eventListStyle";
     import AppContent from "$cmp/core/scaffold/AppContent.svelte";
     import { s_filter } from "$cmp/core/scaffold/appHeader/s_filter";
@@ -12,7 +13,10 @@
     style="{$s_eventListStyle === 'compact' ? 'section' : 'transparent'}"
     clazz="{$s_eventListStyle === 'card' ? '!p-0' : ''} !p-0">
     {#key $s_filter}
-    <InfiniteEventList
+    <!--<InfiniteEventList
+        query={$s_filter}
+        />-->
+    <InfiniteEventListUlid
         query={$s_filter}
         />
     {/key}

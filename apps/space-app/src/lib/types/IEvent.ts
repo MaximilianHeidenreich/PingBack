@@ -1,5 +1,6 @@
 import { z } from "zod";
-import nodeEmoji from "node-emoji";
+import * as nodeEmoji from "node-emoji";
+import { isValid } from "ulidx";
 
 /**
  * Parser to use when displaying event description.
@@ -31,8 +32,11 @@ export interface IEvent {
 }
 
 // SCHEMAS
-export const ZEventKey = z.string()
-    .uuid();
+export const ZEventKey = z.string().refine((val) => {
+    return isValid(val);
+}, {
+  message: "Invalid ULID.",
+});
 export const ZEventName = z.string()
     .min(1)
     .max(50)
