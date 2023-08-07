@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { FakeBase } from "./fakeBase";
-import type { IDBRecord } from "$lib/types/IDBRecord";
+import type { IDBRecord } from "@pingback/shared";
 
 describe("fakeBase", () => {
     interface TestSchema {
