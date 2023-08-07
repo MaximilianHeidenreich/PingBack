@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { z } from "zod";
 import { db_events, db_projects, db_system, DB_SYS_KEY, db_timeFrames } from "./deta";
 import { respondInternalError } from "./responseHelper";
+import { ulid } from "ulidx";
 
 /**
  * Type for creating a new event.
@@ -21,7 +22,7 @@ export interface ICreateEvent extends Partial<IEvent> {
     description: string | object;
 }
 export const SCreateEvent = z.object({
-    key: ZEventKey.optional().default(() => crypto.randomUUID()),
+    key: ZEventKey.optional().default(() => ulid()),
     v: z.number().optional().default(VERSION.major),
     createdAt: z
         .number()
