@@ -16,7 +16,9 @@ export function client_EnableLiveData(updateInterval: number = 3000) {
     liveTriggerTimer = setInterval(onUpdate, updateInterval);
 }
 
-export function client_DisableLiveData() {}
+export function client_DisableLiveData() {
+    if (liveTriggerTimer) clearInterval(liveTriggerTimer);
+}
 
 // LiveUpdate state
 let liveUpdateEnabledTimestamp: number = 0;
