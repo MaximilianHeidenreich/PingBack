@@ -6,7 +6,7 @@ import type { ITimeFrame } from "$lib/types/ITimeFrame";
 import type { IProject } from "@pingback/shared";
 import type { ISystemDoc } from "$lib/types/ISystemDoc";
 import { Deta } from "deta";
-import type { IPushSubscription } from "$lib/types/IPushSubscription";
+import type { IPushSubscription } from "@pingback/shared";
 
 export const deta = Deta(env.DETA_PROJECT_KEY);
 
