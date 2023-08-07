@@ -1,4 +1,4 @@
-import { sanitizeProjectIdInternal } from "./utils/sanitizers/sanitizers";
+import { sanitizeProjectIdInternal } from "../utils/sanitizers/sanitizers";
 import { z } from "zod";
 import type { IChannel } from "./IChannel";
 

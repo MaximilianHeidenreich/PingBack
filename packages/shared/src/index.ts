@@ -1,11 +1,13 @@
-export * from "./IEvent";
-export * from "./IChannel";
-export * from "./IProject";
-export * from "./IApiKey";
-export * from "./IDBRecord";
-export * from "./IPushSubscription";
-export * from "./ISystemDoc";
-export * from "./ITimeFrame";
+
+// Types & Zod Schemas
+export * from "./types/IEvent";
+export * from "./types/IChannel";
+export * from "./types/IProject";
+export * from "./types/IApiKey";
+export * from "./types/IDBRecord";
+export * from "./types/IPushSubscription";
+export * from "./types/ISystemDoc";
+export * from "./types/ITimeFrame";
 
 export * from "./utils/utilTypes";
 
