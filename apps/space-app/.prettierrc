@@ -8,12 +8,6 @@
     "proseWrap": "preserve",
     "bracketSpacing": true,
     "bracketSameLine": true,
-    "plugins": [
-        "prettier-plugin-svelte",
-        "prettier-plugin-organize-imports",
-        "@ianvs/prettier-plugin-sort-imports",
-        "prettier-plugin-tailwindcss"
-    ],
     "pluginSearchDirs": ["."],
     "overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }],
 

@@ -20,12 +20,10 @@ export interface IProject {
     channels: IChannel[];
 }
 
-export const ZProjectKey = z.string()
+export const ZProjectKey = z
+    .string()
     .min(1)
     .max(50)
     .transform((s) => sanitizeProjectIdInternal(s));
-export const ZProjectDisplayName = z.string()
-    .min(1)
-    .max(50);
+export const ZProjectDisplayName = z.string().min(1).max(50);
 export const ZProjectEventSpecifiers = z.record(z.string());
-

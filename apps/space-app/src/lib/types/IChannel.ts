@@ -9,9 +9,8 @@ export interface IChannel {
     latestEventTimestamp: number; // Unix timestamp of latest event in project -> efficient query by starting at latest TODO: IMPL
 }
 
-export const ZChannelID = z.string()
-    .min(1).max(25); // TODO: Add transform
-    //
+export const ZChannelID = z.string().min(1).max(25); // TODO: Add transform
+//
 
 export const ZChannel = z.object({
     id: ZChannelID,
