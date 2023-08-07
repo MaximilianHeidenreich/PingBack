@@ -2,7 +2,7 @@ import { Invalid, InvalidZod } from "$lib/errors/core";
 import { db_projects } from "$lib/server/deta";
 import { server_CreateProject } from "$lib/server/project";
 import { buildResponse, respondBadRequest, respondInternalError } from "$lib/server/responseHelper";
-import type { IProject } from "$lib/types/IProject";
+import type { IProject } from "@pingback/shared";
 import type { RequestHandler } from "./$types";
 
 export const GET = (async ({ url }) => {

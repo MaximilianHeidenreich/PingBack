@@ -1,4 +1,4 @@
-import type { IEvent } from "$lib/types/IEvent";
+import type { IEvent } from "@pingback/shared";
 import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
 import dayjs from "dayjs";
 import type { IWorkerContext } from ".";

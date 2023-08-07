@@ -3,7 +3,7 @@
     import Input from "$cmp/core/inputs/Input.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
     import { clientCreateProjectChannelRaw } from "$lib/helpers/api/projectsClient";
-    import type { IProject } from "$lib/types/IProject";
+    import type { IProject } from "@pingback/shared";
     import { sanitizeProjectIdInput } from "$lib/utils/sanitizers";
     import toastOptions from "$lib/utils/toast";
     import toast from "svelte-french-toast";

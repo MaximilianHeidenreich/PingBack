@@ -1,9 +1,9 @@
 import { env } from "$env/dynamic/private";
 // import { DETA_PROJECT_KEY } from "$env/static/private";
 import type { IApiKey } from "$lib/types/IApiKey";
-import type { IEvent } from "$lib/types/IEvent";
+import type { IEvent } from "@pingback/shared";
 import type { ITimeFrame } from "$lib/types/ITimeFrame";
-import type { IProject } from "$lib/types/IProject";
+import type { IProject } from "@pingback/shared";
 import type { ISystemDoc } from "$lib/types/ISystemDoc";
 import { Deta } from "deta";
 import type { IPushSubscription } from "$lib/types/IPushSubscription";

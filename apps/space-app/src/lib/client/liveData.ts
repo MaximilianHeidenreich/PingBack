@@ -1,5 +1,5 @@
 import { NotFound } from "$lib/errors/core";
-import type { IEvent } from "$lib/types/IEvent";
+import type { IEvent } from "@pingback/shared";
 import { TIME_FRAME_OFFSET_UNIT, type ITimeFrame } from "$lib/types/ITimeFrame";
 import toastOptions from "$lib/utils/toast";
 import dayjs from "dayjs";

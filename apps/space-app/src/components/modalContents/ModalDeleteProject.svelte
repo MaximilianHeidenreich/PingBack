@@ -2,7 +2,7 @@
     import Button from "$cmp/core/buttons/Button.svelte";
     import Modal from "$cmp/core/modals/Modal.svelte";
     import { clientDeleteProjectRaw } from "$lib/helpers/api/projectsClient";
-    import type { IProject } from "$lib/types/IProject";
+    import type { IProject } from "@pingback/shared";
     import toastOptions from "$lib/utils/toast";
     import toast from "svelte-french-toast";
 

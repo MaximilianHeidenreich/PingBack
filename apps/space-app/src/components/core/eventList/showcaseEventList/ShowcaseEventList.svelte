@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { IEvent } from "$lib/types/IEvent";
+    import type { IEvent } from "@pingback/shared";
     import EventList from "../EventList.svelte";
 
     // PROPS

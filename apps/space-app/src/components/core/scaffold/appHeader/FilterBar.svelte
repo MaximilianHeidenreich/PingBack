@@ -4,7 +4,7 @@
     import { TKN_ICON, TKN_TRANSITION } from "$lib/utils/tokens";
     import { createEventDispatcher } from "svelte";
     import { fly } from "svelte/transition";
-    import type { IProject } from "$lib/types/IProject";
+    import type { IProject } from "@pingback/shared";
     import Input from "$cmp/core/inputs/Input.svelte";
 
     // PROPS

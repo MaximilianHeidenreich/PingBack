@@ -13,7 +13,7 @@
     import ModalDeleteApiKey from "$cmp/modalContents/ModalDeleteApiKey.svelte";
     import ModalDeleteChannel from "$cmp/modalContents/ModalDeleteChannel.svelte";
     import ModalDeleteProject from "$cmp/modalContents/ModalDeleteProject.svelte";
-    import type { IProject } from "$lib/types/IProject";
+    import type { IProject } from "@pingback/shared";
     import { copyToClipboard } from "$lib/utils/clipboard";
     import { TKN_ICON } from "$lib/utils/tokens";
     import type { PageServerData } from "./$types";

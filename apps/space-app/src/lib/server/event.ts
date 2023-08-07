@@ -1,7 +1,7 @@
 import { DetaBaseError, Invalid, InvalidSystemState, InvalidZod, NotFound } from "$lib/errors/core";
 import { getTimeFrameEnd } from "$lib/shared/timeFrame";
-import { ZEventIcon, ZEventKey, ZEventName, ZEventTitle, type IEvent } from "$lib/types/IEvent";
-import { ZProjectKey } from "$lib/types/IProject";
+import { ZEventIcon, ZEventKey, ZEventName, ZEventTitle, type IEvent } from "@pingback/shared";
+import { ZProjectKey } from "@pingback/shared";
 import { TIME_FRAME_OFFSET_UNIT, type ITimeFrame } from "$lib/types/ITimeFrame";
 import { VERSION } from "$lib/utils/version";
 import dayjs from "dayjs";

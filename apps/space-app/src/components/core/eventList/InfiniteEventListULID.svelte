@@ -1,7 +1,7 @@
 <script lang="ts">
     import { cache_SetFrame, type ICachedTimeFrame } from "$lib/client/cache";
     import { client_GetTimeFrame } from "$lib/client/timeFrame";
-    import type { IEvent } from "$lib/types/IEvent";
+    import type { IEvent } from "@pingback/shared";
     import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
     import dayjs, { type ManipulateType } from "dayjs";
     import { onDestroy, onMount } from "svelte";

@@ -4,7 +4,7 @@
 /// <reference lib="webworker" />
 
 import { NotFound } from "$lib/errors/core";
-import type { IEvent } from "$lib/types/IEvent";
+import type { IEvent } from "@pingback/shared";
 import { TIME_FRAME_OFFSET_UNIT, type ITimeFrame } from "$lib/types/ITimeFrame";
 import type { IServiceWorkerMessage, TServiceWorkerMessageType } from "$lib/utils/serviceWorker";
 import dayjs from "dayjs";

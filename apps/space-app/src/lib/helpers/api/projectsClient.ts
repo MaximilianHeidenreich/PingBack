@@ -1,6 +1,6 @@
 import type { TFetcher } from "$lib/types/fetcher";
-import type { IChannel } from "$lib/types/IChannel";
-import type { IProject } from "$lib/types/IProject";
+import type { IChannel } from "@pingback/shared";
+import type { IProject } from "@pingback/shared";
 import { sanitizeChannelID, sanitizeProjectIdInternal } from "$lib/utils/sanitizers";
 import { VERSION } from "$lib/utils/version";
 

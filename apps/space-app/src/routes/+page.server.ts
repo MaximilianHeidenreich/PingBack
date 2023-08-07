@@ -1,7 +1,7 @@
 import { db_projects, db_system, DB_SYS_KEY } from "$lib/server/deta";
 import { server_createEvent, type ICreateEvent } from "$lib/server/event";
-import type { IEvent } from "$lib/types/IEvent";
-import type { IProject } from "$lib/types/IProject";
+import type { IEvent } from "@pingback/shared";
+import type { IProject } from "@pingback/shared";
 import { DEFAULT_SYSTEM_DOC } from "$lib/types/ISystemDoc";
 import { VERSION } from "$lib/utils/version";
 import { redirect } from "@sveltejs/kit";

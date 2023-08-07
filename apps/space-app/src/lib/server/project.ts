@@ -1,6 +1,6 @@
 import { InvalidZod } from "$lib/errors/core";
-import { ZChannel, type IChannel } from "$lib/types/IChannel";
-import { ZProjectDisplayName, ZProjectEventSpecifiers, ZProjectKey, type IProject } from "$lib/types/IProject";
+import { ZChannel, type IChannel } from "@pingback/shared";
+import { ZProjectDisplayName, ZProjectEventSpecifiers, ZProjectKey, type IProject } from "@pingback/shared";
 import { z } from "zod";
 import { server_CreateApiKey } from "./apiKey";
 import { db_apiKeys, db_projects } from "./deta";
@@ -16,7 +16,7 @@ export const ZCreateProject = z.object({
     displayName: ZProjectDisplayName,
     channels: z.array(ZChannel).optional().default([]),
     createdAt: z.number().optional().default(Date.now),
-    
+
     contentHash: z.string().optional().default(() => crypto.randomUUID()),
     latestEventTimestamp: z.number().optional().default(-1),
     eventSpecifiers: ZProjectEventSpecifiers.optional().default({})
@@ -62,7 +62,7 @@ export async function server_CreateProject(project: ICreateProject): Promise<IPr
 /**
   * Deletes a project and all its associated remaining data (apiKeys, events...).
   * NOTE: Use migrate functions to migrate data before calling this!
-  * TODO: impl delete events and other data 
+  * TODO: impl delete events and other data
   */
 export async function server_DeleteProject(projectKey: string): Promise<void> {
     try {

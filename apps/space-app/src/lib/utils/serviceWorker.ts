@@ -1,5 +1,5 @@
 import { dev } from "$app/environment";
-import type { IEvent } from "$lib/types/IEvent";
+import type { IEvent } from "@pingback/shared";
 import { VERSION } from "./version";
 
 export type TServiceWorkerMessageType =

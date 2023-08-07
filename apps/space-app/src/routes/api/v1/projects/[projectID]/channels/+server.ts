@@ -1,7 +1,7 @@
 import { db_projects } from "$lib/server/deta";
 import { buildResponse, respondInternalError, respondNotFound } from "$lib/server/responseHelper";
-import type { IChannel } from "$lib/types/IChannel";
-import type { IProject } from "$lib/types/IProject";
+import type { IChannel } from "@pingback/shared";
+import type { IProject } from "@pingback/shared";
 import { sanitizeProjectIdInternal } from "$lib/utils/sanitizers";
 import type { RequestHandler } from "./$types";
 

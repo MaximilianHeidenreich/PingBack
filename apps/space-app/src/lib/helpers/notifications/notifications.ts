@@ -1,5 +1,5 @@
 import { showNativeNotification } from "$lib/client/notifications";
-import type { IEvent } from "$lib/types/IEvent";
+import type { IEvent } from "@pingback/shared";
 import toastOptions from "$lib/utils/toast";
 import toast from "svelte-french-toast";
 

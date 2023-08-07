@@ -1,7 +1,7 @@
 <script lang="ts">
     import { relativeTime } from "svelte-relative-time";
     import { s_eventListStyle } from "./s_eventListStyle";
-    import type { IEvent } from "$lib/types/IEvent";
+    import type { IEvent } from "@pingback/shared";
     import { s_timeFormat } from "$lib/stores/s_timeFormat";
     import { browser } from "$app/environment";
     import { generatePalette } from "emoji-palette";
@@ -13,8 +13,8 @@
         odd: boolean = true;
 
     // STATE
-    $: truncatedDescription = event.parser === "text" ? 
-        !event.description ? null : 
+    $: truncatedDescription = event.parser === "text" ?
+        !event.description ? null :
         `${(event.description as string).substring(0, isMobile() ? 83 : 200)}...` : "No preview available.";
 
 </script>

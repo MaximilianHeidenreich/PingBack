@@ -1,7 +1,7 @@
 <script lang="ts">
     import { CodeBlock } from "svhighlight";
     import EventListItem from "$cmp/core/eventList/EventListItem.svelte";
-    import type { IEvent } from "$lib/types/IEvent";
+    import type { IEvent } from "@pingback/shared";
     import { quintOut } from "svelte/easing";
     import TourHeader from "./TourHeader.svelte";
     import TourStep from "./TourStep.svelte";

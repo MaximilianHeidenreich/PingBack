@@ -1,6 +1,6 @@
 <script lang="ts">
     import ShowcaseEventList from "$cmp/core/eventList/showcaseEventList/ShowcaseEventList.svelte";
-    import type { IEvent } from "$lib/types/IEvent";
+    import type { IEvent } from "@pingback/shared";
     import { onDestroy, onMount } from "svelte";
     import TourHeader from "./TourHeader.svelte";
     import TourStep from "./TourStep.svelte";
@@ -78,7 +78,7 @@
                 The event <span class="text-pink-500">feed</span>.
             </svelte:fragment>
             <svelte:fragment slot="description">
-                The feed is a list of all your events. It is automatically updated so you always see the latest events. 
+                The feed is a list of all your events. It is automatically updated so you always see the latest events.
                 You can switch between a "compact" and "card" view with the button in the top right corner.<br>
                 The feed can also be filtered to extract only relevant events.
             </svelte:fragment>

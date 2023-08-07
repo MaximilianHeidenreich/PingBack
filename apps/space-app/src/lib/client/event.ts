@@ -1,6 +1,6 @@
 import { browser } from "$app/environment";
 import { NotFound } from "$lib/errors/core";
-import type { IEvent } from "$lib/types/IEvent";
+import type { IEvent } from "@pingback/shared";
 import { TIME_FRAME_OFFSET_UNIT } from "$lib/types/ITimeFrame";
 import { VERSION } from "$lib/utils/version";
 import dayjs from "dayjs";

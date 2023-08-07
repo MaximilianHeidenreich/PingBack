@@ -1,4 +1,4 @@
-import type { IEvent } from "$lib/types/IEvent";
+import type { IEvent } from "@pingback/shared";
 
 export function mapEventProjectsIntoRecord(events: IEvent[]) {
     const eventMap = new Map<string, IEvent[]>();
